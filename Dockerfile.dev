@@ -1,0 +1,42 @@
+# Development Dockerfile with hot reload
+FROM node:18-alpine
+
+# Install dumb-init for proper signal handling
+RUN apk add --no-cache dumb-init
+
+# Create app user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# Set working directory
+WORKDIR /app
+
+
+# Install Bun globally as root
+RUN npm install -g bun
+
+
+# Ensure .next directory exists and is owned by nodejs (do this as root)
+RUN mkdir -p /app/.next && chown -R nodejs:nodejs /app /app/.next
+USER nodejs
+
+# Copy package files
+COPY --chown=nodejs:nodejs package*.json ./
+
+# Install all dependencies (including dev dependencies)
+RUN bun install
+
+# Copy source code
+COPY --chown=nodejs:nodejs . .
+
+# Expose port
+EXPOSE 3000
+
+# Ensure .next directory exists and is owned by nodejs
+RUN mkdir -p /app/.next && chown -R nodejs:nodejs /app/.next
+
+# Use dumb-init to handle signals properly
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start development server with hot reload
+CMD ["bun", "run", "dev"]

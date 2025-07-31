@@ -1,34 +1,26 @@
+# Multi-stage build for production optimization (Bun/Next.js)
+FROM node:20-alpine AS builder
 
-# Use official Node.js image as the base
-FROM node:20-alpine AS base
-
-# Set working directory
 WORKDIR /app
-
-# Install bun globally in base image so it's available in all stages
-RUN npm install -g bun
-
-# Install dependencies only when needed
-FROM base AS deps
 COPY package.json bun.lock ./
-RUN bun install
-
-# Copy all files and build
-FROM base AS builder
-COPY --from=deps /app/node_modules ./node_modules
+RUN npm install -g bun && bun install
 COPY . .
 RUN bun run build
 
-# Production image, copy only necessary files
-FROM base AS production
-ENV NODE_ENV=production
+FROM node:20-alpine AS production
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
 WORKDIR /app
-RUN npm install -g bun
+COPY package.json bun.lock ./
+RUN npm install -g bun && bun install --production
 COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/next.config.ts ./next.config.ts
-
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/node_modules ./node_modules
+RUN chown -R nodejs:nodejs /app
+USER nodejs
 EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -qO- http://localhost:3000 || exit 1
 CMD ["bun", "start"]

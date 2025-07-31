@@ -1,18 +1,15 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { SITE_URL } from "@/config/env-config";
+import { Inter } from "next/font/google";
+import "../globals.css";
+import Header from "./_compoments/Header";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const geistSans = Inter({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata = {
-  metadataBase: new URL("https://your-domain.com"), // <-- Set your production domain here
+  metadataBase: new URL(SITE_URL), // <-- Set your production domain here
   title: "Capital H – Conversational AI Chatbot",
   description:
     "A minimal, user-friendly AI chatbot website with guiderails for safe, smart conversations.",
@@ -20,11 +17,11 @@ export const metadata = {
     title: "Capital H – Conversational AI Chatbot",
     description:
       "Chat naturally with a smart assistant. Safe, relevant, and human-like.",
-    url: "https://your-domain.com",
+    url: SITE_URL,
     siteName: "Capital H",
     images: [
       {
-        url: "/og-image.png",
+        url: `${SITE_URL}/og-image.png`,
         width: 1200,
         height: 630,
         alt: "Capital H Chatbot",
@@ -49,9 +46,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={` ${geistSans.className} antialiased`}>
+        <Header />
         {children}
       </body>
     </html>

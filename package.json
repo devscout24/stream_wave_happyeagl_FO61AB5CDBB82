@@ -4,9 +4,18 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "docker:dev": "./scripts/dev.sh",
+    "docker:prod": "./scripts/prod.sh",
+    "docker:cleanup": "./scripts/cleanup.sh",
+    "docker:build": "docker build -t tips-payment-api .",
+    "docker:build-dev": "docker build -f Dockerfile.dev -t tips-payment-api:dev .",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "clean": "rm -rf .next dist",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
