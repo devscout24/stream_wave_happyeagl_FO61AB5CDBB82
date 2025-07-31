@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - BUN_HOT=1
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    tmpfs:
+      - /app/.next
+    command: bun --hot dev
+
+volumes:
+  node_modules:
