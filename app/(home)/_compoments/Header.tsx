@@ -1,5 +1,7 @@
 import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import ThemeToggle from "./ThemeToggler";
 
 export default function Header() {
@@ -12,8 +14,11 @@ export default function Header() {
               <Icon src="/menu.svg" />
               <Logo />
             </div>
-            <div>
+            <div className="flex items-center gap-4">
               <ThemeToggle />
+              <Link href="/login">
+                <Button variant="default">Sign In</Button>
+              </Link>
             </div>
           </div>
         </div>
