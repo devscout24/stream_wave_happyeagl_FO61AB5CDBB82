@@ -6,42 +6,31 @@ interface IconProps {
   style?: React.CSSProperties;
   onClick?: React.MouseEventHandler<SVGSVGElement>;
   src: string;
-  title?: string;
-  desc?: string;
-  beforeInjection?: (svg: SVGSVGElement) => void;
-  afterInjection?: (svg: SVGSVGElement) => void;
-  evalScripts?: "always" | "once" | "never";
-  fallback?: () => React.ReactNode;
-  httpRequestWithCredentials?: boolean;
-  loading?: () => React.ReactNode;
-  onError?: (error: unknown) => void;
-  renumerateIRIElements?: boolean;
-  useRequestCache?: boolean;
-  wrapper?: "div" | "span" | "svg";
 }
 
-const Icon: React.FC<IconProps> = (props) => {
-  const { onClick, afterInjection, onError, ...rest } = props;
-  // Attach onClick to SVG after injection if provided
-  const handleAfterInjection = (svg: SVGSVGElement) => {
-    if (onClick) {
-      svg.onclick = (e) => {
-        onClick(e as unknown as React.MouseEvent<SVGSVGElement, MouseEvent>);
-      };
-    }
-    if (afterInjection) afterInjection(svg);
-  };
-  // Adapt onError to accept unknown
-  const handleOnError = onError
-    ? (error: unknown) => {
-        onError(error);
-      }
-    : undefined;
+const Icon: React.FC<IconProps> = ({
+  src,
+  className,
+  style,
+  onClick,
+}: IconProps) => {
   return (
     <ReactSVG
-      {...rest}
-      afterInjection={handleAfterInjection}
-      onError={handleOnError}
+      src={src}
+      beforeInjection={(svg) => {
+        if (className) {
+          className.split(" ").forEach((cls) => {
+            if (cls) svg.classList.add(cls);
+          });
+        }
+        if (style) Object.assign(svg.style, style);
+        if (onClick)
+          svg.addEventListener("click", (e) =>
+            onClick(
+              e as unknown as React.MouseEvent<SVGSVGElement, MouseEvent>,
+            ),
+          );
+      }}
     />
   );
 };
