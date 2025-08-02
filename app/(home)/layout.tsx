@@ -1,63 +1,34 @@
-import { ThemeProvider } from "@/components/theme-provider";
-import { SITE_URL } from "@/config/env-config";
-import { Inter } from "next/font/google";
-import "../globals.css";
+import type { Metadata } from "next";
 import Header from "./_compoments/Header";
 
-const geistSans = Inter({
-  subsets: ["latin"],
-  display: "swap",
-});
-
-export const metadata = {
-  metadataBase: new URL(SITE_URL), // <-- Set your production domain here
-  title: "Capital H – Conversational AI Chatbot",
+export const metadata: Metadata = {
+  title: "Home - Capital H",
   description:
-    "A minimal, user-friendly AI chatbot website with guiderails for safe, smart conversations.",
-  openGraph: {
-    title: "Capital H – Conversational AI Chatbot",
-    description:
-      "Chat naturally with a smart assistant. Safe, relevant, and human-like.",
-    url: SITE_URL,
-    siteName: "Capital H",
-    images: [
-      {
-        url: `${SITE_URL}/og-image.png`,
-        width: 1200,
-        height: 630,
-        alt: "Capital H Chatbot",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Capital H – Conversational AI Chatbot",
-    description:
-      "Chat naturally with a smart assistant. Safe, relevant, and human-like.",
-    images: ["/og-image.png"],
-  },
+    "Welcome to Capital H - A modern Next.js application with Docker development environment",
 };
 
-export default function RootLayout({
+export default function HomeLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={` ${geistSans.className} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Header />
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+    <>
+      {/* Home-specific header */}
+      <Header />
+      {/* Main content area */}
+      <main className="home-content">{children}</main>
+      {/* Home-specific footer */}
+      <footer className="bg-card mt-auto border-t">
+        <div className="container mx-auto px-4 py-6">
+          <div className="text-muted-foreground text-center text-sm">
+            <p>
+              &copy; 2025 Capital H. Built with Next.js, Docker, and auto-sync
+              magic.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </>
   );
 }

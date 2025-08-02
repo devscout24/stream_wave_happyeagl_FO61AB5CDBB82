@@ -1,8 +1,8 @@
-# Development Dockerfile with hot reload
+# Development Dockerfile with hot reload and auto-sync
 FROM node:18-alpine
 
-# Install dumb-init for proper signal handling
-RUN apk add --no-cache dumb-init
+# Install dumb-init and inotify-tools for proper signal handling and file watching
+RUN apk add --no-cache dumb-init inotify-tools
 
 # Create app user
 RUN addgroup -g 1001 -S nodejs && \
@@ -11,32 +11,33 @@ RUN addgroup -g 1001 -S nodejs && \
 # Set working directory
 WORKDIR /app
 
-
 # Install Bun globally as root
 RUN npm install -g bun
 
-
 # Ensure .next directory exists and is owned by nodejs (do this as root)
 RUN mkdir -p /app/.next && chown -R nodejs:nodejs /app /app/.next
-USER nodejs
 
-# Copy package files
+# Copy package files first (for better caching)
 COPY --chown=nodejs:nodejs package*.json ./
+COPY --chown=nodejs:nodejs bun.lock* ./
+
+# Switch to nodejs user
+USER nodejs
 
 # Install all dependencies (including dev dependencies)
 RUN bun install
 
-# Copy source code
+# Copy source code and scripts
 COPY --chown=nodejs:nodejs . .
+
+# Make startup script executable
+RUN chmod +x scripts/docker-dev-start.sh
 
 # Expose port
 EXPOSE 3000
 
-# Ensure .next directory exists and is owned by nodejs
-RUN mkdir -p /app/.next && chown -R nodejs:nodejs /app/.next
-
 # Use dumb-init to handle signals properly
 ENTRYPOINT ["dumb-init", "--"]
 
-# Start development server with hot reload
-CMD ["bun", "run", "dev"]
+# Start development server with auto-sync
+CMD ["./scripts/docker-dev-start.sh"]
