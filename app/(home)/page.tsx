@@ -1,4 +1,4 @@
-import ChatForm from "./_compoments/ChatForm";
+import ChatForm from "./_components/ChatForm";
 
 export const metadata = {
   title: "Capital H – Conversational AI Chatbot",

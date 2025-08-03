@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import { SITE_URL } from "@/config/env-config";
 import { Inter } from "next/font/google";
+import Header from "../components/Header";
 import "./globals.css";
 
 const geistSans = Inter({
@@ -53,6 +54,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Header />
           {children}
         </ThemeProvider>
       </body>
