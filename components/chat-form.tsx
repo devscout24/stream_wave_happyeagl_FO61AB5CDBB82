@@ -1,81 +1,58 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import Icon from "@/components/Icon";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import useChatForm from "@/hooks/use-chat-form";
+import { ShieldAlert } from "lucide-react";
 
-const formSchema = z.object({
-  message: z
-    .string()
-    .min(1, "Message is required")
-    .max(500, "Message is too long"),
-});
-
-type FormData = z.infer<typeof formSchema>;
-
-export function ChatForm() {
-  const [messages, setMessages] = useState<
-    { text: string; timestamp: string }[]
-  >([]);
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-  });
-
-  const onSubmit = async (data: FormData) => {
-    const timestamp = format(new Date(), "h:mm:ss a");
-    setMessages((prev) => [...prev, { text: data.message, timestamp }]);
-    reset();
-  };
+export default function ChatForm() {
+  const { form, onSubmit } = useChatForm();
 
   return (
-    <div className="space-y-4">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="space-y-2">
-          <textarea
-            {...register("message")}
-            placeholder="Type your message here..."
-            className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring min-h-[100px] w-full resize-none rounded-md border px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-            disabled={isSubmitting}
-          />
-          {errors.message && (
-            <p className="text-sm text-red-500">{errors.message.message}</p>
-          )}
-        </div>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="ring-offset-background focus-visible:ring-ring bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-        >
-          {isSubmitting ? "Sending..." : "Send Message"}
-        </button>
-      </form>
-
-      {messages.length > 0 && (
-        <div className="space-y-2">
-          <h4 className="text-sm font-medium">Messages:</h4>
-          <div className="max-h-40 space-y-2 overflow-y-auto">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className="bg-muted rounded-md border p-3 text-sm"
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem className="relative">
+              <Button
+                type="button"
+                variant="ghost"
+                className="absolute top-1/2 left-4 -translate-y-1/2 transform cursor-pointer hover:bg-transparent dark:text-white dark:hover:bg-transparent dark:hover:text-white"
               >
-                <p>{message.text}</p>
-                <p className="text-muted-foreground mt-1 text-xs">
-                  Sent at {message.timestamp}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
+                <Icon src="/attachment.svg" />
+              </Button>
+              <FormControl>
+                <Input
+                  placeholder="Describe your thought"
+                  {...field}
+                  className="bg-input text-foreground placeholder:text-foreground rounded-2xl py-7 pl-14 text-sm placeholder:text-sm lg:py-8 lg:text-lg placeholder:lg:text-lg"
+                />
+              </FormControl>
+
+              <Button
+                type="submit"
+                variant="ghost"
+                className="text-input bg-foreground hover:bg-foreground hover:text-input dark:bg-primary dark:text-background dark:hover:text-background dark:hover:bg-primary absolute top-1/2 right-4 -translate-y-1/2 transform cursor-pointer"
+              >
+                <Icon src="/sent.svg" />
+              </Button>
+            </FormItem>
+          )}
+        />
+        <p className="text-muted-foreground flex items-start justify-center gap-1 text-center text-xs font-normal md:items-center md:text-sm">
+          <ShieldAlert
+            size={16}
+            strokeWidth={1.5}
+            className="max-sm:h-8 max-sm:w-8"
+          />
+          This AI may occasionally generate incorrect or incomplete answers.
+          Always verify important information.
+        </p>
+      </form>
+    </Form>
   );
 }
