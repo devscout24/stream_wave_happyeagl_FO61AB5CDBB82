@@ -2,7 +2,7 @@ import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import ThemeToggle from "../app/(home)/_components/ThemeToggler";
+import ThemeToggle from "./theme-toggle";
 
 export default function Header() {
   return (
