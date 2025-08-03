@@ -17,18 +17,9 @@ export default function HomeLayout({
       {/* Home-specific header */}
       <Header />
       {/* Main content area */}
-      <main className="home-content">{children}</main>
-      {/* Home-specific footer */}
-      <footer className="bg-card mt-auto border-t">
-        <div className="container mx-auto px-4 py-6">
-          <div className="text-muted-foreground text-center text-sm">
-            <p>
-              &copy; 2025 Capital H. Built with Next.js, Docker, and auto-sync
-              magic.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <main className="flex min-h-[calc(100vh-100px)] flex-col items-center justify-center">
+        {children}
+      </main>
     </>
   );
 }

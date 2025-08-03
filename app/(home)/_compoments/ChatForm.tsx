@@ -1,18 +1,12 @@
 "use client";
 
+import Icon from "@/components/Icon";
 import useChatForm from "./use-chat-form";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ShieldAlert } from "lucide-react";
 
 export default function ChatForm() {
   const { form, onSubmit } = useChatForm();
@@ -24,19 +18,41 @@ export default function ChatForm() {
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
+            <FormItem className="relative">
+              <Button
+                type="button"
+                variant="ghost"
+                className="absolute top-1/2 left-4 -translate-y-1/2 transform cursor-pointer hover:bg-transparent dark:text-white dark:hover:bg-transparent dark:hover:text-white"
+              >
+                <Icon src="/attachment.svg" />
+              </Button>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input
+                  placeholder="Describe your thought"
+                  {...field}
+                  className="bg-input text-foreground placeholder:text-foreground rounded-2xl py-8 pl-14 text-lg placeholder:text-lg"
+                />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
+
+              <Button
+                type="submit"
+                variant="ghost"
+                className="text-input bg-foreground hover:bg-foreground hover:text-input dark:bg-primary dark:text-background dark:hover:text-background dark:hover:bg-primary absolute top-1/2 right-4 -translate-y-1/2 transform cursor-pointer"
+              >
+                <Icon src="/sent.svg" />
+              </Button>
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <p className="text-muted-foreground flex items-start justify-center gap-1 text-center text-sm font-normal md:items-center">
+          <ShieldAlert
+            size={16}
+            strokeWidth={1.5}
+            className="max-sm:h-8 max-sm:w-8"
+          />
+          This AI may occasionally generate incorrect or incomplete answers.
+          Always verify important information.
+        </p>
       </form>
     </Form>
   );
