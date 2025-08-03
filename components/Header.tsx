@@ -8,7 +8,7 @@ export default function Header() {
   return (
     <header>
       <nav>
-        <div className="container mx-auto max-md:px-2 lg:max-w-6xl">
+        <div className="container mx-auto max-md:px-2 lg:max-w-7xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 py-4">
               <Link href="/about">
