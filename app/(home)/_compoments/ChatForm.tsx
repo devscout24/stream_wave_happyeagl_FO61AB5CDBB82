@@ -30,7 +30,7 @@ export default function ChatForm() {
                 <Input
                   placeholder="Describe your thought"
                   {...field}
-                  className="bg-input text-foreground placeholder:text-foreground rounded-2xl py-8 pl-14 text-lg placeholder:text-lg"
+                  className="bg-input text-foreground placeholder:text-foreground rounded-2xl py-7 pl-14 text-sm placeholder:text-sm lg:py-8 lg:text-lg placeholder:lg:text-lg"
                 />
               </FormControl>
 
@@ -44,7 +44,7 @@ export default function ChatForm() {
             </FormItem>
           )}
         />
-        <p className="text-muted-foreground flex items-start justify-center gap-1 text-center text-sm font-normal md:items-center">
+        <p className="text-muted-foreground flex items-start justify-center gap-1 text-center text-xs font-normal md:items-center md:text-sm">
           <ShieldAlert
             size={16}
             strokeWidth={1.5}

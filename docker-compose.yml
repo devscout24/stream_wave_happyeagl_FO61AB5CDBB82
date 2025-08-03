@@ -20,6 +20,31 @@ services:
       - /app/.next
     profiles:
       - dev
+    develop:
+      watch:
+        # Rebuild container for critical config changes
+        - path: ./next.config.ts
+          action: rebuild
+        - path: ./tailwind.config.ts
+          action: rebuild
+        - path: ./Dockerfile.dev
+          action: rebuild
+        # Sync package files to trigger internal auto-sync
+        - path: ./package.json
+          target: /app/package.json
+          action: sync
+        - path: ./bun.lock
+          target: /app/bun.lock
+          action: sync
+        # Sync all other files
+        - path: .
+          target: /app
+          action: sync
+          ignore:
+            - node_modules/
+            - .git/
+            - .next/
+            - dist/
 
   app-prod:
     build:
