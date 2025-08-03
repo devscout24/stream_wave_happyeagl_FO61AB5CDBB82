@@ -3,3 +3,10 @@ export interface Feature {
   title: string;
   description: string;
 }
+
+export interface Testimonial {
+  id: number;
+  content: string;
+  author: string;
+  ratings: number;
+}

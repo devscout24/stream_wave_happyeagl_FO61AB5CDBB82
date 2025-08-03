@@ -5,10 +5,10 @@ export default function Feature() {
   return (
     <div className="container mx-auto mt-16 max-lg:px-2 lg:max-w-7xl">
       <div className="space-y-2">
-        <h1 className="text-center text-4xl font-semibold">
+        <h1 className="text-center text-2xl font-semibold sm:text-3xl lg:text-4xl">
           What Makes our AI Smarter
         </h1>
-        <p className="text-paragraph text-center">
+        <p className="text-paragraph text-center max-sm:text-xs">
           More than just chat — it understands context, learns with you, and
           helps you get real work done.
         </p>
