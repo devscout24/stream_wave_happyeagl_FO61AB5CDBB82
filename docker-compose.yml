@@ -22,21 +22,18 @@ services:
       - dev
     develop:
       watch:
-        # Rebuild container for critical config changes
         - path: ./next.config.ts
           action: rebuild
         - path: ./tailwind.config.ts
           action: rebuild
         - path: ./Dockerfile.dev
           action: rebuild
-        # Sync package files to trigger internal auto-sync
         - path: ./package.json
           target: /app/package.json
           action: sync
         - path: ./bun.lock
           target: /app/bun.lock
           action: sync
-        # Sync all other files
         - path: .
           target: /app
           action: sync
@@ -45,7 +42,6 @@ services:
             - .git/
             - .next/
             - dist/
-
   app-prod:
     build:
       context: .
@@ -59,6 +55,19 @@ services:
     volumes:
       - .env.production:/app/.env
     profiles:
+      - prod
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: capital_h_backend
+    environment:
+      NODE_ENV: development
+    ports:
+      - "5000:5000"
+    profiles:
+      - dev
       - prod
 
 volumes:

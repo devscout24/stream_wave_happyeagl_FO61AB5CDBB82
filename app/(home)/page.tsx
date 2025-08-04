@@ -1,4 +1,5 @@
 import ChatForm from "@/components/chat-form";
+import Inbox from "@/components/Inbox";
 
 export const metadata = {
   title: "Capital H – Conversational AI Chatbot",
@@ -9,6 +10,10 @@ export const metadata = {
 export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
+      <div>
+        <Inbox />
+      </div>
+
       <div className="mx-auto max-w-3xl space-y-7 lg:space-y-14">
         <h1 className="text-center text-2xl font-medium md:text-3xl xl:text-4xl">
           How May I Help you!

@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "email": "jane@example.com"
+    }
+  ],
+  "inbox": [
+    {
+      "id": 1,
+      "sender": "john@example.com",
+      "subject": "Hello",
+      "body": "Hi there!"
+    },
+    {
+      "id": 2,
+      "sender": "jane@example.com",
+      "subject": "Meeting Reminder",
+      "body": "Don't forget our meeting tomorrow."
+    }
+  ]
+}
