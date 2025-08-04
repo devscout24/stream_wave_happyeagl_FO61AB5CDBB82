@@ -10,3 +10,11 @@ export interface Testimonial {
   author: string;
   ratings: number;
 }
+
+export interface ChatMessage {
+  id: number;
+  content: string;
+  sender: "user" | "bot";
+  avatar: string;
+  timestamp: string;
+}

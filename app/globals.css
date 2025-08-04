@@ -46,7 +46,7 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: #efefef;
   --foreground: #070707; /* Input text color for light theme */
   --card: #e3e3e3; /* Card background for light theme */
   --card-foreground: oklch(0.145 0 0);
@@ -56,12 +56,12 @@
   --primary-foreground: #ffe27c;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
+  --muted: #e4e4e4;
+  --muted-foreground: #212121;
+  --accent: #ff0000;
+  --accent-foreground: #333333;
+  --destructive: #e63946;
+  --border: #cccccc;
   --input: #fbe5b6;
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
@@ -78,6 +78,7 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --paragraph: #4b5563; /* Paragraph color for light mode */
+  --chat-text-background: #e4e4e4; /* Chat text background color for light mode */
 
   /* */
 }
