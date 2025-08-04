@@ -1,10 +1,15 @@
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Icon from "./Icon";
 
-export default function Logo() {
+interface LogoProps {
+  className?: string;
+}
+
+export default function Logo({ className }: LogoProps) {
   return (
     <Link href="/">
-      <Icon src="/logo.svg" className="h-12 w-12" />
+      <Icon src="/logo.svg" className={cn("h-12 w-12", className)} />
     </Link>
   );
 }
