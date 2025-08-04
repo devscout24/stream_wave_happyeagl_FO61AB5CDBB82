@@ -29,7 +29,7 @@ export default function ChatForm() {
                 <Input
                   placeholder="Describe your thought"
                   {...field}
-                  className="bg-input text-foreground placeholder:text-foreground rounded-2xl py-7 pl-14 text-sm placeholder:text-sm lg:py-8 lg:text-lg placeholder:lg:text-lg"
+                  className="bg-input text-foreground placeholder:text-foreground rounded-2xl py-7 pl-14 text-sm drop-shadow-xl placeholder:text-sm lg:py-8 lg:text-lg placeholder:lg:text-lg dark:drop-shadow-none"
                 />
               </FormControl>
 
