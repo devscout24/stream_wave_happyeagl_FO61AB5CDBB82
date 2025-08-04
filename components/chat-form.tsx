@@ -29,7 +29,7 @@ export default function ChatForm() {
                 <Input
                   placeholder="Describe your thought"
                   {...field}
-                  className="bg-input text-foreground placeholder:text-foreground rounded-2xl py-7 pl-14 text-sm drop-shadow-xl placeholder:text-sm lg:py-8 lg:text-lg placeholder:lg:text-lg dark:drop-shadow-none"
+                  className="bg-input text-foreground placeholder:text-foreground rounded-[20px] py-7 pl-14 text-sm shadow-xl placeholder:text-sm lg:py-9 lg:text-lg placeholder:lg:text-lg dark:border-none"
                 />
               </FormControl>
 
@@ -43,11 +43,11 @@ export default function ChatForm() {
             </FormItem>
           )}
         />
-        <p className="text-muted-foreground flex items-start justify-center gap-1 text-center text-xs font-normal md:items-center md:text-sm">
+        <p className="text-paragraph flex items-start justify-center gap-1 text-center text-xs font-normal md:items-center md:text-sm">
           <ShieldAlert
             size={16}
             strokeWidth={1.5}
-            className="max-sm:h-8 max-sm:w-8"
+            className="text-paragraph max-sm:h-8 max-sm:w-8"
           />
           This AI may occasionally generate incorrect or incomplete answers.
           Always verify important information.

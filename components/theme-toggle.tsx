@@ -48,10 +48,10 @@ export default function ThemeToggle() {
 
       <div
         className={cn(
-          "group peer relative h-8 w-16 rounded-full shadow-inner outline-none peer-focus:outline-none",
+          "group peer relative h-8 w-16 rounded-full outline-none peer-focus:outline-none",
           {
-            "bg-[#525252] shadow-[#525252]": !isDark,
-            "bg-[#554F4F] shadow-[#554F4F]": isDark,
+            "bg-[#525252] shadow-[inset_0_4px_4px_0_rgba(0,0,0,0.25)]": !isDark,
+            "bg-[#554F4F] shadow-[inset_0_4px_4px_0_rgba(0,0,0,0.25)]": isDark,
           },
         )}
       >
