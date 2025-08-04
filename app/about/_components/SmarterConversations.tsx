@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function SmarterConversations() {
   return (
-    <section className="mt-16 overflow-hidden bg-[#212121] py-16 max-md:px-2">
+    <section className="mt-16 overflow-hidden bg-[#212121] max-md:px-2 max-md:py-16">
       <div className="container mx-auto flex flex-col items-center justify-between gap-16 md:flex-row lg:max-w-7xl">
         <div className="max-w-lg space-y-2">
           <h1 className="text-background dark:text-foreground text-2xl font-semibold max-md:text-center sm:text-3xl lg:text-4xl">
@@ -25,7 +25,7 @@ export default function SmarterConversations() {
           </Link>
         </div>
 
-        <div className="flex flex-col items-center justify-center gap-4">
+        <div className="flex w-full flex-col items-center justify-between gap-4">
           <Image
             src="/section-top.png"
             alt="Smarter Conversations"
