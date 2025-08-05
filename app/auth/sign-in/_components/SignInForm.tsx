@@ -37,7 +37,7 @@ export default function SignInForm() {
                 <Input
                   placeholder="you@example.com"
                   {...field}
-                  className="outline-border border-border placeholder:text-primary text-primary focus:border-none focus:ring-0 max-md:placeholder:text-xs"
+                  className="outline-border border-border text-muted-foreground placeholder:text-muted-foreground/30 focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none"
                 />
               </FormControl>
 
@@ -58,7 +58,7 @@ export default function SignInForm() {
                 <PasswordInput
                   placeholder="Enter your password"
                   {...field}
-                  className="outline-border border-border text-muted-foreground focus:border-none focus:ring-0 max-md:placeholder:text-xs"
+                  className="outline-border border-border text-muted-foreground placeholder:text-muted-foreground/30 focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none"
                 />
               </FormControl>
               <FormMessage className="max-md:text-xs" />
@@ -111,7 +111,7 @@ export default function SignInForm() {
 
         <Button
           type="submit"
-          className="text-muted-foreground hover:text-primary bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 w-full cursor-pointer text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+          className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 w-full cursor-pointer text-sm font-semibold !text-black transition-colors hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
           size="lg"
         >
           Submit

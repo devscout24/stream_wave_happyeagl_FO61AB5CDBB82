@@ -34,7 +34,7 @@ export default function SignInModal() {
 
   return isDesktopOrLaptop ? (
     <Dialog defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
-      <DialogContent className="bg-opacity-20 text-muted-foreground w-full !max-w-xl rounded-md border bg-clip-padding p-10 backdrop-blur-md backdrop-filter">
+      <DialogContent className="text-muted-foreground bg-muted/5 dark:bg-muted w-full !max-w-xl rounded-md border bg-clip-padding p-10 backdrop-blur-md backdrop-filter dark:border-none">
         <DialogHeader className="space-y-3">
           <DialogTitle className="text-muted-foreground text-center text-4xl font-semibold">
             Hey there! Good to see you
@@ -48,7 +48,7 @@ export default function SignInModal() {
     </Dialog>
   ) : (
     <Drawer defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
-      <DrawerContent className="bg-opacity-20 text-muted-foreground rounded-md border bg-clip-padding px-4 backdrop-blur-md backdrop-filter">
+      <DrawerContent className="bg-opacity-20 text-muted-foreground dark:bg-muted bg-muted/5 rounded-md border bg-clip-padding px-4 backdrop-blur-md backdrop-filter dark:border-none">
         <DrawerHeader className="text-left">
           <DrawerTitle className="text-muted-foreground text-center text-xl font-semibold">
             Hey there! Good to see you
