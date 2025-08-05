@@ -9,7 +9,7 @@ export const metadata = {
 export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mx-auto max-w-3xl space-y-7 lg:space-y-14">
+      <div className="mx-auto max-w-4xl space-y-5">
         <h1 className="text-center text-2xl font-medium md:text-3xl xl:text-4xl">
           How May I Help you!
         </h1>

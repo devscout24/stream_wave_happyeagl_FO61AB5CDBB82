@@ -19,7 +19,7 @@ export default function Header() {
             <div className="flex items-center gap-4">
               <ThemeToggle />
 
-              <Link href="/login">
+              <Link href="/auth/sign-in">
                 <Button variant="default">
                   Sign In <Icon src="/login-arrow.svg" />
                 </Button>
