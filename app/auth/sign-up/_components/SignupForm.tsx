@@ -1,12 +1,10 @@
 "use client";
 
-import Icon from "@/components/Icon";
 import PasswordInput from "@/components/PasswordInput";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -14,10 +12,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import useLogin from "./use-login";
+import useSignup from "./use-signup";
 
-export default function SignInForm() {
-  const { form, onSubmit } = useLogin();
+export default function SignupForm() {
+  const { form, onSubmit } = useSignup();
 
   return (
     <Form {...form}>
@@ -66,75 +64,45 @@ export default function SignInForm() {
           )}
         />
 
-        <div className="flex items-center">
-          <FormField
-            control={form.control}
-            name="rememberMe"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex items-center">
-                  <FormControl>
-                    {field.value ? (
-                      <Icon
-                        src="/check-box.svg"
-                        className="text-muted-foreground mr-1 size-4 cursor-pointer md:size-5"
-                        onClick={() => field.onChange(false)}
-                      />
-                    ) : (
-                      <Icon
-                        src="/unchecked.svg"
-                        className="text-muted-foreground mr-1 size-4 cursor-pointer md:size-5"
-                        onClick={() => field.onChange(true)}
-                      />
-                    )}
-                  </FormControl>
-                  <FormDescription
-                    className="text-muted-foreground cursor-pointer max-md:text-xs"
-                    onClick={() => field.onChange(!field.value)}
-                  >
-                    Remember me
-                  </FormDescription>
-                </div>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <Link
-            href="/auth/forgot-password"
-            className="text-muted-foreground ml-auto text-sm underline max-md:text-xs"
-          >
-            Forgot password?
-          </Link>
-        </div>
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem className="space-y-1 md:space-y-3">
+              <FormLabel className="text-muted-foreground max-md:text-xs">
+                Confirm Password
+              </FormLabel>
+              <FormControl>
+                <PasswordInput
+                  placeholder="Enter your password again"
+                  {...field}
+                  className="outline-border border-border text-muted-foreground placeholder:text-muted-foreground/30 focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none"
+                />
+              </FormControl>
+              <FormMessage className="max-md:text-xs" />
+            </FormItem>
+          )}
+        />
 
         <Button
           type="submit"
           className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 w-full cursor-pointer text-sm font-semibold !text-black transition-colors hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
           size="lg"
         >
-          Submit
+          Create account
         </Button>
 
         <div className="space-y-2">
           <p className="text-muted-foreground text-center text-sm max-md:text-xs">
-            <span> Don&apos;t have an account? </span>
+            <span> Already have an account? </span>
             <Link
-              href="/auth/sign-up"
+              href="/auth/sign-in"
               replace
               className="text-muted-foreground text-sm underline"
             >
-              Sign up
+              Sign In
             </Link>
           </p>
-
-          <Link
-            href="/auth/logout"
-            className="text-muted-foreground block text-center text-sm underline max-md:text-xs"
-          >
-            Stay Logged Out?
-          </Link>
         </div>
 
         <p className="text-muted-foreground text-center text-sm max-sm:text-xs">
