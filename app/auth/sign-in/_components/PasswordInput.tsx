@@ -25,7 +25,7 @@ export default function PasswordInput({
       <Button
         type="button"
         variant="ghost"
-        className="hover:text-background absolute top-0.5 right-4 !m-0 cursor-pointer !p-0 hover:bg-transparent"
+        className="text-muted-foreground absolute top-0.5 right-4 !m-0 cursor-pointer !p-0 hover:bg-transparent"
         onClick={() => setIsShowPassword(!isShowPassword)}
       >
         {!isShowPassword ? (
