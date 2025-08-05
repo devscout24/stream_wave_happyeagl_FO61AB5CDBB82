@@ -1,3 +1,9 @@
+import ForgotPasswordModal from "@/app/auth/forgot-password/_components/ForgotPasswordModal";
+
 export default function ForgotPassword() {
-  return <div>Forgot Password</div>;
+  return (
+    <section>
+      <ForgotPasswordModal />
+    </section>
+  );
 }

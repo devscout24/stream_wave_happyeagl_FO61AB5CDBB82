@@ -103,6 +103,7 @@ export default function SignInForm() {
 
           <Link
             href="/auth/forgot-password"
+            replace
             className="text-muted-foreground ml-auto text-sm underline max-md:text-xs"
           >
             Forgot password?
