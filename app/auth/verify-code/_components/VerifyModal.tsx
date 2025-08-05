@@ -16,11 +16,13 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 
+import Icon from "@/components/Icon";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMediaQuery } from "react-responsive";
-import ForgotPasswordForm from "./ForgotPasswordForm";
+import VerifyForm from "./VerifyForm";
 
-export default function ForgotPasswordModal({ email }: { email?: string }) {
+export default function VerifyModal({ email }: { email: string }) {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 768px)",
   });
@@ -37,14 +39,22 @@ export default function ForgotPasswordModal({ email }: { email?: string }) {
       <DialogContent className="text-muted-foreground bg-muted/5 dark:bg-muted w-full !max-w-xl rounded-md border bg-clip-padding p-10 backdrop-blur-md backdrop-filter dark:border-none">
         <DialogHeader className="space-y-3">
           <DialogTitle className="text-muted-foreground text-center text-4xl font-semibold">
-            Forgot Your Password?
+            Enter Verification Code
           </DialogTitle>
           <DialogDescription className="text-muted-foreground text-center text-sm font-normal">
-            Don’t worry! Enter your email, and we’ll send you instructions to
-            reset your password.
+            enter the verification code sent to
           </DialogDescription>
+          <DialogTitle className="text-muted-foreground flex items-center justify-center text-center text-xl font-semibold">
+            {email}
+            <Link
+              href={`/auth/forgot-password?email=${btoa(email)}`}
+              className="ml-2"
+            >
+              <Icon src="/pen.svg" className="ml-2 inline-block size-6" />
+            </Link>
+          </DialogTitle>
         </DialogHeader>
-        <ForgotPasswordForm email={email} />
+        <VerifyForm />
       </DialogContent>
     </Dialog>
   ) : (
@@ -52,14 +62,22 @@ export default function ForgotPasswordModal({ email }: { email?: string }) {
       <DrawerContent className="bg-opacity-20 text-muted-foreground dark:bg-muted bg-muted/5 rounded-md border bg-clip-padding px-4 backdrop-blur-md backdrop-filter dark:border-none">
         <DrawerHeader className="text-left">
           <DrawerTitle className="text-muted-foreground text-center text-xl font-semibold">
-            Forgot Your Password?
+            Enter Verification Code?
           </DrawerTitle>
           <DrawerDescription className="text-muted-foreground text-center text-xs font-normal">
-            Don’t worry! Enter your email, and we’ll send you instructions to
-            reset your password.
+            enter the verification code sent to
           </DrawerDescription>
+          <DrawerTitle className="text-muted-foreground flex items-center justify-center text-center text-lg font-semibold">
+            {email}
+            <Link
+              href={`/auth/forgot-password?email=${btoa(email)}`}
+              className="ml-2"
+            >
+              <Icon src="/pen.svg" className="ml-2 inline-block size-6" />
+            </Link>
+          </DrawerTitle>
         </DrawerHeader>
-        <ForgotPasswordForm email={email} />
+        <VerifyForm />
       </DrawerContent>
     </Drawer>
   );

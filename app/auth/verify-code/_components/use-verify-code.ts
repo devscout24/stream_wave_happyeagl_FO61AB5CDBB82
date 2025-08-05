@@ -1,24 +1,24 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  email: z.string().min(2, {
-    message: "Email must be at least 2 characters.",
-  }),
+  otp: z
+    .string()
+    .min(4, {
+      message: "OTP must be at least 4 characters.",
+    })
+    .max(4, {
+      message: "OTP must be at most 4 characters.",
+    }),
 });
 
-export default function useForgotPassword(email?: string) {
-  const router = useRouter();
-
-  console.log("Email in useForgotPassword:", email);
-
+export default function useVerifyCode() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: email || "",
+      otp: "",
     },
   });
 
@@ -28,8 +28,6 @@ export default function useForgotPassword(email?: string) {
     // ✅ This will be type-safe and validated.
     console.log(values);
     // Encode email to base64
-    const encodedEmail = btoa(values.email);
-    router.replace(`/auth/verify-code?email=${encodedEmail}`);
   }
   return { form, onSubmit };
 }
