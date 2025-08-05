@@ -21,22 +21,27 @@ export default function SignInForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6 md:space-y-8"
+      >
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel className="text-muted-foreground">Email</FormLabel>
+            <FormItem className="space-y-1 md:space-y-3">
+              <FormLabel className="text-muted-foreground max-md:text-xs">
+                Email
+              </FormLabel>
               <FormControl>
                 <Input
                   placeholder="you@example.com"
                   {...field}
-                  className="outline-border border-border placeholder:text-primary text-primary focus:border-none focus:ring-0"
+                  className="outline-border border-border placeholder:text-primary text-primary focus:border-none focus:ring-0 max-md:placeholder:text-xs"
                 />
               </FormControl>
 
-              <FormMessage />
+              <FormMessage className="max-md:text-xs" />
             </FormItem>
           )}
         />
@@ -45,16 +50,18 @@ export default function SignInForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel className="text-muted-foreground">Password</FormLabel>
+            <FormItem className="space-y-1 md:space-y-3">
+              <FormLabel className="text-muted-foreground max-md:text-xs">
+                Password
+              </FormLabel>
               <FormControl>
                 <PasswordInput
                   placeholder="Enter your password"
                   {...field}
-                  className="outline-border border-border text-muted-foreground focus:border-none focus:ring-0"
+                  className="outline-border border-border text-muted-foreground focus:border-none focus:ring-0 max-md:placeholder:text-xs"
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="max-md:text-xs" />
             </FormItem>
           )}
         />
@@ -70,19 +77,19 @@ export default function SignInForm() {
                     {field.value ? (
                       <Icon
                         src="/check-box.svg"
-                        className="text-muted-foreground mr-1 h-5 w-5 cursor-pointer"
+                        className="text-muted-foreground mr-1 size-4 cursor-pointer md:size-5"
                         onClick={() => field.onChange(false)}
                       />
                     ) : (
                       <Icon
                         src="/unchecked.svg"
-                        className="text-muted-foreground mr-1 h-5 w-5 cursor-pointer"
+                        className="text-muted-foreground mr-1 size-4 cursor-pointer md:size-5"
                         onClick={() => field.onChange(true)}
                       />
                     )}
                   </FormControl>
                   <FormDescription
-                    className="text-muted-foreground cursor-pointer"
+                    className="text-muted-foreground cursor-pointer max-md:text-xs"
                     onClick={() => field.onChange(!field.value)}
                   >
                     Remember me
@@ -96,7 +103,7 @@ export default function SignInForm() {
 
           <Link
             href="/auth/forgot-password"
-            className="text-muted-foreground ml-auto text-sm underline"
+            className="text-muted-foreground ml-auto text-sm underline max-md:text-xs"
           >
             Forgot password?
           </Link>
@@ -111,7 +118,7 @@ export default function SignInForm() {
         </Button>
 
         <div className="space-y-2">
-          <p className="text-muted-foreground text-center text-sm">
+          <p className="text-muted-foreground text-center text-sm max-md:text-xs">
             <span> Don&apos;t have an account? </span>
             <Link
               href="/auth/sign-up"
@@ -123,13 +130,13 @@ export default function SignInForm() {
 
           <Link
             href="/auth/logout"
-            className="text-muted-foreground block text-center text-sm underline"
+            className="text-muted-foreground block text-center text-sm underline max-md:text-xs"
           >
             Stay Logged Out?
           </Link>
         </div>
 
-        <p className="text-muted-foreground text-center text-sm">
+        <p className="text-muted-foreground text-center text-sm max-sm:text-xs">
           By continuing, you accept the{" "}
           <Link href="/auth/terms" className="text-muted-foreground underline">
             Terms of Service
