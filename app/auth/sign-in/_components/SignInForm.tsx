@@ -1,9 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,7 +25,7 @@ export default function SignInForm() {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="space-y-3">
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
@@ -42,7 +44,7 @@ export default function SignInForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="space-y-3">
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <PasswordInput
@@ -55,6 +57,32 @@ export default function SignInForm() {
             </FormItem>
           )}
         />
+
+        <div className="flex items-center">
+          <FormField
+            control={form.control}
+            name="rememberMe"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex items-center">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      className="data-[state=checked]:!bg-primary-foreground !border-primary-foreground !text-primary mr-2"
+                    />
+                  </FormControl>
+                  <FormDescription className="text-background">
+                    Remember me
+                  </FormDescription>
+                </div>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <Button
           type="submit"
           className="bg-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary w-full cursor-pointer"

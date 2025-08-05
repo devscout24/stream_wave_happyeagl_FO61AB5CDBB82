@@ -9,6 +9,7 @@ const formSchema = z.object({
   password: z.string().min(6, {
     message: "Password must be at least 6 characters.",
   }),
+  rememberMe: z.boolean().optional(),
 });
 
 export default function useLogin() {
@@ -18,6 +19,7 @@ export default function useLogin() {
     defaultValues: {
       email: "",
       password: "",
+      rememberMe: false,
     },
   });
 
