@@ -4,22 +4,28 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-const formSchema = z.object({
-  email: z.string().min(2, {
-    message: "Email must be at least 2 characters.",
-  }),
-});
+const formSchema = z
+  .object({
+    newPassword: z.string().min(6, {
+      message: "New password must be at least 6 characters.",
+    }),
+    confirmPassword: z.string().min(6, {
+      message: "Confirm password must be at least 6 characters.",
+    }),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+  });
 
-export default function useForgotPassword(email?: string) {
+export default function useChangePassword() {
   const router = useRouter();
-
-  console.log("Email in useForgotPassword:", email);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: email || "",
+      newPassword: "",
+      confirmPassword: "",
     },
   });
 
@@ -28,11 +34,9 @@ export default function useForgotPassword(email?: string) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
-    // Encode email to base64
-    toast.success("Password reset email sent!");
+    toast.success("Password changed successfully!");
 
-    const encodedEmail = btoa(values.email);
-    router.replace(`/auth/verify-code?email=${encodedEmail}`);
+    router.replace("/auth/sign-in");
   }
   return { form, onSubmit };
 }

@@ -1,6 +1,6 @@
 "use server";
 
-import { API_URL } from "@/config/env-config";
+import { API_URL } from "@/config";
 
 export default async function fetcher(endPoint: string, options?: RequestInit) {
   console.log(`Fetching data from API: ${API_URL}/${endPoint}`);

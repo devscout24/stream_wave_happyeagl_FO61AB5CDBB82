@@ -1,5 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -14,6 +16,8 @@ const formSchema = z.object({
 });
 
 export default function useVerifyCode() {
+  const router = useRouter();
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -28,6 +32,9 @@ export default function useVerifyCode() {
     // ✅ This will be type-safe and validated.
     console.log(values);
     // Encode email to base64
+    toast.success("OTP verified successfully!");
+
+    router.replace("/auth/change-password");
   }
   return { form, onSubmit };
 }

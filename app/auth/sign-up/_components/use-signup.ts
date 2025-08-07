@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z
@@ -34,6 +35,7 @@ export default function useSignup() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+    toast.success("Signup successful!");
   }
   return { form, onSubmit };
 }
