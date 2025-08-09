@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/drawer";
 import { getUserProfile } from "@/lib/actions";
 import { Menu } from "lucide-react";
-import Logout from "./Logout";
+import Logout from "../../../components/Logout";
 
 export default async function MobileSidebar() {
   const user = await getUserProfile(); // Assume this function fetches the user profile
