@@ -67,7 +67,7 @@ export default function ChangePasswordForm() {
         <div className="flex w-full items-center justify-between gap-4">
           <Button
             type="submit"
-            className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-secondary dark:text-muted-foreground dark:hover:bg-primary/80 flex-1 cursor-pointer text-sm font-semibold !text-black transition-colors hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+            className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 flex-1 cursor-pointer text-sm font-semibold !text-black transition-colors hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
             size="lg"
           >
             Update
@@ -75,7 +75,7 @@ export default function ChangePasswordForm() {
 
           <Button
             type="button"
-            className="bg-foreground text-background hover:bg-foreground/80 focus-visible:ring-ring dark:bg-primary dark:text-background dark:hover:bg-primary/80 hover:text-background flex-1 cursor-pointer text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+            className="bg-foreground text-background hover:bg-foreground/80 focus-visible:ring-ring dark:hover:transparent hover:text-background dark:text-secondary dark:border-secondary/10 flex-1 cursor-pointer text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 dark:border dark:bg-transparent"
             size="lg"
             onClick={() => router.back()}
           >
