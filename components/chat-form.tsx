@@ -15,7 +15,7 @@ export default function ChatForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="username"
+          name="body"
           render={({ field }) => (
             <FormItem className="relative">
               <Button

@@ -1,10 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import { ChatMessage } from "@/types";
+import { Chat } from "@/types";
 
-export default function Message({ message }: { message: ChatMessage }) {
-  console.log(message);
-
+export default function Message({ message }: { message: Chat }) {
   return (
     <div
       className={cn("flex flex-col gap-2 p-4", {
@@ -29,7 +27,7 @@ export default function Message({ message }: { message: ChatMessage }) {
 
       <div className="bg-muted mt-1 flex-1 rounded-md">
         <p className="text-muted-foreground px-4 py-2 text-sm">
-          {message.content}
+          {message.body}
         </p>
       </div>
     </div>

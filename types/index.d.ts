@@ -11,12 +11,20 @@ export interface Testimonial {
   ratings: number;
 }
 
-export interface ChatMessage {
-  id: number;
-  content: string;
+export interface Chat {
+  id: string;
+  body: string;
   sender: "user" | "bot";
   avatar: string;
-  timestamp: string;
+  createdAt: string;
+  name: string;
+}
+
+export interface ChatFormValues {
+  body: string;
+  sender: "user" | "bot";
+  avatar: string;
+  name: string;
 }
 
 // ====== URL QUERY PARAMS
