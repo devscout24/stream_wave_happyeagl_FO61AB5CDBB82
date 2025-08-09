@@ -10,10 +10,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useRouter } from "next/navigation";
 import useChangePassword from "./use-change-password";
 
 export default function ChangePasswordForm() {
   const { form, onSubmit } = useChangePassword();
+
+  const router = useRouter();
 
   return (
     <Form {...form}>
@@ -64,16 +67,17 @@ export default function ChangePasswordForm() {
         <div className="flex w-full items-center justify-between gap-4">
           <Button
             type="submit"
-            className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 flex-1 cursor-pointer text-sm font-semibold !text-black transition-colors hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+            className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-secondary dark:text-muted-foreground dark:hover:bg-primary/80 flex-1 cursor-pointer text-sm font-semibold !text-black transition-colors hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
             size="lg"
           >
             Update
           </Button>
 
           <Button
-            type="submit"
-            className="bg-foreground text-background hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 hover:text-background flex-1 cursor-pointer text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+            type="button"
+            className="bg-foreground text-background hover:bg-foreground/80 focus-visible:ring-ring dark:bg-primary dark:text-background dark:hover:bg-primary/80 hover:text-background flex-1 cursor-pointer text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
             size="lg"
+            onClick={() => router.back()}
           >
             Cancel
           </Button>
