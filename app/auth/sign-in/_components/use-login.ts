@@ -1,3 +1,4 @@
+import { loginUser } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -7,7 +8,7 @@ const formSchema = z.object({
   email: z.string().min(2, {
     message: "Email must be at least 2 characters.",
   }),
-  password: z.string().min(6, {
+  password: z.string().min(4, {
     message: "Password must be at least 6 characters.",
   }),
   rememberMe: z.boolean().optional(),
@@ -26,10 +27,14 @@ export default function useLogin() {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-    toast.success("Login successful!");
+    toast.promise(loginUser(values), {
+      loading: "Logging in...",
+      success: "Logged in successfully!",
+      error: (error) => {
+        console.error("Login error:", error);
+        return "Failed to log in. Please try again.";
+      },
+    });
   }
   return { form, onSubmit };
 }

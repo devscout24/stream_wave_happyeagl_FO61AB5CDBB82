@@ -1,3 +1,9 @@
+export interface UserProfile {
+  first_name: string;
+  last_name: string;
+  profile_pic: string;
+}
+
 export interface Feature {
   icon: string;
   title: string;
@@ -18,6 +24,27 @@ export interface Chat {
   avatar: string;
   createdAt: string;
   name: string;
+}
+
+// Response from the API
+export interface ApiResponse<T> {
+  data: T;
+  message: string;
+  status: string;
+}
+
+// Error response from the API
+export interface ApiError {
+  error: string;
+  message: string;
+}
+
+// Login response structure
+export interface LoginResponse {
+  tokens: {
+    access: string;
+    refresh: string;
+  };
 }
 
 export interface ChatFormValues {

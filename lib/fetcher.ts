@@ -1,6 +1,7 @@
 "use server";
 
 import config from "@/config";
+import { getUserSession } from "./actions";
 
 /**
  * Custom error class for API errors
@@ -34,6 +35,8 @@ export async function fetcher<T = unknown>(
     throw new Error("Endpoint is required for fetcher");
   }
 
+  const accessToken = await getUserSession();
+
   // Ensure the endpoint doesn't start with a slash
   const cleanEndpoint = endpoint.startsWith("/") ? endpoint.slice(1) : endpoint;
 
@@ -44,6 +47,7 @@ export async function fetcher<T = unknown>(
   const defaultOptions: RequestInit = {
     headers: {
       "Content-Type": "application/json",
+      Authorization: accessToken ? `Bearer ${accessToken}` : "",
     },
     next: {
       revalidate: 60, // Cache for 60 seconds by default
@@ -65,19 +69,17 @@ export async function fetcher<T = unknown>(
 
     const response = await fetch(url, fetchOptions);
 
-    // Handle non-success responses
     if (!response.ok) {
-      let errorData;
+      let errorData: unknown;
+      const text = await response.text();
       try {
-        errorData = await response.json();
+        errorData = JSON.parse(text);
       } catch {
-        errorData = await response.text();
+        errorData = text;
       }
-
       throw new ApiError(response.status, response.statusText, errorData);
     }
 
-    // Parse and return the data
     return await response.json();
   } catch (error) {
     if (error instanceof ApiError) {
