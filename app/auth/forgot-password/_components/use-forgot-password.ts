@@ -6,17 +6,14 @@ import { z } from "zod";
 import { sendForgotPasswordEmail } from "./action";
 
 const formSchema = z.object({
-  email: z.string().min(2, {
-    message: "Email must be at least 2 characters.",
+  email: z.string().email({
+    message: "Please enter a valid email address.",
   }),
 });
 
 export default function useForgotPassword(email?: string) {
   const router = useRouter();
 
-  console.log("Email in useForgotPassword:", email);
-
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -24,24 +21,45 @@ export default function useForgotPassword(email?: string) {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Encode email to base64
-    toast.promise(sendForgotPasswordEmail(values.email), {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const sendEmailPromise = async () => {
+      const result = await sendForgotPasswordEmail(values.email);
+
+      if (result?.error) {
+        // Set form errors for validation display
+        form.setError("root", {
+          type: "server",
+          message: result.error,
+        });
+        form.setFocus("email");
+
+        // Throw error so toast.promise shows it as error
+        throw new Error(result.error);
+      }
+
+      // Success - clear form errors and return success message
+      form.clearErrors();
+      return result.message || "Password reset email sent successfully!";
+    };
+
+    const response = await toast.promise(sendEmailPromise(), {
       loading: "Sending password reset email...",
-      success: (data) => {
-        console.log("Email sent successfully:", data);
-        return data.message;
-      },
+      success: (message) => message,
       error: (error) => {
-        console.error("Error sending email:", error);
-        return "Failed to send password reset email";
+        // Handle form state on error
+        form.setFocus("email");
+        return error instanceof Error
+          ? error.message
+          : "Failed to send password reset email";
       },
     });
-    // Redirect to verify code page with encoded email
 
-    const encodedEmail = btoa(values.email);
-    router.replace(`/auth/verify-code?email=${encodedEmail}`);
+    // Only redirect on success (when promise resolves)
+    if (response) {
+      const encodedEmail = btoa(values.email);
+      router.replace(`/auth/verify-code?email=${encodedEmail}`);
+    }
   }
+
   return { form, onSubmit };
 }
