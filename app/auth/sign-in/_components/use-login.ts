@@ -1,5 +1,6 @@
 import { loginUser } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -15,6 +16,8 @@ const formSchema = z.object({
 });
 
 export default function useLogin() {
+  const router = useRouter();
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -29,7 +32,10 @@ export default function useLogin() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     toast.promise(loginUser(values), {
       loading: "Logging in...",
-      success: "Logged in successfully!",
+      success: (response) => {
+        router.replace("/chat");
+        return response.message || "Logged in successfully";
+      },
       error: (error) => {
         console.error("Login error:", error);
         return "Failed to log in. Please try again.";

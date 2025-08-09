@@ -2,7 +2,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import config from "@/config";
 import { Inter } from "next/font/google";
-import Header from "../components/Header";
 import "./globals.css";
 
 const geistSans = Inter({
@@ -57,7 +56,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
           <Toaster />
           {modal}
           {children}

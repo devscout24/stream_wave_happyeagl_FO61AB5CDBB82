@@ -1,14 +1,10 @@
 import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
 import { Button } from "@/components/ui/button";
-import { getUserProfile } from "@/lib/actions";
 import Link from "next/link";
-import Profile from "./Profile";
-import ThemeToggle from "./theme-toggle";
+import ThemeToggle from "../../../components/theme-toggle";
 
 export default async function Header() {
-  const user = await getUserProfile();
-
   return (
     <header>
       <nav>
@@ -21,17 +17,13 @@ export default async function Header() {
               <Logo />
             </div>
             <div className="flex items-center gap-4">
-              {!user && <ThemeToggle />}
+              <ThemeToggle />
 
-              {!user && (
-                <Link href="/auth/sign-in">
-                  <Button variant="default">
-                    Sign In <Icon src="/login-arrow.svg" />
-                  </Button>
-                </Link>
-              )}
-
-              {user && <Profile profile={user} />}
+              <Link href="/auth/sign-in">
+                <Button variant="default">
+                  Sign In <Icon src="/login-arrow.svg" />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
