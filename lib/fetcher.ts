@@ -30,31 +30,29 @@ export async function fetcher<T = unknown>(
   endpoint: string,
   options?: RequestInit,
 ): Promise<T> {
-  // Ensure endpoint is provided
   if (!endpoint) {
     throw new Error("Endpoint is required for fetcher");
   }
 
-  const accessToken = await getUserSession();
-
-  // Ensure the endpoint doesn't start with a slash
   const cleanEndpoint = endpoint.startsWith("/") ? endpoint.slice(1) : endpoint;
-
-  // Build the full URL
   const url = `${config.apiUrl}/${cleanEndpoint}`;
 
-  // Set default options
+  // Don't add auth header for auth endpoints
+  const isAuthEndpoint = ["login/", "signup/", "register/", "logout/"].includes(
+    cleanEndpoint,
+  );
+  const accessToken = !isAuthEndpoint ? await getUserSession() : null;
+
   const defaultOptions: RequestInit = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: accessToken ? `Bearer ${accessToken}` : "",
+      ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
     },
     next: {
-      revalidate: 60, // Cache for 60 seconds by default
+      revalidate: 60,
     },
   };
 
-  // Merge default options with provided options
   const fetchOptions = {
     ...defaultOptions,
     ...options,
@@ -66,7 +64,6 @@ export async function fetcher<T = unknown>(
 
   try {
     console.log(`Fetching data from API: ${url}`);
-
     const response = await fetch(url, fetchOptions);
 
     if (!response.ok) {
@@ -77,21 +74,58 @@ export async function fetcher<T = unknown>(
       } catch {
         errorData = text;
       }
+
+      // Log the server response for debugging
+      console.error(
+        `API Error: ${response.status} ${response.statusText}`,
+        errorData,
+      );
+
+      // Extract the server's message and throw it
+      if (
+        errorData &&
+        typeof errorData === "object" &&
+        "message" in errorData
+      ) {
+        throw new Error(errorData.message as string);
+      }
+
+      // Fallback to status-based messages
+      if (response.status === 401) {
+        throw new Error(
+          "Invalid credentials. Please check your email and password.",
+        );
+      } else if (response.status === 400) {
+        throw new Error("Invalid request. Please check your input.");
+      } else if (response.status >= 500) {
+        throw new Error("Server error. Please try again later.");
+      }
+
       throw new ApiError(response.status, response.statusText, errorData);
     }
 
-    return await response.json();
+    const text = await response.text();
+    if (!text) {
+      return null as T;
+    }
+    return JSON.parse(text) as T;
   } catch (error) {
-    if (error instanceof ApiError) {
+    // Re-throw errors from the if (!response.ok) block
+    if (
+      error instanceof Error &&
+      error.message !== `[fetcher] Failed to fetch: ${error}`
+    ) {
       throw error;
     }
 
     console.error(`[fetcher] Failed to fetch: ${error}`);
 
-    // Check for network errors
     if (error instanceof TypeError && error.message.includes("fetch failed")) {
       console.error(
         "[fetcher] Network error: API server may be down or unreachable",
+      );
+      throw new Error(
+        "Network error. Please check your connection and try again.",
       );
     }
 

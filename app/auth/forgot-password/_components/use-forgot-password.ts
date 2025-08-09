@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { sendForgotPasswordEmail } from "./action";
 
 const formSchema = z.object({
   email: z.string().min(2, {
@@ -25,11 +26,19 @@ export default function useForgotPassword(email?: string) {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
     // Encode email to base64
-    toast.success("Password reset email sent!");
+    toast.promise(sendForgotPasswordEmail(values.email), {
+      loading: "Sending password reset email...",
+      success: (data) => {
+        console.log("Email sent successfully:", data);
+        return data.message;
+      },
+      error: (error) => {
+        console.error("Error sending email:", error);
+        return "Failed to send password reset email";
+      },
+    });
+    // Redirect to verify code page with encoded email
 
     const encodedEmail = btoa(values.email);
     router.replace(`/auth/verify-code?email=${encodedEmail}`);

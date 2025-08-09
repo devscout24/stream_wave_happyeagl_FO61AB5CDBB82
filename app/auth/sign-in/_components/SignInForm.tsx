@@ -1,5 +1,6 @@
 "use client";
 
+import ErrorMessage from "@/components/ErrorMessage";
 import Icon from "@/components/Icon";
 import PasswordInput from "@/components/PasswordInput";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ import useLogin from "./use-login";
 
 export default function SignInForm() {
   const { form, onSubmit } = useLogin();
+  console.log(form.formState.errors);
 
   return (
     <Form {...form}>
@@ -110,12 +112,20 @@ export default function SignInForm() {
           </Link>
         </div>
 
+        {form.formState.errors?.root?.message && (
+          <ErrorMessage
+            variant="destructive"
+            message={form.formState.errors.root.message}
+          />
+        )}
+
         <Button
           type="submit"
           className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 w-full cursor-pointer text-sm font-semibold !text-black transition-colors hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
           size="lg"
+          disabled={!form.formState.isValid || form.formState.isSubmitting}
         >
-          Submit
+          Log In
         </Button>
 
         <div className="space-y-2">

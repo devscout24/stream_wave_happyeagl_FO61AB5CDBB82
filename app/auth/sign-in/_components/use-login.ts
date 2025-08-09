@@ -1,9 +1,8 @@
-import { loginUser } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { loginUser } from "./action";
 
 const formSchema = z.object({
   email: z.string().min(2, {
@@ -16,9 +15,6 @@ const formSchema = z.object({
 });
 
 export default function useLogin() {
-  const router = useRouter();
-
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,19 +24,56 @@ export default function useLogin() {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    toast.promise(loginUser(values), {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Create a promise that resolves with the actual result or rejects with user errors only
+    const loginPromise = async () => {
+      try {
+        const result = await loginUser(values);
+
+        if (result?.error) {
+          // Set form errors for validation display
+          form.setError("root", {
+            type: "server",
+            message: result.error,
+          });
+          form.resetField("password");
+          form.clearErrors("email");
+          form.clearErrors("password");
+          form.clearErrors("rememberMe");
+          form.setFocus("email");
+
+          // Throw error so toast.promise shows it as error
+          throw new Error(result.error);
+        }
+
+        // Success - clear form errors
+        form.clearErrors();
+        return "Logged in successfully!";
+      } catch (error) {
+        // Check if it's a NEXT_REDIRECT error (successful redirect)
+        if (error instanceof Error && error.message === "NEXT_REDIRECT") {
+          // This is actually success - clear form and return success
+          form.clearErrors();
+          return "Logged in successfully!";
+        }
+        // Re-throw actual errors
+        throw error;
+      }
+    };
+
+    toast.promise(loginPromise(), {
       loading: "Logging in...",
-      success: (response) => {
-        router.replace("/chat");
-        return response.message || "Logged in successfully";
-      },
+      success: (message) => message,
       error: (error) => {
-        console.error("Login error:", error);
-        return "Failed to log in. Please try again.";
+        // Handle form state on error
+        form.resetField("password");
+        form.setFocus("email");
+        return error instanceof Error
+          ? error.message
+          : "Login failed. Please try again.";
       },
     });
   }
+
   return { form, onSubmit };
 }

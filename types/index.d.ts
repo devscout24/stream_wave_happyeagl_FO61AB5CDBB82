@@ -47,6 +47,10 @@ export interface LoginResponse {
   };
 }
 
+export interface EmailResetResponse {
+  message: string;
+}
+
 export interface ChatFormValues {
   body: string;
   sender: "user" | "bot";
