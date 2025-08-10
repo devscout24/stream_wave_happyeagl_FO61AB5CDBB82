@@ -21,7 +21,7 @@ export default function ChatLayout({
       <main id="scrollbar" className="overflow-y-auto">
         {children}
       </main>
-      <footer className="py-4">
+      <footer className="py-4 max-sm:px-2">
         <ChatForm />
       </footer>
     </div>

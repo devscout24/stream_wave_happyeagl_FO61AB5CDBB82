@@ -29,28 +29,30 @@ export default function ChatForm() {
                 <Input
                   placeholder="Describe your thought"
                   {...field}
-                  className="bg-input text-foreground placeholder:text-foreground rounded-[20px] py-7 pl-14 text-sm shadow-xl placeholder:text-sm lg:py-9 lg:text-lg placeholder:lg:text-lg dark:border-none"
+                  className="bg-input text-foreground placeholder:text-foreground py-4 pl-14 text-sm shadow-xl placeholder:text-sm lg:rounded-[20px] lg:py-9 lg:text-lg placeholder:lg:text-lg dark:border-none"
                 />
               </FormControl>
 
               <Button
                 type="submit"
                 variant="ghost"
-                className="text-input bg-foreground hover:bg-foreground hover:text-input dark:bg-primary dark:text-background dark:hover:text-background dark:hover:bg-primary absolute top-1/2 right-4 -translate-y-1/2 transform cursor-pointer"
+                className="text-input bg-foreground hover:bg-foreground hover:text-input dark:bg-primary dark:text-background dark:hover:text-background dark:hover:bg-primary absolute top-1/2 right-4 -translate-y-1/2 transform cursor-pointer max-lg:size-6 max-lg:rounded-sm"
               >
-                <Icon src="/sent.svg" />
+                <Icon src="/sent.svg" className="size-4" />
               </Button>
             </FormItem>
           )}
         />
-        <p className="text-paragraph flex items-start justify-center gap-1 text-center text-xs font-normal md:items-center md:text-sm">
+        <p className="text-paragraph flex items-start justify-center gap-1 text-center font-normal md:items-center">
           <ShieldAlert
             size={16}
             strokeWidth={1.5}
             className="text-paragraph max-sm:h-8 max-sm:w-8"
           />
-          This AI may occasionally generate incorrect or incomplete answers.
-          Always verify important information.
+          <span className="text-xs md:text-sm">
+            This AI may occasionally generate incorrect or incomplete answers.
+            Always verify important information.
+          </span>
         </p>
       </form>
     </Form>

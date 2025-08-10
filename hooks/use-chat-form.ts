@@ -1,7 +1,6 @@
-import { sendChat } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -11,6 +10,7 @@ const formSchema = z.object({
 });
 
 export default function useChatForm() {
+  const router = useRouter();
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -24,14 +24,10 @@ export default function useChatForm() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
-    toast.promise(sendChat(values), {
-      loading: "Sending message...",
-      success: "Message sent successfully!",
-      error: (error) => `Failed to send message: ${error.message}`,
-    });
-
-    // Reset the form after submission
-    form.reset();
+    setTimeout(() => {
+      router.replace("/chat/" + values.body);
+      form.reset();
+    }, 500);
   }
 
   return { form, onSubmit };
