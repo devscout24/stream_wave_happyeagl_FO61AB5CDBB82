@@ -52,12 +52,17 @@ export default function useLogin() {
         return;
       }
 
-      // If we reach here, success but no redirect yet - clear form and show success
+      // Success - clear form and show success
       form.clearErrors();
       toast.dismiss();
       toast.success("Logged in successfully!");
-      router.replace("/chat");
-      router.refresh();
+
+      // Close modal first, then redirect
+      router.back();
+      setTimeout(() => {
+        router.push("/chat");
+        router.refresh();
+      }, 100); // Small delay to ensure modal closes first
     } catch (error) {
       // Handle actual errors only
       const errorMessage =
