@@ -5,7 +5,7 @@ import { Chat } from "@/types";
 export default function Message({ message }: { message: Chat }) {
   return (
     <div
-      className={cn("flex flex-col gap-2 p-4", {
+      className={cn("flex flex-col gap-2", {
         "items-end self-end": message.sender === "user",
         "items-start self-start": message.sender === "bot",
       })}

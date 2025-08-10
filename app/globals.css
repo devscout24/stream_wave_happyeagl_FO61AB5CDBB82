@@ -132,15 +132,18 @@
 
 /* Custom scrollbar styles */
 
-/* Gemini-like custom scrollbar: only thumb is visible */
-
-::-webkit-scrollbar {
+/* Handle on hover */
+#scrollbar::-webkit-scrollbar {
+  background: transparent;
   width: 10px;
 }
-/* Track */
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: var(--sidebar-border);
+#scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-ring);
   border-radius: 10px;
+  display: none;
+}
+
+#scrollbar:hover::-webkit-scrollbar-thumb {
+  display: block;
 }
