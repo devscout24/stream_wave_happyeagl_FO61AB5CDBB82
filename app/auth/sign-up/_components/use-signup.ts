@@ -15,9 +15,8 @@ const formSchema = z
     confirm_password: z.string().min(6, {
       message: "Confirm Password must be at least 6 characters.",
     }),
-    terms: z.boolean().refine((val) => val, {
-      message: "You must accept the terms and conditions.",
-    }),
+    terms: z.boolean().optional(),
+    privacy: z.boolean().optional(),
   })
   .refine((data) => data.password === data.confirm_password, {
     message: "Passwords do not match",
@@ -32,11 +31,13 @@ export default function useSignup() {
       password: "",
       confirm_password: "",
       terms: false,
+      privacy: false,
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const registerPromise = async () => {
+    toast.loading("Registering...");
+    try {
       const result = await registerUser(values);
 
       if (result?.error) {
@@ -45,6 +46,7 @@ export default function useSignup() {
           message: result.error,
         });
         form.resetField("password");
+        form.resetField("confirm_password");
         form.clearErrors("email");
         form.clearErrors("password");
         form.setFocus("email");
@@ -52,20 +54,26 @@ export default function useSignup() {
       }
 
       form.clearErrors();
-      return "Registered successfully!";
-    };
-
-    toast.promise(registerPromise(), {
-      loading: "Creating account...",
-      success: (message) => message,
-      error: (error) => {
-        form.resetField("password");
-        form.setFocus("email");
-        return error instanceof Error
+      toast.success(
+        "Registration successful! Please check your email to verify.",
+      );
+    } catch (error) {
+      form.setError("root", {
+        type: "server",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Registration failed. Please try again.",
+      });
+      toast.error(
+        error instanceof Error
           ? error.message
-          : "Registration failed. Please try again.";
-      },
-    });
+          : "Registration failed. Please try again.",
+      );
+      form.setFocus("email");
+    } finally {
+      toast.dismiss();
+    }
   }
 
   return { form, onSubmit };

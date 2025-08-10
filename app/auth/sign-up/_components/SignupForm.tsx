@@ -1,5 +1,6 @@
 "use client";
 
+import ErrorMessage from "@/components/ErrorMessage";
 import PasswordInput from "@/components/PasswordInput";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,9 +12,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import TermsModal from "./TermsModal";
 import useSignup from "./use-signup";
+
+// Replace any import of TermsModal with:
+const TermsModal = dynamic(() => import("./TermsModal"), {
+  ssr: false,
+  loading: () => <span>Loading...</span>, // Optional loading placeholder
+});
 
 export default function SignupForm() {
   const { form, onSubmit } = useSignup();
@@ -85,6 +92,13 @@ export default function SignupForm() {
           )}
         />
 
+        {form.formState.errors?.root?.message && (
+          <ErrorMessage
+            variant="destructive"
+            message={form.formState.errors.root.message}
+          />
+        )}
+
         <Button
           type="submit"
           className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 w-full cursor-pointer text-sm font-semibold !text-black transition-colors hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
@@ -94,21 +108,19 @@ export default function SignupForm() {
           Create account
         </Button>
 
-        <div className="space-y-2">
-          <p className="text-muted-foreground text-center text-sm max-md:text-xs">
-            <span> Already have an account? </span>
-            <Link
-              href="/auth/sign-in"
-              replace
-              className="text-muted-foreground text-sm underline"
-            >
-              Sign In
-            </Link>
-          </p>
+        <div className="text-muted-foreground text-center text-sm max-md:text-xs">
+          <span> Already have an account? </span>
+          <Link
+            href="/auth/sign-in"
+            replace
+            className="text-muted-foreground text-sm underline"
+          >
+            Sign In
+          </Link>
         </div>
 
-        <p className="text-muted-foreground flex items-center justify-center gap-1 text-center text-sm max-sm:text-xs">
-          By continuing, you accept the{" "}
+        <div className="text-muted-foreground flex flex-wrap items-center justify-center gap-1 text-center text-sm max-sm:text-xs">
+          <span>By continuing, you accept the&nbsp;</span>
           <FormField
             control={form.control}
             name="terms"
@@ -124,10 +136,10 @@ export default function SignupForm() {
               </FormItem>
             )}
           />
-          and{" "}
+          <span>&nbsp;and&nbsp;</span>
           <FormField
             control={form.control}
-            name="terms"
+            name="privacy"
             render={({ field }) => (
               <FormItem className="space-y-1 md:space-y-3">
                 <FormControl>
@@ -137,8 +149,8 @@ export default function SignupForm() {
               </FormItem>
             )}
           />
-          .
-        </p>
+          <span>.</span>
+        </div>
       </form>
     </Form>
   );

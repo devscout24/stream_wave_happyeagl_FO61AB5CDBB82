@@ -17,6 +17,7 @@ const formSchema = z.object({
 export default function useLogin() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
     defaultValues: {
       email: "",
       password: "",

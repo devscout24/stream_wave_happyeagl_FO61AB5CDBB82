@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { DialogClose } from "@/components/ui/dialog";
+import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 
 export default function TermsServiceForm({
   onChange,
@@ -20,7 +20,7 @@ export default function TermsServiceForm({
         please contact our support team.
       </p>
 
-      <div className="flex items-center gap-2">
+      <DialogFooter className="flex items-center gap-2">
         <DialogClose asChild className="flex-1">
           <Button
             type="button"
@@ -39,7 +39,7 @@ export default function TermsServiceForm({
             Decline
           </Button>
         </DialogClose>
-      </div>
+      </DialogFooter>
     </>
   );
 }
