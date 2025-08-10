@@ -147,21 +147,6 @@ export default function SignInForm() {
             Stay Logged Out?
           </Link>
         </div>
-
-        <p className="text-muted-foreground text-center text-sm max-sm:text-xs">
-          By continuing, you accept the{" "}
-          <Link href="/auth/terms" className="text-muted-foreground underline">
-            Terms of Service
-          </Link>{" "}
-          and{" "}
-          <Link
-            href="/auth/privacy"
-            className="text-muted-foreground underline"
-          >
-            Privacy Policy
-          </Link>
-          .
-        </p>
       </form>
     </Form>
   );

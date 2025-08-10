@@ -1,15 +1,14 @@
 import { Button } from "@/components/ui/button";
+import { DialogClose } from "@/components/ui/dialog";
 
 export default function TermsServiceForm({
   onChange,
-  value,
 }: {
   onChange: (open: boolean) => void;
-  value: boolean;
 }) {
   return (
     <>
-      <p>
+      <p className="text-muted-foreground mb-4 text-sm">
         By accessing and using our AI chatbot, you agree to follow the outlined
         terms and conditions. This includes using the chatbot responsibly,
         avoiding the sharing of personal or sensitive information, and
@@ -22,21 +21,24 @@ export default function TermsServiceForm({
       </p>
 
       <div className="flex items-center gap-2">
-        <Button
-          type="button"
-          onClick={() => onChange(!value)}
-          className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 mt-4 w-full flex-1"
-        >
-          Accept
-        </Button>
+        <DialogClose asChild className="flex-1">
+          <Button
+            type="button"
+            className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 !text-background w-full"
+            onClick={() => onChange(true)}
+          >
+            Accept
+          </Button>
+        </DialogClose>
 
-        <Button
-          type="button"
-          onClick={() => onChange(false)}
-          className="bg-muted hover:bg-muted/80 focus-visible:ring-ring dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted/80 mt-2 w-full flex-1"
-        >
-          Decline
-        </Button>
+        <DialogClose asChild className="flex-1">
+          <Button
+            type="button"
+            className="bg-muted hover:bg-muted/80 focus-visible:ring-ring dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted/80 w-full border-2"
+          >
+            Decline
+          </Button>
+        </DialogClose>
       </div>
     </>
   );

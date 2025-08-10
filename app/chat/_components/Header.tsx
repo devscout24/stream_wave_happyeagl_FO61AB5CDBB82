@@ -5,6 +5,8 @@ import MobileSidebar from "./MobileSidebar";
 export default async function Header() {
   const user = await getUserProfile(); // Assume this function fetches the user profile
 
+  console.log("user in header", user);
+
   return (
     <header>
       <nav>

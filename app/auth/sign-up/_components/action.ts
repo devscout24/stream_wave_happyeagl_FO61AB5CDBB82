@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 export async function registerUser(values: {
   email: string;
   password: string;
-  confirmPassword: string;
+  confirm_password: string;
 }) {
   const response = await fetcher<ApiResponse<LoginResponse>>("signup/", {
     method: "POST",

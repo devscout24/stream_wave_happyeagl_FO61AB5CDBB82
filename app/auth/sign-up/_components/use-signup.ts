@@ -12,14 +12,14 @@ const formSchema = z
     password: z.string().min(6, {
       message: "Password must be at least 6 characters.",
     }),
-    confirmPassword: z.string().min(6, {
+    confirm_password: z.string().min(6, {
       message: "Confirm Password must be at least 6 characters.",
     }),
     terms: z.boolean().refine((val) => val, {
       message: "You must accept the terms and conditions.",
     }),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.confirm_password, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
@@ -30,57 +30,40 @@ export default function useSignup() {
     defaultValues: {
       email: "",
       password: "",
-      confirmPassword: "",
+      confirm_password: "",
       terms: false,
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Create a promise that resolves with the actual result or rejects with user errors only
     const registerPromise = async () => {
-      try {
-        const result = await registerUser(values);
+      const result = await registerUser(values);
 
-        if (result?.error) {
-          // Set form errors for validation display
-          form.setError("root", {
-            type: "server",
-            message: result.error,
-          });
-          form.resetField("password");
-          form.clearErrors("email");
-          form.clearErrors("password");
-          form.setFocus("email");
-
-          // Throw error so toast.promise shows it as error
-          throw new Error(result.error);
-        }
-
-        // Success - clear form errors
-        form.clearErrors();
-        return "Registered successfully!";
-      } catch (error) {
-        // Check if it's a NEXT_REDIRECT error (successful redirect)
-        if (error instanceof Error && error.message === "NEXT_REDIRECT") {
-          // This is actually success - clear form and return success
-          form.clearErrors();
-          return "Logged in successfully!";
-        }
-        // Re-throw actual errors
-        throw error;
+      if (result?.error) {
+        form.setError("root", {
+          type: "server",
+          message: result.error,
+        });
+        form.resetField("password");
+        form.clearErrors("email");
+        form.clearErrors("password");
+        form.setFocus("email");
+        throw new Error(result.error);
       }
+
+      form.clearErrors();
+      return "Registered successfully!";
     };
 
     toast.promise(registerPromise(), {
       loading: "Creating account...",
       success: (message) => message,
       error: (error) => {
-        // Handle form state on error
         form.resetField("password");
         form.setFocus("email");
         return error instanceof Error
           ? error.message
-          : "Login failed. Please try again.";
+          : "Registration failed. Please try again.";
       },
     });
   }

@@ -67,7 +67,7 @@ export default function SignupForm() {
 
         <FormField
           control={form.control}
-          name="confirmPassword"
+          name="confirm_password"
           render={({ field }) => (
             <FormItem className="space-y-1 md:space-y-3">
               <FormLabel className="text-muted-foreground max-md:text-xs">
@@ -107,7 +107,7 @@ export default function SignupForm() {
           </p>
         </div>
 
-        <p className="text-muted-foreground text-center text-sm max-sm:text-xs">
+        <p className="text-muted-foreground flex items-center justify-center gap-1 text-center text-sm max-sm:text-xs">
           By continuing, you accept the{" "}
           <FormField
             control={form.control}
@@ -115,19 +115,28 @@ export default function SignupForm() {
             render={({ field }) => (
               <FormItem className="space-y-1 md:space-y-3">
                 <FormControl>
-                  <TermsModal onChange={field.onChange} value={field.value} />
+                  <TermsModal
+                    text="Terms of Service"
+                    onChange={field.onChange}
+                  />
                 </FormControl>
                 <FormMessage className="max-md:text-xs" />
               </FormItem>
             )}
-          />{" "}
+          />
           and{" "}
-          <Link
-            href="/auth/privacy"
-            className="text-muted-foreground underline"
-          >
-            Privacy Policy
-          </Link>
+          <FormField
+            control={form.control}
+            name="terms"
+            render={({ field }) => (
+              <FormItem className="space-y-1 md:space-y-3">
+                <FormControl>
+                  <TermsModal text="Privacy Policy" onChange={field.onChange} />
+                </FormControl>
+                <FormMessage className="max-md:text-xs" />
+              </FormItem>
+            )}
+          />
           .
         </p>
       </form>

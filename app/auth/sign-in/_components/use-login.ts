@@ -77,3 +77,7 @@ export default function useLogin() {
 
   return { form, onSubmit };
 }
+
+// In your server action (loginUser)
+// Move this catch block into the actual loginUser function implementation in ./action if needed.
+// Remove this invalid standalone catch block.

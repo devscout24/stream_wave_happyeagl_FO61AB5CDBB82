@@ -17,13 +17,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { useMediaQuery } from "react-responsive";
+import TermsServiceForm from "./TermsServiceForm";
 
 export default function TermsModal({
+  text,
   onChange,
-  value,
 }: {
+  text: string;
   onChange: (open: boolean) => void;
-  value: boolean;
 }) {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 768px)",
@@ -37,19 +38,20 @@ export default function TermsModal({
   return isDesktopOrLaptop ? (
     <Dialog>
       <DialogTrigger className="cursor-pointer underline" asChild>
-        <Button type="button">Open Terms Modal</Button>
+        <Button variant="ghost" type="button" className="!m-0 !p-0">
+          {text}
+        </Button>
       </DialogTrigger>
       <DialogContent className="text-muted-foreground bg-muted/5 dark:bg-muted w-full !max-w-xl rounded-md border bg-clip-padding p-10 backdrop-blur-md backdrop-filter dark:border-none">
         <DialogHeader className="space-y-3">
-          <DialogTitle className="text-muted-foreground text-center text-4xl font-semibold">
+          <DialogTitle className="text-muted-foreground text-center text-2xl font-semibold">
             Review Our Terms & Conditions
           </DialogTitle>
-          <DialogDescription className="text-muted-foreground text-center text-sm font-normal">
+          <DialogDescription className="text-muted-foreground text-center text-lg font-normal">
             Please read our terms before continuing to use the chatbot service.
           </DialogDescription>
         </DialogHeader>
-        {/* <TermsServiceForm /> */}
-        Hello
+        <TermsServiceForm onChange={onChange} />
       </DialogContent>
     </Dialog>
   ) : (
