@@ -35,9 +35,9 @@ export default function Search() {
   }, [query, router, searchParams]);
 
   return (
-    <div className="mt-10 flex flex-1 items-center overflow-hidden rounded-lg bg-black px-4">
+    <div className="mt-5 flex items-center overflow-hidden rounded-sm bg-black px-4 lg:mt-10 lg:flex-1 lg:rounded-lg">
       <Input
-        className="placeholder:text-secondary/50 text-secondary border-0 py-6 text-base outline-offset-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+        className="placeholder:text-secondary/50 text-secondary border-0 py-6 text-base outline-offset-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 lg:py-6"
         placeholder="Search here"
         onChange={(e) => setQuery(e.target.value)}
       />

@@ -4,17 +4,17 @@ export default function Chats() {
   return (
     <div className="flex-1">
       <h2 className="dark:text-secondary mt-10 text-sm">Recent Chat</h2>
-      <ul className="mt-3 h-[500px] overflow-y-auto">
+      <ul className="custom-scrollbar mt-3 overflow-hidden hover:overflow-y-auto lg:h-[500px]">
         {chats.map((chat) => (
           <li
             key={chat.id}
-            className="border-secondary/5 truncate border-b py-2"
+            className="border-secondary/5 mr-2 border-b py-2 first:pt-0"
           >
             <Link
               href={`/chat?id=${chat.id}`}
               className="dark:text-secondary flex items-center gap-2"
             >
-              {chat.title}
+              <span className="truncate">{chat.title}</span>
             </Link>
           </li>
         ))}
@@ -73,5 +73,55 @@ const chats = [
     id: 10,
     title: "Summarize this blog post for me.",
     date: "2023-10-10",
+  },
+  {
+    id: 11,
+    title: "What’s a good caption for my travel photo?",
+    date: "2023-10-11",
+  },
+  {
+    id: 12,
+    title: "Summarize this blog post for me.",
+    date: "2023-10-12",
+  },
+  {
+    id: 13,
+    title: "What’s a good caption for my travel photo?",
+    date: "2023-10-13",
+  },
+  {
+    id: 14,
+    title: "Summarize this blog post for me.",
+    date: "2023-10-14",
+  },
+  {
+    id: 15,
+    title: "What’s a good caption for my travel photo?",
+    date: "2023-10-15",
+  },
+  {
+    id: 16,
+    title: "Summarize this blog post for me.",
+    date: "2023-10-16",
+  },
+  {
+    id: 17,
+    title: "What’s a good caption for my travel photo?",
+    date: "2023-10-17",
+  },
+  {
+    id: 18,
+    title: "Summarize this blog post for me.",
+    date: "2023-10-18",
+  },
+  {
+    id: 19,
+    title: "What’s a good caption for my travel photo?",
+    date: "2023-10-19",
+  },
+  {
+    id: 20,
+    title: "Summarize this blog post for me.",
+    date: "2023-10-20",
   },
 ];

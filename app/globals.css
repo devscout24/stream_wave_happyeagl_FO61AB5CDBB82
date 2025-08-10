@@ -129,3 +129,18 @@
     @apply text-paragraph;
   }
 }
+
+/* Custom scrollbar styles */
+
+/* Gemini-like custom scrollbar: only thumb is visible */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+/* Track */
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--sidebar-border);
+  border-radius: 10px;
+}
