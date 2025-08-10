@@ -36,14 +36,28 @@ export async function registerUser(values: {
       maxAge: 60 * 60 * 24 * 7, // 7 days
     });
 
-    // This will throw a NEXT_REDIRECT error internally, which is handled by Next.js
+    // This will redirect successfully
     redirect("/chat");
   } catch (error) {
-    // If error is an object with a message property, use that
+    // Check if this is a NEXT_REDIRECT error (which is normal)
+    if (error && typeof error === "object" && "digest" in error) {
+      const errorDigest =
+        typeof error === "object" && error !== null && "digest" in error
+          ? (error as { digest: string }).digest
+          : undefined;
+      if (
+        typeof errorDigest === "string" &&
+        errorDigest.startsWith("NEXT_REDIRECT")
+      ) {
+        // This is a successful redirect, re-throw it so Next.js can handle it
+        throw error;
+      }
+    }
+
+    // Handle actual errors
     if (error && typeof error === "object" && "message" in error) {
       return { error: (error as { message: string }).message };
     }
-    // Otherwise, fallback
     return { error: "Registration failed. Please try again." };
   }
 }

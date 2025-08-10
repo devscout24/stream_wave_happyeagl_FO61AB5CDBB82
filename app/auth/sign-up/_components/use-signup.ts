@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -24,6 +25,8 @@ const formSchema = z
   });
 
 export default function useSignup() {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,6 +60,7 @@ export default function useSignup() {
       toast.success(
         "Registration successful! Please check your email to verify.",
       );
+      router.push("/chat");
     } catch (error) {
       form.setError("root", {
         type: "server",
