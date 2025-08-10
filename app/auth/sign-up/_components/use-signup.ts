@@ -10,11 +10,11 @@ const formSchema = z
     email: z.string().email({
       message: "Please enter a valid email address.",
     }),
-    password: z.string().min(6, {
-      message: "Password must be at least 6 characters.",
+    password: z.string().min(4, {
+      message: "Password must be at least 4 characters.",
     }),
-    confirm_password: z.string().min(6, {
-      message: "Confirm Password must be at least 6 characters.",
+    confirm_password: z.string().min(4, {
+      message: "Confirm Password must be at least 4 characters.",
     }),
     terms: z.boolean().optional(),
     privacy: z.boolean().optional(),
@@ -40,10 +40,12 @@ export default function useSignup() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     toast.loading("Registering...");
+
     try {
       const result = await registerUser(values);
 
       if (result?.error) {
+        // Set form errors for validation display
         form.setError("root", {
           type: "server",
           message: result.error,
@@ -53,30 +55,37 @@ export default function useSignup() {
         form.clearErrors("email");
         form.clearErrors("password");
         form.setFocus("email");
-        throw new Error(result.error);
+
+        // Show error toast
+        toast.dismiss();
+        toast.error(result.error);
+        return;
       }
 
+      // If we reach here, success but no redirect yet - clear form and show success
       form.clearErrors();
-      toast.success(
-        "Registration successful! Please check your email to verify.",
-      );
-      router.push("/chat");
+      toast.dismiss();
+      toast.success("Registration successful!");
+
+      router.replace("/chat");
+      router.refresh();
     } catch (error) {
-      form.setError("root", {
-        type: "server",
-        message:
-          error instanceof Error
-            ? error.message
-            : "Registration failed. Please try again.",
-      });
-      toast.error(
+      // Handle actual errors only
+      const errorMessage =
         error instanceof Error
           ? error.message
-          : "Registration failed. Please try again.",
-      );
+          : "Registration failed. Please try again.";
+
+      form.setError("root", {
+        type: "server",
+        message: errorMessage,
+      });
+      form.resetField("password");
+      form.resetField("confirm_password");
       form.setFocus("email");
-    } finally {
+
       toast.dismiss();
+      toast.error(errorMessage);
     }
   }
 

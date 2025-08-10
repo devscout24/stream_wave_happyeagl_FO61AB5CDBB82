@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -15,6 +16,8 @@ const formSchema = z.object({
 });
 
 export default function useLogin() {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onChange",
@@ -26,59 +29,53 @@ export default function useLogin() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Create a promise that resolves with the actual result or rejects with user errors only
-    const loginPromise = async () => {
-      try {
-        const result = await loginUser(values);
+    toast.loading("Logging in...");
 
-        if (result?.error) {
-          // Set form errors for validation display
-          form.setError("root", {
-            type: "server",
-            message: result.error,
-          });
-          form.resetField("password");
-          form.clearErrors("email");
-          form.clearErrors("password");
-          form.clearErrors("rememberMe");
-          form.setFocus("email");
+    try {
+      const result = await loginUser(values);
 
-          // Throw error so toast.promise shows it as error
-          throw new Error(result.error);
-        }
-
-        // Success - clear form errors
-        form.clearErrors();
-        return "Logged in successfully!";
-      } catch (error) {
-        // Check if it's a NEXT_REDIRECT error (successful redirect)
-        if (error instanceof Error && error.message === "NEXT_REDIRECT") {
-          // This is actually success - clear form and return success
-          form.clearErrors();
-          return "Logged in successfully!";
-        }
-        // Re-throw actual errors
-        throw error;
-      }
-    };
-
-    toast.promise(loginPromise(), {
-      loading: "Logging in...",
-      success: (message) => message,
-      error: (error) => {
-        // Handle form state on error
+      if (result?.error) {
+        // Set form errors for validation display
+        form.setError("root", {
+          type: "server",
+          message: result.error,
+        });
         form.resetField("password");
+        form.clearErrors("email");
+        form.clearErrors("password");
+        form.clearErrors("rememberMe");
         form.setFocus("email");
-        return error instanceof Error
+
+        // Show error toast
+        toast.dismiss();
+        toast.error(result.error);
+        return;
+      }
+
+      // If we reach here, success but no redirect yet - clear form and show success
+      form.clearErrors();
+      toast.dismiss();
+      toast.success("Logged in successfully!");
+      router.replace("/chat");
+      router.refresh();
+    } catch (error) {
+      // Handle actual errors only
+      const errorMessage =
+        error instanceof Error
           ? error.message
           : "Login failed. Please try again.";
-      },
-    });
+
+      form.setError("root", {
+        type: "server",
+        message: errorMessage,
+      });
+      form.resetField("password");
+      form.setFocus("email");
+
+      toast.dismiss();
+      toast.error(errorMessage);
+    }
   }
 
   return { form, onSubmit };
 }
-
-// In your server action (loginUser)
-// Move this catch block into the actual loginUser function implementation in ./action if needed.
-// Remove this invalid standalone catch block.

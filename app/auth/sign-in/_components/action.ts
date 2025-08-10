@@ -3,7 +3,6 @@
 import fetcher from "@/lib/fetcher";
 import { ApiResponse, LoginResponse } from "@/types";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export async function loginUser(values: { email: string; password: string }) {
   try {
@@ -33,8 +32,8 @@ export async function loginUser(values: { email: string; password: string }) {
       maxAge: 60 * 60 * 24 * 7, // 7 days
     });
 
-    // This will throw a NEXT_REDIRECT error internally, which is handled by Next.js
-    redirect("/chat");
+    // Success - redirect to chat (outside try-catch to avoid catching NEXT_REDIRECT)
+    return { message: "Logged in successfully!" };
   } catch (error) {
     // If error is an object with a message property, use that
     if (error && typeof error === "object" && "message" in error) {

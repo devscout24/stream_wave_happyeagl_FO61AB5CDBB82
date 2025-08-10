@@ -140,7 +140,7 @@ export default function SignInForm() {
           </p>
 
           <Link
-            href="/auth/logout"
+            href="/"
             className="text-muted-foreground block text-center text-sm underline max-md:text-xs"
           >
             Stay Logged Out?

@@ -20,9 +20,9 @@ export default function ChatLayout({
           <DesktopSidebar />
         </div>
 
-        <div className="col-span-12 flex flex-col justify-center md:col-span-9">
+        <div className="col-span-12 flex flex-col md:col-span-9">
           <Header />
-          <div className="min-h-screen">{children}</div>
+          <div className="">{children}</div>
         </div>
       </main>
     </>

@@ -1,8 +1,8 @@
 "use server";
+
 import fetcher from "@/lib/fetcher";
 import { ApiResponse, LoginResponse } from "@/types";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export async function registerUser(values: {
   email: string;
@@ -36,24 +36,9 @@ export async function registerUser(values: {
       maxAge: 60 * 60 * 24 * 7, // 7 days
     });
 
-    // This will redirect successfully
-    redirect("/chat");
+    // Success - redirect to chat (outside try-catch to avoid catching NEXT_REDIRECT)
+    return { message: "Registration successful!" };
   } catch (error) {
-    // Check if this is a NEXT_REDIRECT error (which is normal)
-    if (error && typeof error === "object" && "digest" in error) {
-      const errorDigest =
-        typeof error === "object" && error !== null && "digest" in error
-          ? (error as { digest: string }).digest
-          : undefined;
-      if (
-        typeof errorDigest === "string" &&
-        errorDigest.startsWith("NEXT_REDIRECT")
-      ) {
-        // This is a successful redirect, re-throw it so Next.js can handle it
-        throw error;
-      }
-    }
-
     // Handle actual errors
     if (error && typeof error === "object" && "message" in error) {
       return { error: (error as { message: string }).message };
