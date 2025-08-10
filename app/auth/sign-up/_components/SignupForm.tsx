@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import TermsModal from "./TermsModal";
 import useSignup from "./use-signup";
 
 export default function SignupForm() {
@@ -88,6 +89,7 @@ export default function SignupForm() {
           type="submit"
           className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 w-full cursor-pointer text-sm font-semibold !text-black transition-colors hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
           size="lg"
+          disabled={!form.formState.isValid || form.formState.isSubmitting}
         >
           Create account
         </Button>
@@ -107,9 +109,18 @@ export default function SignupForm() {
 
         <p className="text-muted-foreground text-center text-sm max-sm:text-xs">
           By continuing, you accept the{" "}
-          <Link href="/auth/terms" className="text-muted-foreground underline">
-            Terms of Service
-          </Link>{" "}
+          <FormField
+            control={form.control}
+            name="terms"
+            render={({ field }) => (
+              <FormItem className="space-y-1 md:space-y-3">
+                <FormControl>
+                  <TermsModal onChange={field.onChange} value={field.value} />
+                </FormControl>
+                <FormMessage className="max-md:text-xs" />
+              </FormItem>
+            )}
+          />{" "}
           and{" "}
           <Link
             href="/auth/privacy"
