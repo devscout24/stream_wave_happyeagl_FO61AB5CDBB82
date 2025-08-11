@@ -94,7 +94,7 @@
   --primary-foreground: #000000; /* Button text color for dark theme */
   --secondary: #fbe5b6;
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: #242424;
+  --muted: #404040;
   --muted-foreground: #f1f5f9;
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);

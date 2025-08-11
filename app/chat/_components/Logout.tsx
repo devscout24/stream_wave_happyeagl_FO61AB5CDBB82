@@ -43,11 +43,11 @@ export default function Logout() {
   return (
     <Button
       variant="ghost"
-      className="text-secondary hover:text-secondary cursor-pointer !p-0"
+      className="text-secondary hover:text-secondary mt-4 cursor-pointer !p-0"
       onClick={handleLogout}
     >
-      <Icon src="/logout.svg" className="h-6 w-6" />
-      <span>Sign Out</span>
+      <Icon src="/logout.svg" className="size-6" />
+      <span className="text-base">Sign Out</span>
     </Button>
   );
 }

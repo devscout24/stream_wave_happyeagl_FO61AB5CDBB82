@@ -36,7 +36,7 @@ export default function DesktopSidebar() {
         ))}
       </ul>
 
-      <div className="h-20">
+      <div className="flex h-32 items-start">
         <Logout />
       </div>
     </aside>

@@ -8,7 +8,7 @@ interface InboxProps {
 export default function Inbox({ inboxes }: InboxProps) {
   return (
     <section>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-10">
         {inboxes.map((message: Chat) => (
           <Message key={message.id} message={message} />
         ))}
