@@ -1,6 +1,7 @@
 import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
 import Link from "next/link";
+import { Suspense } from "react";
 import Logout from "./Logout";
 import Search from "./Search";
 import SidebarMenu from "./SidebarMenu";
@@ -14,7 +15,9 @@ export default function DesktopSidebar() {
           <Icon src="/left-arrow.svg" />
         </div>
 
-        <Search />
+        <Suspense fallback={null}>
+          <Search />
+        </Suspense>
 
         <SidebarMenu />
 
