@@ -1,6 +1,6 @@
+import Header from "@/components/Header";
 import type { Metadata } from "next";
 import DesktopSidebar from "../_components/DesktopSidebar";
-import Header from "../_components/Header";
 
 export const metadata: Metadata = {
   title: "Home - Capital H",

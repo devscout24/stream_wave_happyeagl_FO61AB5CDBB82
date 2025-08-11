@@ -1,6 +1,6 @@
+import Header from "@/components/Header";
 import { Metadata } from "next";
 import React from "react";
-import Header from "../(home)/_components/Header";
 
 export const metadata: Metadata = {
   title: "About - Capital H",

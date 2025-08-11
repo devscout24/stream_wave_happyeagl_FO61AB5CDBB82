@@ -5,13 +5,6 @@ export function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("access_token")?.value;
   const { pathname } = request.nextUrl;
 
-  // Protect all /chat routes: redirect to sign-in if not authenticated
-  if (pathname.startsWith("/chat")) {
-    if (!accessToken) {
-      return NextResponse.redirect(new URL("/auth/sign-in", request.url));
-    }
-  }
-
   // If logged in, prevent access to home, sign-in, and sign-up pages
   if (
     accessToken &&

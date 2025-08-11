@@ -50,8 +50,6 @@ export async function fetcher<T = unknown>(
 
   const text = await response.text();
 
-  console.log(`Fetch URL: ${text}`);
-
   if (!text) {
     return null as T;
   }
@@ -75,21 +73,25 @@ export async function fetcher<T = unknown>(
     if (errorData && typeof errorData === "object") {
       const err = errorData as ErrorResponse;
       if ("message" in err && err.message) {
-        throw new Error(String(err.message));
+        // Optionally log the error
+        console.warn("API error:", err.message);
+        return null as T;
       }
       if ("detail" in err && err.detail) {
-        throw new Error(String(err.detail));
+        console.warn("API error:", err.detail);
+        return null as T;
       }
       if ("error" in err && err.error) {
-        throw new Error(String(err.error));
+        console.warn("API error:", err.error);
+        return null as T;
       }
       if ("code" in err && err.code) {
-        throw new Error(String(err.code));
+        console.warn("API error:", err.code);
+        return null as T;
       }
     }
-    throw new Error(
-      typeof errorData === "string" ? errorData : "Unknown error",
-    );
+    console.warn("API error:", errorData);
+    return null as T;
   }
 
   return JSON.parse(text) as T;
