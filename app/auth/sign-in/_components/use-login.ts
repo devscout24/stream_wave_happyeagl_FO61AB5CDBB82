@@ -58,11 +58,11 @@ export default function useLogin() {
       toast.success("Logged in successfully!");
 
       // Close modal first, then redirect
-      router.back();
-      setTimeout(() => {
-        router.push("/chat");
-        router.refresh();
-      }, 100); // Small delay to ensure modal closes first
+      // router.back();
+      // setTimeout(() => {
+      router.replace("/chat");
+      router.refresh();
+      // }, 100); // Small delay to ensure modal closes first
     } catch (error) {
       // Handle actual errors only
       const errorMessage =

@@ -70,7 +70,9 @@ export default function useSignup() {
       // Close modal first, then redirect
       router.back();
       setTimeout(() => {
-        router.push("/chat");
+        router.replace("/chat", {
+          scroll: false,
+        });
         router.refresh();
       }, 100); // Small delay to ensure modal closes first
     } catch (error) {

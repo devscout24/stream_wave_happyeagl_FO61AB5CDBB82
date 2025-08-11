@@ -49,11 +49,11 @@ export default function useForgotPassword(email?: string) {
       toast.success("Password reset email sent!");
 
       // Close modal first, then redirect
-      router.back();
-      setTimeout(() => {
-        router.replace(`/auth/verify-code?email=${btoa(values.email)}`);
-        router.refresh();
-      }, 100); // Small delay to ensure modal closes first
+      // router.back();
+      // setTimeout(() => {
+      router.replace(`/auth/verify-code?email=${btoa(values.email)}`);
+      router.refresh();
+      // }, 100); // Small delay to ensure modal closes first
     } catch (error) {
       // Handle actual errors only
       const errorMessage =
