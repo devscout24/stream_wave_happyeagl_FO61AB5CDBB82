@@ -14,7 +14,7 @@ import { getUserProfile } from "@/lib/actions";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import Logout from "../../../components/Logout";
-import Search from "./Search";
+import Search from "../../../components/Search";
 
 export default async function MobileSidebar() {
   const user = await getUserProfile(); // Assume this function fetches the user profile
@@ -53,7 +53,7 @@ export default async function MobileSidebar() {
               <li>
                 <DrawerClose asChild>
                   <Link
-                    href="/chat"
+                    href="/chat/history"
                     className="dark:text-secondary flex items-center gap-2"
                   >
                     <Icon src="/chat-history.svg" />
@@ -64,7 +64,7 @@ export default async function MobileSidebar() {
               <li>
                 <DrawerClose asChild>
                   <Link
-                    href="/chat"
+                    href="/chat/archive"
                     className="dark:text-secondary flex items-center gap-2"
                   >
                     <Icon src="/archive-chat.svg" />
@@ -87,7 +87,7 @@ export default async function MobileSidebar() {
                 >
                   <DrawerClose asChild>
                     <Link
-                      href={`/chat?id=${chat.id}`}
+                      href={`/chat/${chat.id}`}
                       className="dark:text-secondary flex items-center gap-2"
                     >
                       <span className="truncate">{chat.title}</span>

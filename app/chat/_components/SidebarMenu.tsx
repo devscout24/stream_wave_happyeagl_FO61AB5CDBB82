@@ -17,7 +17,7 @@ export default function SidebarMenu() {
         </li>
         <li>
           <Link
-            href="/chat"
+            href="/chat/history"
             className="dark:text-secondary flex items-center gap-2"
           >
             <Icon src="/chat-history.svg" />
@@ -26,7 +26,7 @@ export default function SidebarMenu() {
         </li>
         <li>
           <Link
-            href="/chat"
+            href="/chat/archive"
             className="dark:text-secondary flex items-center gap-2"
           >
             <Icon src="/archive-chat.svg" />

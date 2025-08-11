@@ -1,9 +1,9 @@
 import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
+import Search from "@/components/Search";
 import Link from "next/link";
 import { Suspense } from "react";
 import Logout from "./Logout";
-import Search from "./Search";
 import SidebarMenu from "./SidebarMenu";
 
 export default function DesktopSidebar() {
