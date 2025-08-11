@@ -32,7 +32,7 @@ export default function useVerifyCode() {
     toast.loading("Verifying...");
 
     try {
-      const result = await verifyCode(values.otp);
+      const result = await verifyCode(values);
 
       if (result?.error) {
         // Set form errors for validation display
@@ -54,9 +54,9 @@ export default function useVerifyCode() {
       toast.success("Verification successful!");
 
       // Close modal first, then redirect
-      router.back();
+      // router.back();
       setTimeout(() => {
-        router.push("/auth/sign-in");
+        router.replace("/auth/change-password");
         router.refresh();
       }, 100); // Small delay to ensure modal closes first
     } catch (error) {

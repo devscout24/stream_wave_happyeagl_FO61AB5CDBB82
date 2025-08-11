@@ -25,7 +25,7 @@ export default function useForgotPassword(email?: string) {
     toast.loading("Sending...");
 
     try {
-      const result = await sendForgotPasswordEmail(values.email);
+      const result = await sendForgotPasswordEmail(values);
 
       if (result?.error) {
         // Set form errors for validation display
@@ -51,9 +51,7 @@ export default function useForgotPassword(email?: string) {
       // Close modal first, then redirect
       router.back();
       setTimeout(() => {
-        router.replace(
-          `/auth/verify-code?email=${encodeURIComponent(values.email)}`,
-        );
+        router.replace(`/auth/verify-code?email=${btoa(values.email)}`);
         router.refresh();
       }, 100); // Small delay to ensure modal closes first
     } catch (error) {

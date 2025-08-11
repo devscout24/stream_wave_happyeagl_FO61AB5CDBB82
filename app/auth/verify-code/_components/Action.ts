@@ -2,8 +2,15 @@
 
 import fetcher from "@/lib/fetcher";
 import { ApiResponse, VerifyCodeResponse } from "@/types";
+import { cookies } from "next/headers";
 
-export async function verifyCode(otp: string) {
+interface VerifyCodeData {
+  otp: string;
+}
+
+export async function verifyCode(data: VerifyCodeData) {
+  const { otp } = data;
+
   try {
     const response = await fetcher<ApiResponse<VerifyCodeResponse>>(
       "password-reset/verify-otp/",
@@ -13,9 +20,28 @@ export async function verifyCode(otp: string) {
       },
     );
 
+    console.log("Verify code response:", response);
+
     if (!response || !response.data) {
       return { error: "Verification failed. Please try again." };
     }
+
+    // Set cookies (HttpOnly, Secure, etc.)
+    const cookieStore = await cookies();
+    cookieStore.set("reset_token", response.data.tokens.access, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24, // 1 day
+    });
+    cookieStore.set("refresh_reset_token", response.data.tokens.refresh, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
 
     return { message: "Verification successful!" };
   } catch (error) {

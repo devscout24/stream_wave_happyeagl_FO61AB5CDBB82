@@ -52,7 +52,10 @@ export interface EmailResetResponse {
 }
 
 export interface VerifyCodeResponse {
-  otp: string;
+  tokens: {
+    access: string;
+    refresh: string;
+  };
 }
 
 export interface ChatFormValues {
@@ -60,6 +63,10 @@ export interface ChatFormValues {
   sender: "user" | "bot";
   avatar: string;
   name: string;
+}
+
+export interface PasswordResetResponse {
+  message: string;
 }
 
 // ====== URL QUERY PARAMS

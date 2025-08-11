@@ -9,7 +9,7 @@ export default async function VerifyCode({
 }) {
   const { email: encodedEmail } = await searchParams; // Await searchParams before destructuring
 
-  const email = decodeURIComponent(encodedEmail);
+  const email = atob(encodedEmail);
   return (
     <section className="grid min-h-[calc(100vh-5rem)] place-items-center gap-4">
       <div className="container mx-auto max-w-xl space-y-3 max-md:px-2 md:space-y-5">

@@ -2,7 +2,7 @@
 import fetcher from "@/lib/fetcher";
 import { ApiResponse, EmailResetResponse } from "@/types";
 
-export async function sendForgotPasswordEmail(email: string) {
+export async function sendForgotPasswordEmail({ email }: { email: string }) {
   try {
     const response = await fetcher<ApiResponse<EmailResetResponse>>(
       "password-reset/request/",

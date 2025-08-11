@@ -47,6 +47,7 @@ export default function ForgotPasswordForm({ email }: { email?: string }) {
           type="submit"
           className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 w-full cursor-pointer text-sm font-semibold !text-black transition-colors hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
           size="lg"
+          disabled={!form.formState.isValid || form.formState.isSubmitting}
         >
           Send Verification Code
         </Button>

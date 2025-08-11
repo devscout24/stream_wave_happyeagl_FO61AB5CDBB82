@@ -26,7 +26,7 @@ export default function ChangePasswordForm() {
       >
         <FormField
           control={form.control}
-          name="newPassword"
+          name="new_password"
           render={({ field }) => (
             <FormItem className="space-y-1 md:space-y-3">
               <FormLabel className="text-muted-foreground max-md:text-xs">
@@ -46,7 +46,7 @@ export default function ChangePasswordForm() {
 
         <FormField
           control={form.control}
-          name="confirmPassword"
+          name="confirm_password"
           render={({ field }) => (
             <FormItem className="space-y-1 md:space-y-3">
               <FormLabel className="text-muted-foreground max-md:text-xs">
@@ -69,6 +69,7 @@ export default function ChangePasswordForm() {
             type="submit"
             className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 flex-1 cursor-pointer text-sm font-semibold !text-black transition-colors hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
             size="lg"
+            disabled={!form.formState.isValid || form.formState.isSubmitting}
           >
             Update
           </Button>
