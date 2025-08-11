@@ -51,6 +51,10 @@ export interface EmailResetResponse {
   message: string;
 }
 
+export interface VerifyCodeResponse {
+  otp: string;
+}
+
 export interface ChatFormValues {
   body: string;
   sender: "user" | "bot";
