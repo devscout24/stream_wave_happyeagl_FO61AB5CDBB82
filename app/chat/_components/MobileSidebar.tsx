@@ -1,10 +1,8 @@
-import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
 import Profile from "@/components/Profile";
 import { DialogTitle } from "@/components/ui/dialog";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
@@ -12,9 +10,10 @@ import {
 } from "@/components/ui/drawer";
 import { getUserProfile } from "@/lib/actions";
 import { Menu } from "lucide-react";
-import Link from "next/link";
 import Logout from "../../../components/Logout";
 import Search from "../../../components/Search";
+import RecentHistory from "./RecentHistory";
+import SidebarMenu from "./SidebarMenu";
 
 export default async function MobileSidebar() {
   const user = await getUserProfile(); // Assume this function fetches the user profile
@@ -36,66 +35,13 @@ export default async function MobileSidebar() {
 
           <Search />
 
-          <div>
-            <h2 className="dark:text-secondary mt-10 text-sm">Menu</h2>
-            <ul className="mt-5 ml-2 flex flex-col gap-4">
-              <li>
-                <DrawerClose asChild>
-                  <Link
-                    href="/chat"
-                    className="dark:text-secondary flex items-center gap-2"
-                  >
-                    <Icon src="/new-chat.svg" />
-                    <span>New Chat</span>
-                  </Link>
-                </DrawerClose>
-              </li>
-              <li>
-                <DrawerClose asChild>
-                  <Link
-                    href="/chat/history"
-                    className="dark:text-secondary flex items-center gap-2"
-                  >
-                    <Icon src="/chat-history.svg" />
-                    <span>Chat History</span>
-                  </Link>
-                </DrawerClose>
-              </li>
-              <li>
-                <DrawerClose asChild>
-                  <Link
-                    href="/chat/archive"
-                    className="dark:text-secondary flex items-center gap-2"
-                  >
-                    <Icon src="/archive-chat.svg" />
-                    <span>Archived Chats</span>
-                  </Link>
-                </DrawerClose>
-              </li>
-            </ul>
-          </div>
+          <SidebarMenu isDesktop={false} />
 
           <div className="flex min-h-0 flex-1 flex-col">
             <h2 className="dark:text-secondary mt-10 text-sm max-lg:pb-2">
               Recent Chat
             </h2>
-            <ul className="mt-3 min-h-0 flex-1 overflow-y-auto">
-              {chats.map((chat) => (
-                <li
-                  key={chat.id}
-                  className="border-secondary/5 truncate border-b py-2 first:pt-0"
-                >
-                  <DrawerClose asChild>
-                    <Link
-                      href={`/chat/${chat.id}`}
-                      className="dark:text-secondary flex items-center gap-2"
-                    >
-                      <span className="truncate">{chat.title}</span>
-                    </Link>
-                  </DrawerClose>
-                </li>
-              ))}
-            </ul>
+            <RecentHistory chats={chats} isDesktop={false} />
           </div>
 
           <DrawerFooter>

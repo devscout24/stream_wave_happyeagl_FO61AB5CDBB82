@@ -1,9 +1,9 @@
 import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
 import Search from "@/components/Search";
-import Link from "next/link";
 import { Suspense } from "react";
 import Logout from "./Logout";
+import RecentHistory from "./RecentHistory";
 import SidebarMenu from "./SidebarMenu";
 
 export default function DesktopSidebar() {
@@ -23,21 +23,8 @@ export default function DesktopSidebar() {
 
         <h2 className="dark:text-secondary mt-10 text-sm">Recent Chat</h2>
       </div>
-      <ul id="scrollbar" className="mt-3 max-h-[500px] overflow-y-auto">
-        {chats.map((chat) => (
-          <li
-            key={chat.id}
-            className="border-muted/50 mr-2 border-b py-2 first:pt-0"
-          >
-            <Link
-              href={`/chat/${chat.id}`}
-              className="dark:text-secondary flex items-center gap-2"
-            >
-              <span className="truncate">{chat.title}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+
+      <RecentHistory chats={chats} />
 
       <div className="flex h-32 items-start">
         <Logout />

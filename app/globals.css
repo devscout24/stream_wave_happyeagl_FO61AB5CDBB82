@@ -86,7 +86,7 @@
 .dark {
   --background: #242424; /* Body background color for dark mode */
   --foreground: #f1f5f9;
-  --card: oklch(0.205 0 0);
+  --card: #282828;
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
@@ -96,7 +96,7 @@
   --secondary-foreground: oklch(0.985 0 0);
   --muted: #404040;
   --muted-foreground: #f1f5f9;
-  --accent: oklch(0.269 0 0);
+  --accent: #333333;
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: #afafaf;

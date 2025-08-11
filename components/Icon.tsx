@@ -31,6 +31,7 @@ const Icon: React.FC<IconProps> = ({
             ),
           );
       }}
+      wrapper="span"
     />
   );
 };

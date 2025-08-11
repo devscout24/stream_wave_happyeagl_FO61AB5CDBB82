@@ -26,6 +26,20 @@ export interface Chat {
   name: string;
 }
 
+export interface ChatHistory {
+  id: number;
+  title: string;
+  date: string;
+}
+
+export interface ChatTitle {
+  id: number;
+  title: string;
+  date: date;
+  body: string;
+  archive: boolean;
+}
+
 // Response from the API
 export interface ApiResponse<T> {
   data: T;
