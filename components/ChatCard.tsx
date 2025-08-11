@@ -9,15 +9,18 @@ export default function ChatCard({ chat }: { chat: ChatTitle }) {
   return (
     <Link
       href={`/chat/${chat.id}`}
-      className="bg-card flex items-center justify-between p-4"
+      className="bg-card flex gap-y-3 p-4 max-sm:flex-col sm:items-center sm:justify-between"
     >
       <div className="space-y-3">
         <h2 className="text-sm">{chat.title}</h2>
-        <p className="flex items-center gap-1 text-xs text-gray-500">
-          <Icon src="/star.svg" /> <span> AI: </span> <span>“{chat.body}”</span>{" "}
-          <span>🌍</span>
+        <p className="flex gap-1 text-xs text-gray-500">
+          <Icon src="/star.svg" /> <span> AI: </span>{" "}
+          <span>
+            “{chat.body}” <span>🌍</span>
+          </span>
         </p>
       </div>
+
       <span className="flex items-center gap-3">
         {chat.archive ? (
           <Button

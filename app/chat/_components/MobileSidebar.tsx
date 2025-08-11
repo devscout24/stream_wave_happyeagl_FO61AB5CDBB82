@@ -18,7 +18,7 @@ import SidebarMenu from "./SidebarMenu";
 export default async function MobileSidebar() {
   const user = await getUserProfile(); // Assume this function fetches the user profile
   return (
-    <aside className="md:hidden">
+    <aside className="lg:hidden">
       <Drawer direction="left">
         <DrawerTrigger>
           <Menu size={30} strokeWidth={1.5} />

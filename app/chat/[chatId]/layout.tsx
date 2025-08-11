@@ -15,7 +15,7 @@ export default function ChatLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="mx-auto grid max-h-dvh grid-rows-[auto_1fr_auto] gap-10 lg:max-w-[1440px] lg:grid-cols-[auto_1fr]">
+    <div className="mx-auto grid max-h-dvh grid-rows-[auto_1fr_auto] gap-10 max-2xl:px-2 lg:max-w-[1440px] lg:grid-cols-[auto_1fr]">
       <DesktopSidebar />
       <Header />
       <main id="scrollbar" className="overflow-y-auto">
