@@ -1,7 +1,6 @@
 "use client";
 
 import Icon from "@/components/Icon";
-import { Input } from "@/components/ui/input";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -35,9 +34,9 @@ export default function Search() {
   }, [query, router, searchParams]);
 
   return (
-    <div className="bg-muted mt-5 flex items-center overflow-hidden rounded-sm px-4 lg:mt-10 lg:flex-1 lg:rounded-lg">
-      <Input
-        className="placeholder:text-muted-foreground/50 text-muted-foreground border-0 py-6 text-base outline-offset-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 lg:py-6"
+    <div className="bg-input mt-5 flex items-center overflow-hidden rounded-sm px-4 lg:mt-10 lg:flex-1 lg:rounded-lg">
+      <input
+        className="placeholder:text-muted-foreground/50 text-muted-foreground w-full border-0 border-none py-2.5 text-base outline-offset-0 outline-none focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 lg:text-lg lg:placeholder:text-lg"
         placeholder="Search here"
         onChange={(e) => setQuery(e.target.value)}
       />

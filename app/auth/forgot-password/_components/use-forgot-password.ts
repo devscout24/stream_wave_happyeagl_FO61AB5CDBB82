@@ -22,7 +22,9 @@ export default function useForgotPassword(email?: string) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const sendEmailPromise = async () => {
+    toast.loading("Sending...");
+
+    try {
       const result = await sendForgotPasswordEmail(values.email);
 
       if (result?.error) {
@@ -31,33 +33,45 @@ export default function useForgotPassword(email?: string) {
           type: "server",
           message: result.error,
         });
+
+        form.clearErrors("email");
         form.setFocus("email");
 
-        // Throw error so toast.promise shows it as error
-        throw new Error(result.error);
+        // Show error toast
+        toast.dismiss();
+        toast.error(result.error);
+        return;
       }
 
-      // Success - clear form errors and return success message
+      // Success - clear form and show success
       form.clearErrors();
-      return result.message || "Password reset email sent successfully!";
-    };
+      toast.dismiss();
+      toast.success("Password reset email sent!");
 
-    const response = await toast.promise(sendEmailPromise(), {
-      loading: "Sending password reset email...",
-      success: (message) => message,
-      error: (error) => {
-        // Handle form state on error
-        form.setFocus("email");
-        return error instanceof Error
+      // Close modal first, then redirect
+      router.back();
+      setTimeout(() => {
+        router.replace(
+          `/auth/verify-code?email=${encodeURIComponent(values.email)}`,
+        );
+        router.refresh();
+      }, 100); // Small delay to ensure modal closes first
+    } catch (error) {
+      // Handle actual errors only
+      const errorMessage =
+        error instanceof Error
           ? error.message
-          : "Failed to send password reset email";
-      },
-    });
+          : "Password reset failed. Please try again.";
 
-    // Only redirect on success (when promise resolves)
-    if (response) {
-      const encodedEmail = btoa(values.email);
-      router.replace(`/auth/verify-code?email=${encodedEmail}`);
+      form.setError("root", {
+        type: "server",
+        message: errorMessage,
+      });
+      form.resetField("email");
+      form.setFocus("email");
+
+      toast.dismiss();
+      toast.error(errorMessage);
     }
   }
 
