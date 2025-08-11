@@ -24,7 +24,7 @@ export default function DesktopSidebar() {
         {chats.map((chat) => (
           <li
             key={chat.id}
-            className="border-secondary/5 mr-2 border-b py-2 first:pt-0"
+            className="border-muted/50 mr-2 border-b py-2 first:pt-0"
           >
             <Link
               href={`/chat/${chat.id}`}

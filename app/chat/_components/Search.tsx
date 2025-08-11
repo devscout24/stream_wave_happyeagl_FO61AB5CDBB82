@@ -35,14 +35,14 @@ export default function Search() {
   }, [query, router, searchParams]);
 
   return (
-    <div className="mt-5 flex items-center overflow-hidden rounded-sm bg-black px-4 lg:mt-10 lg:flex-1 lg:rounded-lg">
+    <div className="bg-muted mt-5 flex items-center overflow-hidden rounded-sm px-4 lg:mt-10 lg:flex-1 lg:rounded-lg">
       <Input
-        className="placeholder:text-secondary/50 text-secondary border-0 py-6 text-base outline-offset-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 lg:py-6"
+        className="placeholder:text-muted-foreground/50 text-muted-foreground border-0 py-6 text-base outline-offset-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 lg:py-6"
         placeholder="Search here"
         onChange={(e) => setQuery(e.target.value)}
       />
 
-      <Icon src="/search.svg" className="text-secondary/50" />
+      <Icon src="/search.svg" className="text-muted-foreground/50" />
     </div>
   );
 }

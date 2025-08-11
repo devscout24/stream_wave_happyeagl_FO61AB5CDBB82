@@ -13,7 +13,7 @@ export default function Message({ message }: { message: Chat }) {
     <div
       className={cn("flex w-full flex-col gap-2", {
         "items-end self-end pr-2": !isBot,
-        "border-secondary/5 items-start self-start not-last:border-b not-last:pb-4":
+        "border-muted/50 items-start self-start not-last:border-b not-last:pb-4":
           isBot,
       })}
     >
@@ -24,7 +24,7 @@ export default function Message({ message }: { message: Chat }) {
         })}
       >
         {isBot ? (
-          <Icon src="/ai.svg" className="size-6 text-white" />
+          <Icon src="/ai.svg" className="size-6" />
         ) : (
           <Avatar className="size-6">
             <AvatarImage src={avatarSrc} alt="User Avatar" />
