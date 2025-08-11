@@ -28,7 +28,7 @@ export default function RecentHistory({
           <Link
             href={`/chat/${chat.id}`}
             className={cn("dark:text-secondary flex items-center gap-2", {
-              "dark:text-primary text-primary": isActive(`/chat/${chat.id}`),
+              "dark:text-primary text-[#FFAA4C]": isActive(`/chat/${chat.id}`),
             })}
           >
             <span className="truncate">{chat.title}</span>
@@ -47,7 +47,9 @@ export default function RecentHistory({
             <Link
               href={`/chat/${chat.id}`}
               className={cn("dark:text-secondary flex items-center gap-2", {
-                "dark:text-primary text-primary": isActive(`/chat/${chat.id}`),
+                "dark:text-primary text-[#FFAA4C]": isActive(
+                  `/chat/${chat.id}`,
+                ),
               })}
             >
               <span className="truncate">{chat.title}</span>

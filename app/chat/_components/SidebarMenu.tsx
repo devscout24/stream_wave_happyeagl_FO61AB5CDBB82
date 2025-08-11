@@ -18,7 +18,7 @@ export default function SidebarMenu({ isDesktop = true }) {
           <Link
             href="/chat"
             className={cn("dark:text-secondary flex items-center gap-2", {
-              "dark:text-primary text-primary": isActive("/chat"),
+              "dark:text-primary text-[#FFAA4C]": isActive("/chat"),
             })}
           >
             <Icon src="/new-chat.svg" />
@@ -29,7 +29,7 @@ export default function SidebarMenu({ isDesktop = true }) {
           <Link
             href="/chat/history"
             className={cn("dark:text-secondary flex items-center gap-2", {
-              "dark:text-primary text-primary": isActive("/chat/history"),
+              "dark:text-primary text-[#FFAA4C]": isActive("/chat/history"),
             })}
           >
             <Icon src="/chat-history.svg" />
@@ -40,7 +40,7 @@ export default function SidebarMenu({ isDesktop = true }) {
           <Link
             href="/chat/archive"
             className={cn("dark:text-secondary flex items-center gap-2", {
-              "dark:text-primary text-primary": isActive("/chat/archive"),
+              "dark:text-primary text-[#FFAA4C]": isActive("/chat/archive"),
             })}
           >
             <Icon src="/archive-chat.svg" />
@@ -58,7 +58,7 @@ export default function SidebarMenu({ isDesktop = true }) {
             <Link
               href="/chat"
               className={cn("dark:text-secondary flex items-center gap-2", {
-                "dark:text-primary text-primary": isActive("/chat"),
+                "dark:text-primary text-[#FFAA4C]": isActive("/chat"),
               })}
             >
               <Icon src="/new-chat.svg" />
@@ -71,7 +71,7 @@ export default function SidebarMenu({ isDesktop = true }) {
             <Link
               href="/chat/history"
               className={cn("dark:text-secondary flex items-center gap-2", {
-                "dark:text-primary text-primary": isActive("/chat/history"),
+                "dark:text-primary text-[#FFAA4C]": isActive("/chat/history"),
               })}
             >
               <Icon src="/chat-history.svg" />
@@ -84,7 +84,7 @@ export default function SidebarMenu({ isDesktop = true }) {
             <Link
               href="/chat/archive"
               className={cn("dark:text-secondary flex items-center gap-2", {
-                "dark:text-primary text-primary": isActive("/chat/archive"),
+                "dark:text-primary text-[#FFAA4C]": isActive("/chat/archive"),
               })}
             >
               <Icon src="/archive-chat.svg" />
