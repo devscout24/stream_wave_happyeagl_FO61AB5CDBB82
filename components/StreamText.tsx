@@ -18,5 +18,5 @@ export default function StreamText({
     }
   }, [animatedText, onTextUpdate]);
 
-  return <div>{animatedText}</div>;
+  return <span>{animatedText}</span>;
 }
