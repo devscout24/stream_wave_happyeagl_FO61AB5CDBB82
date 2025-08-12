@@ -1,15 +1,15 @@
-import { Chat } from "@/types";
+import { Message as IMessage } from "@/types";
 import Message from "./Message";
 
 interface InboxProps {
-  inboxes: Chat[];
+  inboxes: IMessage[];
 }
 
 export default function Inbox({ inboxes }: InboxProps) {
   return (
     <section>
       <div className="flex flex-col gap-10">
-        {inboxes.map((message: Chat) => (
+        {inboxes.map((message: IMessage) => (
           <Message key={message.id} message={message} />
         ))}
       </div>

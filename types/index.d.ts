@@ -72,6 +72,33 @@ export interface VerifyCodeResponse {
   };
 }
 
+export interface MessagesResponse {
+  chat_id: number;
+  chat_title: string;
+  agent_type: string;
+  ai_response: string;
+  is_new_chat: boolean;
+  word_count: number;
+}
+
+export interface Message {
+  id: number;
+  chat: number;
+  sender_type: "user" | "assistant";
+  message_type: "text" | "image" | "file";
+  content: string;
+  file?: File | null;
+  file_url?: string | null;
+  file_name?: string | null;
+  created_at: Date;
+}
+
+export interface Messages {
+  messages: Message[];
+  total_count: number;
+  chat_id: number;
+}
+
 export interface ChatFormValues {
   body: string;
   sender: "user" | "bot";

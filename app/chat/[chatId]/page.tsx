@@ -1,6 +1,18 @@
 import Inbox from "@/components/Inbox";
-import { mockChats } from "../_components/mock";
+import { getChatMessages } from "./_components/action";
 
-export default function ChatPage() {
-  return <Inbox inboxes={mockChats} />;
+export default async function ChatPage({
+  params,
+}: {
+  params: Promise<{ chatId: string }>;
+}) {
+  const { chatId } = await params;
+
+  const chats = await getChatMessages(chatId);
+
+  const messages = chats.messages;
+
+  console.log("Fetched chats:", chats);
+
+  return <Inbox inboxes={messages} />;
 }

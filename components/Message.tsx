@@ -1,10 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import { Chat } from "@/types";
+import { Message as IMessage } from "@/types";
 import Icon from "./Icon";
 
-export default function Message({ message }: { message: Chat }) {
-  const isBot = message.sender === "bot";
+export default function Message({ message }: { message: IMessage }) {
+  const isBot = message.sender_type === "assistant";
 
   const avatarSrc =
     "https://sm.ign.com/ign_pk/cover/a/avatar-gen/avatar-generations_rpge.jpg";
@@ -40,7 +40,7 @@ export default function Message({ message }: { message: Chat }) {
         })}
       >
         <p className="text-muted-foreground px-4 py-2 text-sm">
-          {message.body}
+          {message.content}
         </p>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import IPInfoProvider from "@/components/IPInfoProvider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import config from "@/config";
@@ -58,7 +59,7 @@ export default function RootLayout({
         >
           <Toaster />
           {modal}
-          {children}
+          <IPInfoProvider>{children}</IPInfoProvider>
         </ThemeProvider>
       </body>
     </html>

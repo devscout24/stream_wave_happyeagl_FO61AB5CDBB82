@@ -22,6 +22,7 @@ export default function ChatForm() {
                 type="button"
                 variant="ghost"
                 className="absolute top-1/2 left-4 -translate-y-1/2 transform cursor-pointer hover:bg-transparent dark:text-white dark:hover:bg-transparent dark:hover:text-white"
+                disabled={form.formState.isSubmitting}
               >
                 <Icon src="/attachment.svg" />
               </Button>

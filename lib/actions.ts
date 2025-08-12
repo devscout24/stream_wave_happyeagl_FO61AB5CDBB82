@@ -1,15 +1,25 @@
 "use server";
 
 import fetcher from "@/lib/fetcher";
-import { ApiResponse, UserProfile } from "@/types";
+import { ApiResponse, MessagesResponse, UserProfile } from "@/types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function sendChat(values: { body: string }) {
-  await fetcher("chats", {
-    method: "POST",
-    body: JSON.stringify({ ...values, sender: "user" }),
-  });
+export async function sendChat(values: {
+  content: string;
+  location: string;
+  chatId?: string;
+}): Promise<MessagesResponse> {
+  try {
+    const result = await fetcher<ApiResponse<MessagesResponse>>("chats/send/", {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
+    return result.data;
+  } catch (error) {
+    console.error("Error sending chat:", error);
+    throw error;
+  }
 }
 
 export async function logoutUser() {

@@ -1,5 +1,8 @@
+import { sendChat } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IPInfoContext } from "ip-info-react";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -10,6 +13,8 @@ const formSchema = z.object({
 });
 
 export default function useChatForm() {
+  const userInfo = useContext(IPInfoContext);
+
   const router = useRouter();
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -21,13 +26,15 @@ export default function useChatForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+    const prompt = {
+      content: values.body,
+      location: `${userInfo.city},${userInfo.country_name}`,
+    };
+    const message = await sendChat(prompt);
 
-    setTimeout(() => {
-      router.replace("/chat/" + values.body);
-      form.reset();
-    }, 500);
+    //  Redirect to conversation page
+    router.replace(`/chat/${message.chat_id}`);
+    router.refresh();
   }
 
   return { form, onSubmit };
