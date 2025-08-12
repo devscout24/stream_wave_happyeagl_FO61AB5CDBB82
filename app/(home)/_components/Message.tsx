@@ -4,7 +4,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { ChatResponse } from "@/types";
 
-export default function Message({ message }: { message: ChatResponse }) {
+export default function Message({
+  message,
+  onTextUpdate,
+}: {
+  message: ChatResponse;
+  onTextUpdate?: () => void;
+}) {
   const isBot = message.sender_type === "assistant";
 
   const avatarSrc =
@@ -42,7 +48,10 @@ export default function Message({ message }: { message: ChatResponse }) {
       >
         <p className="text-muted-foreground px-4 py-2 text-sm">
           {isBot ? (
-            <StreamText text={message.ai_response} />
+            <StreamText
+              text={message.ai_response}
+              onTextUpdate={onTextUpdate}
+            />
           ) : (
             message.ai_response
           )}

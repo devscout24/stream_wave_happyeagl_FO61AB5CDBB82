@@ -7,51 +7,97 @@ import Message from "./Message";
 export default function Inbox({ chats }: { chats: ChatResponse[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom when new messages are added
-  useEffect(() => {
+  // Simple auto-scroll function
+  const scrollToBottom = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        top: scrollRef.current.scrollHeight,
-        behavior: "smooth",
+      const element = scrollRef.current;
+      console.log("Scroll values:", {
+        scrollTop: element.scrollTop,
+        scrollHeight: element.scrollHeight,
+        clientHeight: element.clientHeight,
+        shouldScroll: element.scrollHeight > element.clientHeight,
       });
+
+      if (element.scrollHeight > element.clientHeight) {
+        element.scrollTop = element.scrollHeight;
+        console.log("Scrolled to bottom, new scrollTop:", element.scrollTop);
+      } else {
+        console.log("No need to scroll, content fits in view");
+      }
     }
+  };
+
+  // Callback for when streaming text updates
+  const handleTextUpdate = () => {
+    console.log("Text streaming update detected, scrolling");
+    scrollToBottom();
+  };
+
+  // Auto-scroll when new messages are added
+  useEffect(() => {
+    console.log("Chats changed, scrolling to bottom");
+    scrollToBottom();
   }, [chats]);
 
-  // Monitor content changes for streaming text and auto-scroll
+  // Monitor for any DOM changes and scroll
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
 
-    const scrollToBottom = () => {
-      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-      // Only auto-scroll if user is near the bottom (within 100px)
-      const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+    // More aggressive MutationObserver for streaming text
+    const mutationObserver = new MutationObserver((mutations) => {
+      let hasTextChanges = false;
 
-      if (isNearBottom) {
-        scrollContainer.scrollTo({
-          top: scrollContainer.scrollHeight,
-          behavior: "smooth",
+      mutations.forEach((mutation) => {
+        // Check for text content changes
+        if (
+          mutation.type === "characterData" ||
+          mutation.type === "childList" ||
+          (mutation.type === "attributes" &&
+            mutation.attributeName === "data-*")
+        ) {
+          hasTextChanges = true;
+        }
+      });
+
+      if (hasTextChanges) {
+        console.log("Text content changed during streaming, scrolling");
+        // Use immediate scroll during streaming
+        requestAnimationFrame(() => {
+          if (scrollRef.current) {
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+          }
         });
       }
-    };
-
-    // Use MutationObserver to detect content changes (for streaming text)
-    const observer = new MutationObserver(() => {
-      scrollToBottom();
     });
 
-    // Observe changes in the scroll container and all its descendants
-    observer.observe(scrollContainer, {
+    // Observe with more comprehensive options for streaming
+    mutationObserver.observe(scrollContainer, {
       childList: true,
       subtree: true,
       characterData: true,
+      attributes: true,
+      attributeOldValue: true,
+      characterDataOldValue: true,
     });
 
-    // Fallback interval for cases where MutationObserver might miss updates
-    const interval = setInterval(scrollToBottom, 200);
+    // More frequent interval during streaming periods
+    const interval = setInterval(() => {
+      if (scrollRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+        // Check if we're not at the bottom and content is longer than viewport
+        if (
+          scrollHeight > clientHeight &&
+          scrollHeight - scrollTop - clientHeight > 5
+        ) {
+          console.log("Interval scroll during streaming");
+          scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+      }
+    }, 100); // More frequent for streaming
 
     return () => {
-      observer.disconnect();
+      mutationObserver.disconnect();
       clearInterval(interval);
     };
   }, []);
@@ -74,7 +120,7 @@ export default function Inbox({ chats }: { chats: ChatResponse[] }) {
     >
       <div className="flex flex-col gap-10">
         {chats.map((chat, idx) => (
-          <Message key={idx} message={chat} />
+          <Message key={idx} message={chat} onTextUpdate={handleTextUpdate} />
         ))}
       </div>
     </section>

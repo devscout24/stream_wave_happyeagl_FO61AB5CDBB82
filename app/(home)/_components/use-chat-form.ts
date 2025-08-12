@@ -21,6 +21,8 @@ export default function useChatForm() {
   const userInfo = useContext(IPInfoContext);
   const [chats, setChats] = useState<ChatResponse[]>([]);
 
+  console.log("useChatForm - current chats:", chats, "length:", chats.length);
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -31,6 +33,8 @@ export default function useChatForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("Form submitted with values:", values);
+
     const prompt: ChatFormProps = {
       content: values.body,
       location: `${userInfo.city},${userInfo.country_name}`,
@@ -47,7 +51,13 @@ export default function useChatForm() {
       requires_authentication: false,
     };
     console.log("Adding user message:", userMessage);
-    setChats((prevChats) => [...prevChats, userMessage]);
+    console.log("Current chats before adding:", chats);
+
+    setChats((prevChats) => {
+      const newChats = [...prevChats, userMessage];
+      console.log("Updated chats:", newChats);
+      return newChats;
+    });
 
     form.reset();
     form.clearErrors();
