@@ -12,7 +12,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function useChatForm() {
+export default function useChatForm({ chatId }: { chatId?: number }) {
   const userInfo = useContext(IPInfoContext);
 
   const router = useRouter();
@@ -30,10 +30,22 @@ export default function useChatForm() {
       content: values.body,
       location: `${userInfo.city},${userInfo.country_name}`,
     };
-    const message = await sendChat(prompt);
 
-    //  Redirect to conversation page
-    router.replace(`/chat/${message.chat_id}`);
+    if (chatId) {
+      await sendChat({
+        ...prompt,
+        chat_id: chatId.toString(),
+      });
+    } else {
+      const message = await sendChat(prompt);
+
+      //  Redirect to conversation page
+      router.replace(`/chat/${message.chat_id}`);
+    }
+
+    form.reset();
+    form.clearErrors();
+    form.setFocus("body");
     router.refresh();
   }
 

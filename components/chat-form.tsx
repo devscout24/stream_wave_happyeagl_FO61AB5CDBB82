@@ -7,8 +7,8 @@ import { Input } from "@/components/ui/input";
 import useChatForm from "@/hooks/use-chat-form";
 import { ShieldAlert } from "lucide-react";
 
-export default function ChatForm() {
-  const { form, onSubmit } = useChatForm();
+export default function ChatForm({ chatId }: { chatId?: number }) {
+  const { form, onSubmit } = useChatForm({ chatId });
 
   return (
     <Form {...form}>

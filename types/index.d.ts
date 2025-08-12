@@ -100,10 +100,9 @@ export interface Messages {
 }
 
 export interface ChatFormValues {
-  body: string;
-  sender: "user" | "bot";
-  avatar: string;
-  name: string;
+  content: string;
+  chat_id?: number;
+  location: string;
 }
 
 export interface PasswordResetResponse {

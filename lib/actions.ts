@@ -2,25 +2,53 @@
 
 import fetcher from "@/lib/fetcher";
 import { ApiResponse, MessagesResponse, UserProfile } from "@/types";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function sendChat(values: {
   content: string;
   location: string;
-  chatId?: string;
+  chat_id?: string;
 }): Promise<MessagesResponse> {
   try {
     const result = await fetcher<ApiResponse<MessagesResponse>>("chats/send/", {
       method: "POST",
       body: JSON.stringify(values),
     });
+
+    console.log("Chat sent successfully:", result);
+
+    if (!result || !result.data) {
+      throw new Error("Failed to send chat");
+    }
+    revalidatePath(`/chat/${result.data.chat_id}`);
+
     return result.data;
   } catch (error) {
     console.error("Error sending chat:", error);
     throw error;
   }
 }
+
+// export async function resumeChat(
+//   chatId: string,
+//   value: ChatFormValues,
+// ): Promise<MessagesResponse> {
+//   try {
+//     const result = await fetcher<ApiResponse<MessagesResponse>>(
+//       `chats/${chatId}/resume/`,
+//       {
+//         method: "POST",
+//         body: JSON.stringify(value),
+//       },
+//     );
+//     return result.data;
+//   } catch (error) {
+//     console.error("Error resuming chat:", error);
+//     throw error;
+//   }
+// }
 
 export async function logoutUser() {
   const cookieStore = await cookies();
