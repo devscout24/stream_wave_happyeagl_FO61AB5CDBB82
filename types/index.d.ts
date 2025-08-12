@@ -120,3 +120,24 @@ export type RemoveUrlQueryParams = {
   params: string;
   keysToRemove: string[];
 };
+
+// ===== Context Types
+export interface ContextType {
+  state: State;
+  dispatch: Dispatch<Action>;
+}
+
+export interface State {
+  chats: ChatResponse[];
+  messages: Message[];
+}
+
+export interface ChatResponse {
+  chat_id?: number | null;
+  chat_title: string;
+  sender_type: "user" | "assistant";
+  ai_response: string;
+  is_new_chat?: boolean;
+  word_count?: number;
+  requires_authentication?: boolean;
+}
