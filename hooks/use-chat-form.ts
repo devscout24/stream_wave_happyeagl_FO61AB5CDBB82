@@ -18,7 +18,6 @@ export default function useChatForm({ chatId }: { chatId?: number }) {
   const userInfo = useContext(IPInfoContext);
   const contextValue = useCustomContext(); // Returns null if not in Provider
   const addOptimisticChat = contextValue?.addOptimisticChat;
-  const setChats = contextValue?.setChats;
 
   const router = useRouter();
   // 1. Define your form.
