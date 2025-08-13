@@ -141,3 +141,8 @@ export interface ChatResponse {
   word_count?: number;
   requires_authentication?: boolean;
 }
+
+export interface ChatHistoryResponse {
+  chats: ChatTitle[];
+  total_count: number;
+}
