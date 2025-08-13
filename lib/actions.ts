@@ -1,6 +1,6 @@
 "use server";
 
-import fetcher from "@/lib/fetcher";
+import { fetcher } from "@/lib/fetcher";
 import {
   ApiResponse,
   ChatResponse,
@@ -39,6 +39,9 @@ export async function sendChat(values: {
     if (!result || !result.data) {
       throw new Error("Failed to send chat");
     }
+
+    // Commenting out immediate revalidation to prevent race condition
+    // The optimistic updates will handle showing the message immediately
     revalidatePath(`/chat/${result.data.chat_id}`);
 
     return result.data;

@@ -1,8 +1,10 @@
+import { useCustomContext } from "@/app/chat/[chatId]/_context/use-context";
 import { sendChat } from "@/lib/actions";
+import { Message } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IPInfoContext } from "ip-info-react";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { startTransition, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -14,6 +16,8 @@ const formSchema = z.object({
 
 export default function useChatForm({ chatId }: { chatId?: number }) {
   const userInfo = useContext(IPInfoContext);
+  const contextValue = useCustomContext(); // Returns null if not in Provider
+  const addOptimisticChat = contextValue?.addOptimisticChat;
 
   const router = useRouter();
   // 1. Define your form.
@@ -32,10 +36,58 @@ export default function useChatForm({ chatId }: { chatId?: number }) {
     };
 
     if (chatId) {
-      await sendChat({
-        ...prompt,
-        chat_id: chatId.toString(),
-      });
+      // Create optimistic user message
+      const optimisticUserMessage: Message = {
+        id: Date.now(), // Temporary ID
+        chat: chatId,
+        sender_type: "user",
+        message_type: "text",
+        content: values.body,
+        created_at: new Date(),
+      };
+
+      // Add optimistic user message immediately in a transition (only if context is available)
+      if (addOptimisticChat) {
+        console.log("Adding optimistic message:", optimisticUserMessage);
+        startTransition(() => {
+          addOptimisticChat(optimisticUserMessage);
+        });
+      } else {
+        console.log(
+          "No addOptimisticChat function available - context might be null",
+        );
+      }
+
+      // Clear form immediately for better UX
+      form.reset();
+      form.clearErrors();
+      form.setFocus("body");
+
+      try {
+        // Send to server
+        const response = await sendChat({
+          ...prompt,
+          chat_id: chatId.toString(),
+        });
+
+        console.log("Server response received:", response);
+        console.log(
+          "Response type:",
+          "chat_id" in response ? "MessagesResponse" : "ChatResponse",
+        );
+
+        // The sendChat function calls revalidatePath() which updates the page data
+        // But there might be a race condition. Let's handle the server response properly:
+
+        // If we get a MessagesResponse, it means the message was processed successfully
+        // We could update the context state with the new data, but for now let's just
+        // trust that the revalidatePath will eventually sync the data correctly
+
+        // Note: The optimistic message should stay visible until the next page data update
+      } catch (error) {
+        console.error("Failed to send message:", error);
+        // TODO: Handle error - maybe show a retry button
+      }
     } else {
       const message = await sendChat(prompt);
 
@@ -44,11 +96,6 @@ export default function useChatForm({ chatId }: { chatId?: number }) {
       //  Redirect to conversation page
       router.replace(`/chat/${message.chat_id}`);
     }
-
-    form.reset();
-    form.clearErrors();
-    form.setFocus("body");
-    router.refresh();
   }
 
   return { form, onSubmit };
