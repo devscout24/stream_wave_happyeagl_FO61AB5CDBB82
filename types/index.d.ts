@@ -29,15 +29,16 @@ export interface Chat {
 export interface ChatHistory {
   id: number;
   title: string;
-  date: string;
+  created_at: string;
 }
 
 export interface ChatTitle {
   id: number;
   title: string;
-  date: date;
+  created_at: date;
   body: string;
   archive: boolean;
+  
 }
 
 // Response from the API
@@ -145,4 +146,9 @@ export interface ChatResponse {
 export interface ChatHistoryResponse {
   chats: ChatTitle[];
   total_count: number;
+}
+
+export interface ArchivedResponse {
+  archived_chats: ChatTitle[];
+  total_archived: number;
 }

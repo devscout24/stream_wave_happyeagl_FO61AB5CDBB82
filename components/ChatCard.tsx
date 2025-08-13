@@ -6,6 +6,7 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 
 export default function ChatCard({ chat }: { chat: ChatTitle }) {
+  console.log(chat);
   return (
     <Link
       href={`/chat/${chat.id}`}
@@ -43,7 +44,7 @@ export default function ChatCard({ chat }: { chat: ChatTitle }) {
           variant="secondary"
           className="bg-accent h-8 w-24 rounded-full text-xs font-normal"
         >
-          <LastSeen date={chat.date.split(".")[0]} />
+          <LastSeen date={chat.created_at} />
         </Badge>
       </span>
     </Link>
