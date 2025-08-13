@@ -59,5 +59,3 @@ export async function changePassword(data: ChangePasswordData) {
     return { error: "Password change failed. Please try again." };
   }
 }
-
-// Function to reset password

@@ -5,7 +5,7 @@ import config from "@/config";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Inter({
+const inter = Inter({
   subsets: ["latin"],
   display: "swap",
 });
@@ -50,7 +50,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={geistSans.className} id="scrollbar">
+      <body className={inter.className} id="scrollbar">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
