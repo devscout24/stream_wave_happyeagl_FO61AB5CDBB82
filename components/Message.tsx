@@ -2,8 +2,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { Message as IMessage } from "@/types";
 import Icon from "./Icon";
+import StreamText from "./StreamText";
 
-export default function Message({ message }: { message: IMessage }) {
+export default function Message({
+  message,
+  onTextUpdate,
+}: {
+  message: IMessage;
+  onTextUpdate?: () => void;
+}) {
   const isBot = message.sender_type === "assistant";
 
   const avatarSrc =
@@ -39,9 +46,13 @@ export default function Message({ message }: { message: IMessage }) {
           "bg-muted": !isBot,
         })}
       >
-        <p className="text-muted-foreground px-4 py-2 text-sm">
-          {message.content}
-        </p>
+        <div className="text-muted-foreground px-4 py-2 text-sm">
+          {isBot ? (
+            <StreamText text={message.content} onTextUpdate={onTextUpdate} />
+          ) : (
+            message.content
+          )}
+        </div>
       </div>
     </div>
   );

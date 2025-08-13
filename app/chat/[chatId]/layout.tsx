@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import type { Metadata } from "next";
 import DesktopSidebar from "../_components/DesktopSidebar";
 import { getChatMessages } from "./_components/action";
+import Provider from "./_context/Provider";
 
 export const metadata: Metadata = {
   title: "Home - Capital H",
@@ -23,14 +24,18 @@ export default async function ChatLayout({
 
   return (
     <div className="mx-auto grid max-h-dvh grid-rows-[auto_1fr_auto] gap-10 max-2xl:px-2 lg:max-w-[1440px] lg:grid-cols-[auto_1fr]">
-      <DesktopSidebar />
-      <Header />
-      <main id="scrollbar" className="overflow-y-auto">
-        {children}
-      </main>
-      <footer className="py-4 max-sm:px-2">
-        <ChatForm chatId={chats.chat_id} />
-      </footer>
+      <Provider>
+        <>
+          <DesktopSidebar />
+          <Header />
+          <main id="scrollbar" className="overflow-y-auto">
+            {children}
+          </main>
+          <footer className="py-4 max-sm:px-2">
+            <ChatForm chatId={chats.chat_id} />
+          </footer>
+        </>
+      </Provider>
     </div>
   );
 }
