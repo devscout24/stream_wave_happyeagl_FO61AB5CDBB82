@@ -1,5 +1,6 @@
 "use client";
 
+import ErrorMessage from "@/components/ErrorMessage";
 import Icon from "@/components/Icon";
 import PasswordInput from "@/components/PasswordInput";
 import { Button } from "@/components/ui/button";
@@ -103,19 +104,26 @@ export default function SignInForm() {
 
           <Link
             href="/auth/forgot-password"
-            replace
             className="text-muted-foreground ml-auto text-sm underline max-md:text-xs"
           >
             Forgot password?
           </Link>
         </div>
 
+        {form.formState.errors?.root?.message && (
+          <ErrorMessage
+            variant="destructive"
+            message={form.formState.errors.root.message}
+          />
+        )}
+
         <Button
           type="submit"
           className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 w-full cursor-pointer text-sm font-semibold !text-black transition-colors hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
           size="lg"
+          disabled={form.formState.isSubmitting || !form.formState.isValid}
         >
-          Submit
+          Log In
         </Button>
 
         <div className="space-y-2">
@@ -131,27 +139,12 @@ export default function SignInForm() {
           </p>
 
           <Link
-            href="/auth/logout"
+            href="/"
             className="text-muted-foreground block text-center text-sm underline max-md:text-xs"
           >
             Stay Logged Out?
           </Link>
         </div>
-
-        <p className="text-muted-foreground text-center text-sm max-sm:text-xs">
-          By continuing, you accept the{" "}
-          <Link href="/auth/terms" className="text-muted-foreground underline">
-            Terms of Service
-          </Link>{" "}
-          and{" "}
-          <Link
-            href="/auth/privacy"
-            className="text-muted-foreground underline"
-          >
-            Privacy Policy
-          </Link>
-          .
-        </p>
       </form>
     </Form>
   );

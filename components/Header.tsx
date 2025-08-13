@@ -1,11 +1,34 @@
-import Icon from "@/components/Icon";
-import Logo from "@/components/Logo";
-import { Button } from "@/components/ui/button";
+import MobileSidebar from "@/app/chat/_components/MobileSidebar";
+import Profile from "@/components/Profile";
+import { getUserProfile } from "@/lib/actions";
 import Link from "next/link";
+import Icon from "./Icon";
+import Logo from "./Logo";
 import ThemeToggle from "./theme-toggle";
+import { Button } from "./ui/button";
 
-export default function Header() {
-  return (
+export default async function Header() {
+  const user = await getUserProfile(); // Assume this function fetches the user profile
+
+  console.log("user in header", user);
+
+  return user ? (
+    <header>
+      <nav>
+        <div className="container mx-auto max-md:px-2 lg:max-w-7xl">
+          <div className="flex items-center justify-between py-3">
+            <h1 className="text-3xl font-semibold">AI Chat</h1>
+
+            <div className="flex items-center gap-4">
+              <Profile profile={user} avatarOnly />
+
+              <MobileSidebar />
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+  ) : (
     <header>
       <nav>
         <div className="container mx-auto max-md:px-2 lg:max-w-7xl">

@@ -24,6 +24,7 @@
   --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
+  --color-input-accent: var(--input-accent);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
@@ -58,11 +59,12 @@
   --secondary-foreground: oklch(0.205 0 0);
   --muted: #e4e4e4;
   --muted-foreground: #212121;
-  --accent: #ff0000;
+  --accent: #d7d7d7;
   --accent-foreground: #333333;
   --destructive: #e63946;
   --border: #6e6e6e;
   --input: #fbe5b6;
+  --input-accent: #e3e3e3; /* Input field accent color for light mode */
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -86,7 +88,7 @@
 .dark {
   --background: #242424; /* Body background color for dark mode */
   --foreground: #f1f5f9;
-  --card: oklch(0.205 0 0);
+  --card: #282828;
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
@@ -94,13 +96,14 @@
   --primary-foreground: #000000; /* Button text color for dark theme */
   --secondary: #fbe5b6;
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: #242424;
+  --muted: #404040;
   --muted-foreground: #f1f5f9;
-  --accent: oklch(0.269 0 0);
+  --accent: #333333;
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: #afafaf;
   --input: #000000; /* Input field background color for dark mode */
+  --input-accent: #1c1c1c; /* Input field accent color for dark mode */
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
@@ -128,4 +131,22 @@
   p {
     @apply text-paragraph;
   }
+}
+
+/* Custom scrollbar styles */
+
+/* Handle on hover */
+#scrollbar::-webkit-scrollbar {
+  background: transparent;
+  width: 10px;
+}
+
+#scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-ring);
+  border-radius: 10px;
+  display: none;
+}
+
+#scrollbar:hover::-webkit-scrollbar-thumb {
+  display: block;
 }

@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,8 +13,11 @@ export default function HomeLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="flex min-h-[calc(100vh-100px)] flex-col items-center justify-center">
-      {children}
-    </main>
+    <>
+      <Header />
+      <main className="flex min-h-[calc(100vh-100px)] flex-col items-center justify-center">
+        {children}
+      </main>
+    </>
   );
 }

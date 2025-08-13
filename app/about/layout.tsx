@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import { Metadata } from "next";
 import React from "react";
 
@@ -12,5 +13,10 @@ export default function AboutLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <main>{children}</main>;
+  return (
+    <>
+      <Header />
+      <main>{children}</main>;
+    </>
+  );
 }

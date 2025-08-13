@@ -1,3 +1,9 @@
+export interface UserProfile {
+  first_name: string;
+  last_name: string;
+  profile_pic: string;
+}
+
 export interface Feature {
   icon: string;
   title: string;
@@ -11,12 +17,96 @@ export interface Testimonial {
   ratings: number;
 }
 
-export interface ChatMessage {
-  id: number;
-  content: string;
+export interface Chat {
+  id: string;
+  body: string;
   sender: "user" | "bot";
   avatar: string;
-  timestamp: string;
+  createdAt: string;
+  name: string;
+}
+
+export interface ChatHistory {
+  id: number;
+  title: string;
+  date: string;
+}
+
+export interface ChatTitle {
+  id: number;
+  title: string;
+  date: date;
+  body: string;
+  archive: boolean;
+}
+
+// Response from the API
+export interface ApiResponse<T> {
+  data: T;
+  message: string;
+  status: string;
+}
+
+// Error response from the API
+export interface ApiError {
+  error: string;
+  message: string;
+}
+
+// Login response structure
+export interface LoginResponse {
+  tokens: {
+    access: string;
+    refresh: string;
+  };
+}
+
+export interface EmailResetResponse {
+  message: string;
+}
+
+export interface VerifyCodeResponse {
+  tokens: {
+    access: string;
+    refresh: string;
+  };
+}
+
+export interface MessagesResponse {
+  chat_id: number;
+  chat_title: string;
+  agent_type: string;
+  ai_response: string;
+  is_new_chat: boolean;
+  word_count: number;
+}
+
+export interface Message {
+  id: number;
+  chat: number;
+  sender_type: "user" | "assistant";
+  message_type: "text" | "image" | "file";
+  content: string;
+  file?: File | null;
+  file_url?: string | null;
+  file_name?: string | null;
+  created_at: Date;
+}
+
+export interface Messages {
+  messages: Message[];
+  total_count: number;
+  chat_id: number;
+}
+
+export interface ChatFormValues {
+  content: string;
+  chat_id?: number;
+  location: string;
+}
+
+export interface PasswordResetResponse {
+  message: string;
 }
 
 // ====== URL QUERY PARAMS
@@ -30,3 +120,24 @@ export type RemoveUrlQueryParams = {
   params: string;
   keysToRemove: string[];
 };
+
+// ===== Context Types
+export interface ContextType {
+  state: State;
+  dispatch: Dispatch<Action>;
+}
+
+export interface State {
+  chats: ChatResponse[];
+  messages: Message[];
+}
+
+export interface ChatResponse {
+  chat_id?: number | null;
+  chat_title: string;
+  sender_type: "user" | "assistant";
+  ai_response: string;
+  is_new_chat?: boolean;
+  word_count?: number;
+  requires_authentication?: boolean;
+}
