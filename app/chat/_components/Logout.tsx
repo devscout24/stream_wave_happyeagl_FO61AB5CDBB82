@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { logoutUser } from "@/lib/actions";
 import { toast } from "sonner";
 
-export default function Logout() {
+export default function Logout({ isProfile = false }: { isProfile?: boolean }) {
   const handleLogout = async () => {
     const logoutPromise = async () => {
       try {
@@ -40,7 +40,11 @@ export default function Logout() {
     });
   };
 
-  return (
+  return isProfile ? (
+    <Button onClick={handleLogout} variant="default">
+      Sign Out <Icon src="/login-arrow.svg" />
+    </Button>
+  ) : (
     <Button
       variant="ghost"
       className="dark:text-secondary hover:text-foreground hover:dark:text-secondary mt-4 cursor-pointer !p-0 hover:bg-transparent hover:dark:bg-transparent"

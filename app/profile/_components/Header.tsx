@@ -1,3 +1,4 @@
+import Logout from "@/app/chat/_components/Logout";
 import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/theme-toggle";
@@ -24,11 +25,9 @@ export default async function Header() {
             <div className="flex items-center gap-4">
               <ThemeToggle />
 
-              <Link href="/auth/sign-in">
-                <Button variant="default">
-                  Sign Out <Icon src="/login-arrow.svg" />
-                </Button>
-              </Link>
+          
+                <Logout isProfile={true}/>
+         
             </div>
           </div>
         </div>

@@ -27,6 +27,8 @@ export async function fetcher<T = unknown>(
   );
   const accessToken = !isAuthEndpoint ? await getUserSession() : null;
 
+  console.log(accessToken && { Authorization: `Bearer ${accessToken}` })
+
   const defaultOptions: RequestInit = {
     headers: {
       "Content-Type": "application/json",

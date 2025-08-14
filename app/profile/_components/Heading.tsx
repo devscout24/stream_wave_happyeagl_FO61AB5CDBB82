@@ -1,8 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import React from "react";
+import UpdatePassword from "./UpdatePassword";
 
 export default function Heading() {
+
   return (
     <div className="text-foreground">
       <h1 className="mb-1 text-4xl font-semibold">My Profile</h1>
@@ -18,7 +19,7 @@ export default function Heading() {
             <p className="font-normal">faysal@gmail.com</p>
           </span>
         </div>
-        <Button className="bg-secondary text-gray-500" variant="secondary">Change Password</Button>
+        <UpdatePassword/>
       </div>
     </div>
   );

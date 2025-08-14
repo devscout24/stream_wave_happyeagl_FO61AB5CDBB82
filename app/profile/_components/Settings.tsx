@@ -36,7 +36,7 @@ export default function Settings() {
       {/* Clear Chat History */}
       <div className="flex flex-row items-center justify-between border-b border-accent p-3">
         <button
-          className="p-0  font-medium"
+          className="p-0 cursor-pointer font-medium"
           onClick={handleClearHistory}
         >
           Clear Chat History
@@ -46,7 +46,7 @@ export default function Settings() {
       {/* Delete Profile */}
       <div className="flex flex-row items-center justify-between border-b border-accent p-3">
         <button
-          className="p-0  hover:text-red-800 text-red-700 font-medium"
+          className="p-0 cursor-pointer  hover:text-red-600 text-red-700 font-medium"
           onClick={handleDeleteProfile}
         >
           Delete Profile

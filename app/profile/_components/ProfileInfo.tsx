@@ -1,43 +1,38 @@
 import { Input } from "@/components/ui/input";
 import { getUserProfile } from "@/lib/actions";
-import { Edit } from "lucide-react";
-
+import ProfileForm from "./ProfileForm";
 export default async function ProfileInfo() {
-    const user = await getUserProfile();
+  const user = await getUserProfile();
 
+  if(!user){
+    return null
+  }
 
-
-  const profileData = {
-    fastName: "Atik",
-    lastName: "Faysal",
-    email: "example@email.com",
-    password: "********",
-  };
-
+  console.log(user)
   return (
-    <div className="bg-card rounded-lg p-5 w-1/2">
+    <div className="bg-card w-1/2 rounded-lg p-5">
       {/* Header */}
       <div className="mb-5 flex items-center justify-between">
         <h1 className="text-2xl font-medium">Profile Information</h1>
-        <Edit className="cursor-pointer" />
+        <ProfileForm user={user}/>
       </div>
 
       {/* Name */}
-      <div className="flex gap-5 mb-4">
+      <div className="mb-4 flex gap-5">
         <div className="w-full">
           <label className="block text-sm font-medium">First Name</label>
           <Input
-            value={user?.first_name ||""}
+            value={user?.first_name || ""}
             readOnly
-            className="bg-background border-none mt-1"
+            className="bg-background mt-1 border-none"
           />
         </div>
         <div className="w-full">
           <label className="block text-sm font-medium">Last Name</label>
           <Input
-            value={user?.last_name|| ""}
+            value={user?.last_name || ""}
             readOnly
-            className="bg-background border-none mt-1"
+            className="bg-background mt-1 border-none"
           />
         </div>
       </div>
@@ -48,7 +43,7 @@ export default async function ProfileInfo() {
         <Input
           value={"example@gmail.com"}
           readOnly
-          className="bg-background border-none mt-1"
+          className="bg-background mt-1 border-none"
         />
       </div>
     </div>

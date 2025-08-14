@@ -152,3 +152,21 @@ export interface ArchivedResponse {
   archived_chats: ChatTitle[];
   total_archived: number;
 }
+
+
+export interface UpdateProfileResponse {
+  message: string;
+}
+
+
+export interface FormValues {
+  first_name: string;
+  last_name: string;
+}
+
+
+export interface UpdatePass {
+  old_password: string;
+  new_password: string;
+  confirm_password: string;
+}
