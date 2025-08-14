@@ -9,6 +9,8 @@ import { getChatHistory } from "../(root)/history/_components/action";
 
 export default async function DesktopSidebar() {
   const chatHistory = await getChatHistory();
+
+  console.log(chatHistory)
   return (
     <aside className="row-span-full grid grid-rows-[auto_1fr_auto] max-lg:hidden">
       <div>
