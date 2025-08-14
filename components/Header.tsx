@@ -20,7 +20,9 @@ export default async function Header() {
             <h1 className="text-3xl font-semibold">AI Chat</h1>
 
             <div className="flex items-center gap-4">
-              <Profile profile={user} avatarOnly />
+              <Link href="/profile">
+                <Profile profile={user} avatarOnly />
+              </Link>
 
               <MobileSidebar />
             </div>
