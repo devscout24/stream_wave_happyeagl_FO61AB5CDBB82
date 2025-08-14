@@ -2,8 +2,16 @@ import ChatList from "@/components/ChatList";
 import Search from "@/components/Search";
 import { getChatHistory } from "./_components/action";
 
-export default async function HistoryPage() {
-  const chatHistory = await getChatHistory();
+export default async function HistoryPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ chq?: string }>;
+}) {
+  const { chq } = await searchParams;
+
+  console.log(chq);
+
+  const chatHistory = await getChatHistory(!chq ? "" : chq);
 
   console.log("Fetched chat titles:", chatHistory.chats);
 
