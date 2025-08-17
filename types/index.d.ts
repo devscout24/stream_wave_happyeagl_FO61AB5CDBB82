@@ -37,7 +37,7 @@ export interface ChatTitle {
   title: string;
   created_at: date;
   body: string;
-  archive: boolean;
+  is_archived: boolean;
   
 }
 
@@ -169,4 +169,34 @@ export interface UpdatePass {
   old_password: string;
   new_password: string;
   confirm_password: string;
+}
+
+
+export interface ChatMeta {
+  id: number;
+  chat: number;
+  sender_type: string;
+  message_type: string;
+  content: string;
+  file: number | null;
+  file_url: string | null;
+  file_name: string | null;
+  created_at: string;
+}
+
+export interface ChatMessage {
+  id: number;
+  chat: ChatMeta;
+  sender_type: string;
+  message_type: string;
+  content: string;
+  file: number | null;
+  file_url: string | null;
+  file_name: string | null;
+  created_at: string;
+}
+
+export interface ChatHistorySearch {
+  total_messages: number;
+  chat_groups: ChatMessage[];
 }

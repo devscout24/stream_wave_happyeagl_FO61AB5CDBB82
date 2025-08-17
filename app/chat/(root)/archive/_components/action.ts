@@ -2,10 +2,12 @@
 
 import fetcher from "@/lib/fetcher";
 import { ApiResponse, ArchivedResponse } from "@/types";
+import { revalidatePath } from "next/cache";
 
 export async function getArchived() {
   try {
-    const result = await fetcher<ApiResponse<ArchivedResponse>>("chats/archived/");
+    const result =
+      await fetcher<ApiResponse<ArchivedResponse>>("chats/archived/");
     return result.data;
   } catch (error) {
     console.error("Error fetching archived:", error);
@@ -13,4 +15,24 @@ export async function getArchived() {
   }
 }
 
+export async function setArchive(chatId: number, is_archived: boolean) {
+  try {
+    console.log("now on",{ is_archived })
+    const res = await fetcher(`chats/${chatId}/archive/`, {
+      method: "PUT",
+      body: JSON.stringify({ is_archived }),
+    });
+    if(is_archived){
+      revalidatePath('/chat/history')
+    }
+    else {
+      revalidatePath('/chat/archive')
+    }
+    console.log(res);
+    return res; 
+  } catch (error) {
+    console.error("Error archiving chat:", error);
+    throw error;
+  }
+}
 

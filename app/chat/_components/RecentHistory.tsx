@@ -20,39 +20,39 @@ export default function RecentHistory({
 
   return isDesktop ? (
     <ul id="scrollbar" className="mt-3 max-h-[500px] overflow-y-auto">
-      {chats.map((chat) => (
+      {chats?.map((chat) => (
         <li
           key={chat.id}
           className="border-muted/50 mr-2 border-b py-2 first:pt-0"
         >
           <Link
-            href={`/chat/${chat.id}`}
+            href={`/chat/${chat?.id}`}
             className={cn("dark:text-secondary flex items-center gap-2", {
-              "dark:text-primary text-[#FFAA4C]": isActive(`/chat/${chat.id}`),
+              "dark:text-primary text-[#FFAA4C]": isActive(`/chat/${chat?.id}`),
             })}
           >
-            <span className="truncate">{chat.title}</span>
+            <span className="truncate">{chat?.title}</span>
           </Link>
         </li>
       ))}
     </ul>
   ) : (
     <ul className="mt-3 min-h-0 flex-1 overflow-y-auto">
-      {chats.map((chat) => (
+      {chats?.map((chat) => (
         <li
           key={chat.id}
           className="border-secondary/5 truncate border-b py-2 first:pt-0"
         >
           <DrawerClose asChild>
             <Link
-              href={`/chat/${chat.id}`}
+              href={`/chat/${chat?.id}`}
               className={cn("dark:text-secondary flex items-center gap-2", {
                 "dark:text-primary text-[#FFAA4C]": isActive(
-                  `/chat/${chat.id}`,
+                  `/chat/${chat?.id}`,
                 ),
               })}
             >
-              <span className="truncate">{chat.title}</span>
+              <span className="truncate">{chat?.title}</span>
             </Link>
           </DrawerClose>
         </li>

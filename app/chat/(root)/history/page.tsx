@@ -1,6 +1,7 @@
 import ChatList from "@/components/ChatList";
 import Search from "@/components/Search";
 import { getChatHistory } from "./_components/action";
+import Actions from "./_components/Actions";
 
 export default async function HistoryPage({
   searchParams,
@@ -13,17 +14,18 @@ export default async function HistoryPage({
 
   const chatHistory = await getChatHistory(!chq ? "" : chq);
 
-  console.log("Fetched chat titles:", chatHistory.chats);
-
   return (
     <section className="space-y-5">
-      <h1 className="text-4xl font-semibold">Chat History</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-4xl font-semibold">Chat History</h1>
+        <Actions />
+      </div>
       <Search queryKey="chq" placeholder="Search chat history" />
 
-      {chatHistory.total_count === 0 ? (
+      {chatHistory?.total_count === 0 ? (
         <p>No chat history found.</p>
       ) : (
-        <ChatList history={chatHistory.chats} />
+        <ChatList history={chatHistory?.chats} />
       )}
     </section>
   );

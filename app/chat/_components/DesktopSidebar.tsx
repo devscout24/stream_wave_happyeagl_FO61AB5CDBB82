@@ -28,10 +28,10 @@ export default async function DesktopSidebar() {
         <h2 className="dark:text-secondary mt-10 text-sm">Recent Chat</h2>
       </div>
 
-      {chatHistory.total_count === 0 ? (
+      {chatHistory?.total_count === 0 ? (
               <p className="text-sm mt-2">No recent chat found.</p>
             ) : (
-              <RecentHistory chats={chatHistory.chats.slice(0, 10)} />
+              <RecentHistory chats={chatHistory?.chats?.slice(0, 10)} />
             )}
 
       <div className="flex h-32 items-start">
