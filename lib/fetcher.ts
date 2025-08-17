@@ -27,7 +27,7 @@ export async function fetcher<T = unknown>(
   );
   const accessToken = !isAuthEndpoint ? await getUserSession() : null;
 
-  console.log(accessToken && { Authorization: `Bearer ${accessToken}` })
+  console.log(accessToken && { Authorization: `Bearer ${accessToken}` });
 
   const defaultOptions: RequestInit = {
     headers: {
@@ -55,7 +55,7 @@ export async function fetcher<T = unknown>(
   if (!text) {
     return null as T;
   }
-  // If not ok, just throw the response as is
+  // If not ok, throw a rich error so frontend can handle it
   if (!response.ok) {
     type ErrorResponse = {
       message?: string;
@@ -71,29 +71,29 @@ export async function fetcher<T = unknown>(
     } catch {
       errorData = text;
     }
-    // Prefer message, then detail, then error, then code, then fallback
+
+    // Determine the best error message to surface
+    let errorMessage = `Request failed with status ${response.status}`;
     if (errorData && typeof errorData === "object") {
       const err = errorData as ErrorResponse;
-      if ("message" in err && err.message) {
-        // Optionally log the error
-        console.warn("API error:", err.message);
-        return null as T;
-      }
-      if ("detail" in err && err.detail) {
-        console.warn("API error:", err.detail);
-        return null as T;
-      }
-      if ("error" in err && err.error) {
-        console.warn("API error:", err.error);
-        return null as T;
-      }
-      if ("code" in err && err.code) {
-        console.warn("API error:", err.code);
-        return null as T;
+      if (err.message) errorMessage = String(err.message);
+      else if (err.detail) errorMessage = String(err.detail);
+      else if (err.error) errorMessage = String(err.error);
+      else if (err.code) errorMessage = `Error code: ${String(err.code)}`;
+    } else if (typeof errorData === "string" && errorData.length) {
+      errorMessage = errorData;
+    }
+
+    class FetcherError extends Error {
+      status: number;
+      data: unknown;
+      constructor(message: string, status: number, data: unknown) {
+        super(message);
+        this.status = status;
+        this.data = data;
       }
     }
-    console.warn("API error:", errorData);
-    return null as T;
+    throw new FetcherError(errorMessage, response.status, errorData);
   }
 
   return JSON.parse(text) as T;

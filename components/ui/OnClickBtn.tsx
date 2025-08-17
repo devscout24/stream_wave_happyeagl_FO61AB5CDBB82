@@ -1,6 +1,6 @@
 "use client";
 
-import useProvider from "@/app/chat/(root)/history/Context/use-provider";
+import useProvider from "@/app/chat/(root)/Context/use-provider";
 import { PropsWithChildren } from "react";
 
 interface OnClickBtnProps {

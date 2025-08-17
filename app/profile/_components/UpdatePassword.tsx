@@ -1,5 +1,6 @@
 "use client";
 
+import ErrorMessage from "@/components/ErrorMessage";
 import PasswordInput from "@/components/PasswordInput";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import React, { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useUpdatePass from "./useUpdatePass";
 
 export default function UpdatePassword() {
@@ -47,6 +48,13 @@ export default function UpdatePassword() {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            {/* Show general (root) error */}
+            {form.formState.errors?.root?.message && (
+              <ErrorMessage
+                variant="destructive"
+                message={form.formState.errors.root.message}
+              />
+            )}
             <FormField
               control={form.control}
               name="old_password"

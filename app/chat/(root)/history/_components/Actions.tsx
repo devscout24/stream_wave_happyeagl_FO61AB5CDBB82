@@ -12,7 +12,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import useProvider from "../Context/use-provider";
+import useProvider from "../../Context/use-provider";
 import { deleteAllHistory } from "./action";
 
 export default function Action() {
