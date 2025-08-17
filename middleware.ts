@@ -21,14 +21,19 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(signInUrl);
   }
 
-  // If logged in, prevent access to home, sign-in, and sign-up pages
+  // If logged in and accessing auth pages, redirect to chat
   if (
     accessToken &&
-    (pathname === "/" ||
-      pathname.startsWith("/auth/sign-in") ||
+    (pathname.startsWith("/auth/sign-in") ||
       pathname.startsWith("/auth/sign-up"))
   ) {
     return NextResponse.redirect(new URL("/chat", request.url));
+  }
+
+  // Allow access to home page regardless of authentication status
+  // This handles the case when users are redirected after logout/delete profile
+  if (pathname === "/") {
+    return NextResponse.next();
   }
 
   return NextResponse.next();

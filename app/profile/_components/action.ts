@@ -109,19 +109,22 @@ export async function clearChatHistory() {
 export async function deleteProfile() {
   try {
     const cookieStore = await cookies();
-    console.log("🚀 ~ deleteProfile ~ cookieStore:", cookieStore);
-    const refreshToken = cookieStore.get("refresh_token")?.value;
-    console.log("🚀 ~ deleteProfile ~ refreshToken:", refreshToken);
 
-    const res = await fetcher<ApiResponse<void>>("delete-account/", {
+    // First delete the account via API
+    await fetcher<ApiResponse<void>>("delete-account/", {
       method: "DELETE",
     });
-    console.log("🚀 ~ deleteProfile ~ res:", res);
 
+    // Then clear the cookies
     cookieStore.delete("access_token");
     cookieStore.delete("refresh_token");
 
-    return redirect("/");
+    // Revalidate relevant paths to clear any cached data
+    revalidatePath("/profile");
+    revalidatePath("/chat");
+
+    // Redirect to home page
+    redirect("/");
   } catch (error) {
     console.error("Error deleting profile:", error);
     if (error && typeof error === "object" && "message" in error) {

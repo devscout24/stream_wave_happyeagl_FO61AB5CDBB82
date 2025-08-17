@@ -28,6 +28,7 @@ export default function DeleteProfile() {
       });
 
       router.replace("/");
+      router.refresh();
     } catch (error) {
       console.error("Error deleting profile:", error);
     }
