@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteAllHistory } from "./action";
+import Icon from "@/components/Icon";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,12 +12,27 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import Icon from "@/components/Icon";
+import useProvider from "../Context/use-provider";
+import { deleteAllHistory } from "./action";
 
 export default function Action() {
+  const { selectedChat } = useProvider();
+
+  const handleArchiveToggle = async (condition: boolean) => {
+    try {
+      if (selectedChat.length > 0) {
+        console.log("Do selected archived", selectedChat);
+      } else {
+        console.log("Do all archived");
+      }
+    } catch (error) {
+      console.error("Failed to update archive state:", error);
+    }
+  };
+
   return (
     <div className="flex gap-6">
-      <button title="All Archive">
+      <button title="All Archive" onClick={() => handleArchiveToggle(true)}>
         <Icon src="/archive2.svg" />
       </button>
 

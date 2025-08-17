@@ -18,13 +18,14 @@ export interface Testimonial {
 }
 
 export interface Chat {
-  id: string;
+  id: number;
   body: string;
   sender: "user" | "bot";
   avatar: string;
   createdAt: string;
   name: string;
 }
+w;
 
 export interface ChatHistory {
   id: number;
@@ -35,10 +36,11 @@ export interface ChatHistory {
 export interface ChatTitle {
   id: number;
   title: string;
+  content?: string;
   created_at: date;
   body: string;
   is_archived: boolean;
-  
+  chat?: Chat;
 }
 
 // Response from the API
@@ -153,24 +155,20 @@ export interface ArchivedResponse {
   total_archived: number;
 }
 
-
 export interface UpdateProfileResponse {
   message: string;
 }
-
 
 export interface FormValues {
   first_name: string;
   last_name: string;
 }
 
-
 export interface UpdatePass {
   old_password: string;
   new_password: string;
   confirm_password: string;
 }
-
 
 export interface ChatMeta {
   id: number;
@@ -184,7 +182,7 @@ export interface ChatMeta {
   created_at: string;
 }
 
-export interface ChatMessage {
+export interface Chat {
   id: number;
   chat: ChatMeta;
   sender_type: string;
