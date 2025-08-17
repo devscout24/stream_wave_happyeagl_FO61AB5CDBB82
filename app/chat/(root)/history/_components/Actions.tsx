@@ -12,33 +12,53 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import useProvider from "../Context/use-provider";
+import { bulkArchive, deleteHistory } from "./action";
+import { Button } from "@/components/ui/btn";
 import useProvider from "../../Context/use-provider";
 import { deleteAllHistory } from "./action";
 
 export default function Action() {
-  const { selectedChat } = useProvider();
+  const { selectedChat: chat_ids } = useProvider();
 
   const handleArchiveToggle = async (condition: boolean) => {
+    
+  try {
+    const res = await bulkArchive({
+      chat_ids,     
+      archive: condition, 
+    });
+    console.log("the response",res);
+  } catch (error) {
+    console.error("Failed to update archive state:", error);
+  }
+};
+
+
+  const handleDelete = async () => {
     try {
-      if (selectedChat.length > 0) {
-        console.log("Do selected archived", selectedChat);
-      } else {
-        console.log("Do all archived");
-      }
-    } catch (error) {
-      console.error("Failed to update archive state:", error);
-    }
+    await deleteHistory(chat_ids);
+    console.log("Chats deleted successfully");
+  } catch (error) {
+    console.error("Failed to delete chats:", error);
+  }
   };
 
   return (
     <div className="flex gap-6">
-      <button title="All Archive" onClick={() => handleArchiveToggle(true)}>
+      <Button
+        disabled={chat_ids.length === 0}
+        title="All Archive"
+        onClick={() => handleArchiveToggle(true)}
+      >
         <Icon src="/archive2.svg" />
-      </button>
+      </Button>
 
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Icon src="/delete.svg" />
+          <Button disabled={chat_ids.length === 0}>
+            <Icon src="/delete.svg" />
+          </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -50,7 +70,7 @@ export default function Action() {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => deleteAllHistory()}
+              onClick={handleDelete}
               className="bg-red-500 text-white hover:bg-red-600"
             >
               Delete

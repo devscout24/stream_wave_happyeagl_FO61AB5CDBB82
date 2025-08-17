@@ -33,33 +33,45 @@ export async function getChatHistory(chq?: string) {
   }
 }
 
-export const deleteAllHistory = async () => {
+export const deleteHistory = async (chat_ids: number[]) => {
   try {
     await fetcher<ApiResponse<ChatHistoryResponse>>(
-      "chats/archived/delete-all/",
+      "chats/bulk-delete/",
       {
-        method: "DELETE",
+        method: "POST",
+        body: JSON.stringify({ chat_ids }), 
       },
     );
     revalidatePath("/chat/history");
   } catch (error) {
+    console.error("Failed to delete chat history:", error);
     throw error;
   }
 };
 
-export const bulkArchive = async (chatIds: number[], archive = true) => {
+export const bulkArchive = async ({
+  chat_ids,
+  archive,
+}: {
+  chat_ids: number[];
+  archive: boolean;
+}) => {
+  
   try {
     const response = await fetcher<ApiResponse<ChatHistoryResponse>>(
-      "chats/archive-bulk/",
+      "chats/bulk-archived/",
       {
         method: "POST",
         body: JSON.stringify({
-          chat_ids: chatIds,
-          archive: true,
+          chat_ids,
+          archive,
         }),
       },
     );
 
+    revalidatePath("/chat/history");
+
+    console.log("Bulk archive response:", response);
     return response;
   } catch (error) {
     console.error("Failed to bulk archive chats:", error);
