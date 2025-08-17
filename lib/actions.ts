@@ -114,6 +114,12 @@ export async function getUserSession() {
 
 export async function getUserProfile(): Promise<UserProfile | null> {
   try {
+    const session = await getUserSession();
+
+    if (!session) {
+      return null;
+    }
+
     const response = await fetcher<ApiResponse<UserProfile>>("profile/");
     if (!response?.data) {
       return null;
