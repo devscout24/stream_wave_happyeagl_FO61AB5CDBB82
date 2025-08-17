@@ -8,6 +8,8 @@ import {
   UpdateProfileResponse,
 } from "@/types";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 // import { revalidatePath } from "next/cache";
 
 export const updateProfile = async (values: {
@@ -30,22 +32,6 @@ export const updateProfile = async (values: {
     return { error: "Registration failed. Please try again." };
   }
 };
-
-// export const updatePass = async (values: {
-//   old_password: string;
-//   new_password: string;
-//   confirm_password: string;
-// }) => {
-//   try {
-//     const response = await fetcher<ApiResponse<UpdatePass>>("change-password/", {
-//       method: "PUT",
-//       body: JSON.stringify(values),
-//     });
-//     console.log("res from updata pass" ,response);
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 
 export async function updatePassword(values: {
   old_password: string;
@@ -101,5 +87,46 @@ export async function saveChatHistory(data: { save_chat_history: boolean }) {
       return { error: (error as { message: string }).message };
     }
     return { error: "Failed to save chat history. Please try again." };
+  }
+}
+
+export async function clearChatHistory() {
+  try {
+    await fetcher<ApiResponse<void>>("history/delete-all/", {
+      method: "DELETE",
+    });
+
+    revalidatePath("/chat/history");
+  } catch (error) {
+    console.error("Error clearing chat history:", error);
+    if (error && typeof error === "object" && "message" in error) {
+      return { error: (error as { message: string }).message };
+    }
+    return { error: "Failed to clear chat history. Please try again." };
+  }
+}
+
+export async function deleteProfile() {
+  try {
+    const cookieStore = await cookies();
+    console.log("🚀 ~ deleteProfile ~ cookieStore:", cookieStore);
+    const refreshToken = cookieStore.get("refresh_token")?.value;
+    console.log("🚀 ~ deleteProfile ~ refreshToken:", refreshToken);
+
+    const res = await fetcher<ApiResponse<void>>("delete-account/", {
+      method: "DELETE",
+    });
+    console.log("🚀 ~ deleteProfile ~ res:", res);
+
+    cookieStore.delete("access_token");
+    cookieStore.delete("refresh_token");
+
+    return redirect("/");
+  } catch (error) {
+    console.error("Error deleting profile:", error);
+    if (error && typeof error === "object" && "message" in error) {
+      return { error: (error as { message: string }).message };
+    }
+    return { error: "Failed to delete profile. Please try again." };
   }
 }

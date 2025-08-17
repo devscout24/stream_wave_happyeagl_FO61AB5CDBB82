@@ -101,21 +101,26 @@ export async function logoutUser() {
 }
 
 export async function getUserSession() {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("access_token")?.value;
-  // Optionally decode/verify the JWT here
-  return accessToken;
+  try {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get("access_token")?.value;
+    // Optionally decode/verify the JWT here
+    return accessToken;
+  } catch (error) {
+    console.error("Error fetching user session:", error);
+    return null;
+  }
 }
 
 export async function getUserProfile(): Promise<UserProfile | null> {
-  const response = await fetcher<ApiResponse<UserProfile>>("profile/");
-
-  if (!response?.data) {
+  try {
+    const response = await fetcher<ApiResponse<UserProfile>>("profile/");
+    if (!response?.data) {
+      return null;
+    }
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
     return null;
   }
-  return response.data;
 }
-
-
-
-
