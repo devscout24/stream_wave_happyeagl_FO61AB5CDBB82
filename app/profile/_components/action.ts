@@ -11,17 +11,12 @@ export const updateProfile = async (values: {
   //   profile_pic?: File;
 }) => {
   try {
-    const response = await fetcher<ApiResponse<UpdateProfileResponse>>(
-      "profile/",
-      {
-        method: "PUT",
-        body: JSON.stringify(values),
-      },
-    );
+    await fetcher<ApiResponse<UpdateProfileResponse>>("profile/", {
+      method: "PUT",
+      body: JSON.stringify(values),
+    });
 
-    console.log(response);
-
-    revalidatePath("/profile")
+    revalidatePath("/profile");
   } catch (error) {
     // Handle actual errors
     if (error && typeof error === "object" && "message" in error) {
@@ -30,11 +25,6 @@ export const updateProfile = async (values: {
     return { error: "Registration failed. Please try again." };
   }
 };
-
-
-
-
-
 
 // export const updatePass = async (values: {
 //   old_password: string;
@@ -52,22 +42,25 @@ export const updateProfile = async (values: {
 //   }
 // };
 
-
-export async function updatePassword (values: {
+export async function updatePassword(values: {
   old_password: string;
   new_password: string;
   confirm_new_password: string;
-}){
-console.log(values)
+}) {
+  console.log(values);
 
-    try {
-    const response = await fetcher<ApiResponse<UpdatePass>>("change-password/", {
+  try {
+    await fetcher<ApiResponse<UpdatePass>>("change-password/", {
       method: "PUT",
       body: JSON.stringify(values),
     });
-    console.log("res from updata pass" ,response);
-    revalidatePath("/profile")
+
+    revalidatePath("/profile");
   } catch (error) {
-    return {error}
+    console.error("Error updating password:", error);
+    if (error && typeof error === "object" && "message" in error) {
+      return { error: (error as { message: string }).message };
+    }
+    return { error: "Failed to update password. Please try again." };
   }
 }
