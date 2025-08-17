@@ -7,6 +7,10 @@ interface ChatListProps {
 }
 
 export default function ChatList({ history }: ChatListProps) {
+ 
+
+  
+
   return (
     <ul className="space-y-1">
       {history?.length > 0 &&
