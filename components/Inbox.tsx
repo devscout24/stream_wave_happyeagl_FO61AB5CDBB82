@@ -6,9 +6,10 @@ import Message from "./Message";
 
 interface InboxProps {
   inboxes: IMessage[];
+  profilePic?: string;
 }
 
-export default function Inbox({ inboxes }: InboxProps) {
+export default function Inbox({ inboxes, profilePic }: InboxProps) {
   const contextValue = useCustomContext(); // May be null if not in Provider
 
   // If context is available, use it; otherwise fall back to just showing inboxes
@@ -131,6 +132,7 @@ export default function Inbox({ inboxes }: InboxProps) {
                   key={message.id}
                   message={message}
                   onTextUpdate={scrollToBottom}
+                  profile_pic={profilePic}
                 />
               );
             } else {

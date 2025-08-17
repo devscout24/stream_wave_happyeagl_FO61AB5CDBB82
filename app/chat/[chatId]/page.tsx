@@ -1,4 +1,5 @@
 import Inbox from "@/components/Inbox";
+import { getUserProfile } from "@/lib/actions";
 import { getChatMessages } from "./_components/action";
 
 export default async function ChatPage({
@@ -7,6 +8,7 @@ export default async function ChatPage({
   params: Promise<{ chatId: string }>;
 }) {
   const { chatId } = await params;
+  const user = await getUserProfile();
 
   const chats = await getChatMessages(chatId);
 
@@ -14,5 +16,5 @@ export default async function ChatPage({
 
   console.log("Fetched chats:", chats);
 
-  return <Inbox inboxes={messages} />;
+  return <Inbox inboxes={messages} profilePic={user?.profile_pic} />;
 }

@@ -7,13 +7,16 @@ import StreamText from "./StreamText";
 export default function Message({
   message,
   onTextUpdate,
+  profile_pic,
 }: {
   message: IMessage;
   onTextUpdate?: () => void;
+  profile_pic?: string;
 }) {
   const isBot = message.sender_type === "assistant";
 
   const avatarSrc =
+    profile_pic ||
     "https://sm.ign.com/ign_pk/cover/a/avatar-gen/avatar-generations_rpge.jpg";
 
   return (
@@ -48,9 +51,17 @@ export default function Message({
       >
         <div className="text-muted-foreground px-4 py-2 text-sm">
           {isBot ? (
-            <StreamText text={message.content} onTextUpdate={onTextUpdate} />
+            <StreamText
+              isNow={
+                message?.created_at
+                  ? new Date(message.created_at).getTime() > Date.now() - 5000
+                  : false
+              }
+              text={message.content}
+              onTextUpdate={onTextUpdate}
+            />
           ) : (
-            message.content
+            <div className="whitespace-pre-wrap">{message.content}</div>
           )}
         </div>
       </div>

@@ -5,9 +5,11 @@ import { useEffect } from "react";
 export default function StreamText({
   text,
   onTextUpdate,
+  isNow,
 }: {
   text: string;
   onTextUpdate?: () => void;
+  isNow: boolean;
 }) {
   const animatedText = useAnimate(text);
 
@@ -18,5 +20,5 @@ export default function StreamText({
     }
   }, [animatedText, onTextUpdate]);
 
-  return <span>{animatedText}</span>;
+  return <span>{isNow ? animatedText : text}</span>;
 }
