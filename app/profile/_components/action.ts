@@ -89,18 +89,17 @@ export async function getSaveChatHistory() {
 
 export async function saveChatHistory(data: { save_chat_history: boolean }) {
   try {
-    const response = await fetcher<ApiResponse<SaveChatHistoryResponse>>(
-      "save_chat_history/",
-      {
-        method: "PUT",
-        body: JSON.stringify(data),
-      },
-    );
+    await fetcher<ApiResponse<SaveChatHistoryResponse>>("save_chat_history/", {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
 
-    if (response && typeof response === "object") {
-      return response;
-    }
+    revalidatePath("/profile");
   } catch (error) {
-    console.error("Error saving chat history:", error);
+    console.error("Error updating password:", error);
+    if (error && typeof error === "object" && "message" in error) {
+      return { error: (error as { message: string }).message };
+    }
+    return { error: "Failed to save chat history. Please try again." };
   }
 }
