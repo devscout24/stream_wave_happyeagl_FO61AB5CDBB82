@@ -48,7 +48,7 @@ export const deleteAllHistory = async () => {
 };
 
 
-export const bulkArchive = async (chatIds: number[], archive = true) => {
+export const bulkArchive = async (chatIds: number[]) => {
   try {
     const response = await fetcher<ApiResponse<ChatHistoryResponse>>("chats/archive-bulk/", {
       method: "POST",

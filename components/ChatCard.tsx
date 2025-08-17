@@ -1,6 +1,5 @@
 "use client";
 
-import { ChatTitle } from "@/types";
 import Link from "next/link";
 import Icon from "./Icon";
 import LastSeen from "./LastSeen";
@@ -8,29 +7,11 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import React from "react";
 import { setArchive } from "@/app/chat/(root)/archive/_components/action";
-import useAllArchive from "@/hooks/use-allArchive";
-import { bulkArchive } from "@/app/chat/(root)/history/_components/action";
 
-interface ChatCardProps {
-  chat: ChatTitle;
-  allChatIds: number[]; // pass all chat IDs from parent
-}
 
-export default function ChatCard({ chat, allChatIds }: ChatCardProps) {
-const { selectedIds, toggleId, deselectAll } = useAllArchive(allChatIds);
+export default function ChatCard({ chat, selectedIds }: ChatCardProps) {
 
-const handleBulkArchive = async () => {
-  if (selectedIds.length === 0) return; // nothing selected
 
-  try {
-    await bulkArchive(selectedIds, true); // true = archive
-    console.log("Chats archived:", selectedIds);
-    // optionally clear selection after archiving
-    deselectAll();
-  } catch (error) {
-    console.error("Failed to archive selected chats:", error);
-  }
-};
 
   const handleArchiveToggle = async (condition: boolean) => {
     try {
@@ -42,9 +23,9 @@ const handleBulkArchive = async () => {
 
   const isSelected = selectedIds.includes(chat.id);
 
+
   return (
     <div
-      onClick={() => toggleId(chat.id)}
       className={`bg-card flex gap-y-3 p-4 max-sm:flex-col sm:items-center sm:justify-between rounded-lg cursor-pointer transition
         ${isSelected ? "border-2 border-primary" : "border border-transparent"}`}
     >
@@ -94,12 +75,7 @@ const handleBulkArchive = async () => {
           </Badge>
         </span>
         <Link href={`/chat/${chat.id}`} onClick={(e) => e.stopPropagation()}>
-          <Button
-            className="bg-accent h-8 w-full rounded-lg text-xs font-normal"
-            variant="ghost"
-          >
-            View
-          </Button>
+          <Button className="bg-accent h-8 w-full rounded-lg text-xs font-medium" variant="ghost"> View </Button>
         </Link>
       </div>
     </div>

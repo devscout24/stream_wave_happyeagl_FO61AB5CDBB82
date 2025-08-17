@@ -1,29 +1,11 @@
-import { useState } from "react";
+ const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
-const useAllArchive = (allIds: number[]) => {
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  
+  console.log(selectedIds);
 
-  // Toggle single ID
   const toggleId = (chatId: number) => {
     setSelectedIds((prev) =>
       prev.includes(chatId)
-        ? prev.filter((id) => id !== chatId) // remove if exists
-        : [...prev, chatId]                  // add if not exists
+        ? prev.filter((id) => id !== chatId)
+        : [...prev, chatId],
     );
   };
-
-  // Select all IDs
-  const selectAll = () => {
-    setSelectedIds(allIds);
-  };
-
-  // Deselect all IDs
-  const deselectAll = () => {
-    setSelectedIds([]);
-  };
-
-  return { selectedIds, toggleId, selectAll, deselectAll };
-};
-
-export default useAllArchive;
