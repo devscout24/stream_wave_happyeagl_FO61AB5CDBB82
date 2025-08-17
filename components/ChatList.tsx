@@ -1,10 +1,9 @@
-"use client";
-
-import { ChatTitle, ChatMessage } from "@/types";
+import { ChatTitle } from "@/types";
 import ChatCard from "./ChatCard";
+import OnClickBtn from "./ui/OnClickBtn";
 
 interface ChatListProps {
-  history: (ChatTitle | ChatMessage)[];
+  history: ChatTitle[];
 }
 
 export default function ChatList({ history }: ChatListProps) {
@@ -16,16 +15,12 @@ export default function ChatList({ history }: ChatListProps) {
     <ul className="space-y-1">
       {history?.length > 0 &&
         history.map((chat) => (
-          <li
-            onClick={() => toggleId(chat?.id)}
+          <OnClickBtn
             key={chat?.id || chat?.chat?.id}
+            chatId={chat?.id || chat?.chat?.id}
           >
-            <ChatCard
-            selectedIds={selectedIds}
-            setSelectedIds={setSelectedIds}
-              chat={"messages" in chat ? chat : chat?.chat?.messages || chat}
-            />
-          </li>
+            <ChatCard chat={chat} />
+          </OnClickBtn>
         ))}
     </ul>
   );

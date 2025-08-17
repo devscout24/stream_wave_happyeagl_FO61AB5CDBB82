@@ -23,8 +23,8 @@ export async function getChatHistory(chq?: string) {
       console.log("Search HIstory:", result);
 
       return {
-        total_count: result.data.total_messages,
-        chats: result.data.chat_groups,
+        total_count: result?.data?.total_messages || 0,
+        chats: result?.data?.chat_groups || [],
       };
     }
   } catch (error) {
@@ -47,16 +47,18 @@ export const deleteAllHistory = async () => {
   }
 };
 
-
-export const bulkArchive = async (chatIds: number[]) => {
+export const bulkArchive = async (chatIds: number[], archive = true) => {
   try {
-    const response = await fetcher<ApiResponse<ChatHistoryResponse>>("chats/archive-bulk/", {
-      method: "POST",
-      body: JSON.stringify({
-        chat_ids: chatIds,
-        archive : true,
-      }),
-    });
+    const response = await fetcher<ApiResponse<ChatHistoryResponse>>(
+      "chats/archive-bulk/",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          chat_ids: chatIds,
+          archive: true,
+        }),
+      },
+    );
 
     return response;
   } catch (error) {
