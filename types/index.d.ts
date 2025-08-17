@@ -25,7 +25,6 @@ export interface Chat {
   createdAt: string;
   name: string;
 }
-w;
 
 export interface ChatHistory {
   id: number;
@@ -197,4 +196,8 @@ export interface Chat {
 export interface ChatHistorySearch {
   total_messages: number;
   chat_groups: ChatMessage[];
+}
+
+export interface SaveChatHistoryResponse {
+  save_chat_history: boolean;
 }

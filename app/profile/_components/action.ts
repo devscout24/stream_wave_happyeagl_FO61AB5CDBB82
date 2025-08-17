@@ -1,7 +1,12 @@
 "use server";
 
 import fetcher from "@/lib/fetcher";
-import { ApiResponse, UpdatePass, UpdateProfileResponse } from "@/types";
+import {
+  ApiResponse,
+  SaveChatHistoryResponse,
+  UpdatePass,
+  UpdateProfileResponse,
+} from "@/types";
 import { revalidatePath } from "next/cache";
 // import { revalidatePath } from "next/cache";
 
@@ -62,5 +67,40 @@ export async function updatePassword(values: {
       return { error: (error as { message: string }).message };
     }
     return { error: "Failed to update password. Please try again." };
+  }
+}
+
+export async function getSaveChatHistory() {
+  try {
+    const response = await fetcher<Promise<SaveChatHistoryResponse>>(
+      "save_chat_history/",
+      {
+        method: "GET",
+      },
+    );
+
+    if (response && typeof response === "object") {
+      return response;
+    }
+  } catch (error) {
+    console.error("Error fetching saved chat history:", error);
+  }
+}
+
+export async function saveChatHistory(data: { save_chat_history: boolean }) {
+  try {
+    const response = await fetcher<ApiResponse<SaveChatHistoryResponse>>(
+      "save_chat_history/",
+      {
+        method: "PUT",
+        body: JSON.stringify(data),
+      },
+    );
+
+    if (response && typeof response === "object") {
+      return response;
+    }
+  } catch (error) {
+    console.error("Error saving chat history:", error);
   }
 }
