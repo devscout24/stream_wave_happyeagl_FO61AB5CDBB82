@@ -1,10 +1,7 @@
 import Logout from "@/app/chat/_components/Logout";
-import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
 import { getUserProfile } from "@/lib/actions";
-import Link from "next/link";
 
 export default async function Header() {
   const user = await getUserProfile(); // Assume this function fetches the user profile
@@ -25,9 +22,7 @@ export default async function Header() {
             <div className="flex items-center gap-4">
               <ThemeToggle />
 
-          
-                <Logout isProfile={true}/>
-         
+              <Logout isProfile={true} />
             </div>
           </div>
         </div>

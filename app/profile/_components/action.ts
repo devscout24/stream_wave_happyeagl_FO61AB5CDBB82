@@ -133,3 +133,24 @@ export async function deleteProfile() {
     return { error: "Failed to delete profile. Please try again." };
   }
 }
+
+export async function updateProfilePicture(file: File) {
+  try {
+    const formData = new FormData();
+    formData.append("profile_pic", file);
+
+    const res = await fetcher<ApiResponse<void>>("profile/", {
+      method: "PUT",
+      body: formData,
+    });
+    console.log("🚀 ~ updateProfilePicture ~ res:", res);
+
+    revalidatePath("/profile");
+  } catch (error) {
+    console.error("Error updating profile picture:", error);
+    if (error && typeof error === "object" && "message" in error) {
+      return { error: (error as { message: string }).message };
+    }
+    return { error: "Failed to update profile picture. Please try again." };
+  }
+}

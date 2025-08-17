@@ -31,7 +31,10 @@ export async function fetcher<T = unknown>(
 
   const defaultOptions: RequestInit = {
     headers: {
-      "Content-Type": "application/json",
+      // Only set Content-Type for non-FormData requests
+      ...(!(options?.body instanceof FormData) && {
+        "Content-Type": "application/json",
+      }),
       ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
     },
     next: {
@@ -50,11 +53,16 @@ export async function fetcher<T = unknown>(
 
   const response = await fetch(url, fetchOptions);
 
+  // Check if response has content
+  const contentType = response.headers.get("content-type");
+  const isJson = contentType && contentType.includes("application/json");
+
   const text = await response.text();
 
   if (!text) {
     return null as T;
   }
+
   // If not ok, throw a rich error so frontend can handle it
   if (!response.ok) {
     type ErrorResponse = {
@@ -66,9 +74,13 @@ export async function fetcher<T = unknown>(
     };
 
     let errorData: unknown;
-    try {
-      errorData = JSON.parse(text);
-    } catch {
+    if (isJson) {
+      try {
+        errorData = JSON.parse(text);
+      } catch {
+        errorData = text;
+      }
+    } else {
       errorData = text;
     }
 
@@ -96,7 +108,18 @@ export async function fetcher<T = unknown>(
     throw new FetcherError(errorMessage, response.status, errorData);
   }
 
-  return JSON.parse(text) as T;
+  // Only parse as JSON if content-type indicates JSON
+  if (isJson) {
+    try {
+      return JSON.parse(text) as T;
+    } catch {
+      // If JSON parsing fails, return text as fallback
+      return text as T;
+    }
+  }
+
+  // For non-JSON responses, return the text or null
+  return (text || null) as T;
 }
 
 export default fetcher;
