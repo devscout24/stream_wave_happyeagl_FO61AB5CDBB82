@@ -29,7 +29,7 @@ export default function GlobalError({
       </p>
 
       <Dialog defaultOpen={true} open={true}>
-        <DialogContent className="text-muted-foreground bg-muted/5 dark:bg-muted w-full !max-w-xl rounded-md border bg-clip-padding p-10 backdrop-blur-md backdrop-filter dark:border-none">
+        <DialogContent className="text-muted-foreground bg-background w-full !max-w-xl rounded-md border bg-clip-padding p-10 backdrop-blur-md backdrop-filter dark:border-none">
           <DialogHeader className="space-y-3">
             <DialogTitle className="text-muted text-center text-4xl font-semibold">
               Oops! Looks like this page went missing.
