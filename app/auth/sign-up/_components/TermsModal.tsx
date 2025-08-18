@@ -42,7 +42,7 @@ export default function TermsModal({
           {text}
         </Button>
       </DialogTrigger>
-      <DialogContent className="text-muted-foreground bg-muted/5 dark:bg-muted w-full !max-w-xl rounded-md border bg-clip-padding p-10 backdrop-blur-md backdrop-filter dark:border-none">
+      <DialogContent className="text-muted-foreground bg-background w-full !max-w-xl rounded-md border bg-clip-padding p-10 backdrop-blur-md backdrop-filter dark:border-none">
         <DialogHeader className="space-y-3">
           <DialogTitle className="text-muted-foreground text-center text-2xl font-semibold">
             Review Our Terms & Conditions

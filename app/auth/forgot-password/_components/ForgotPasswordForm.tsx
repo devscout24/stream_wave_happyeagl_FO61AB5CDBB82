@@ -12,8 +12,15 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import useForgotPassword from "./use-forgot-password";
+import { cn } from "@/lib/utils";
 
-export default function ForgotPasswordForm({ email }: { email?: string }) {
+export default function ForgotPasswordForm({
+  email,
+  isModal = false,
+}: {
+  email?: string;
+  isModal?: boolean;
+}) {
   const { form, onSubmit } = useForgotPassword(email);
 
   return (
@@ -27,14 +34,21 @@ export default function ForgotPasswordForm({ email }: { email?: string }) {
           name="email"
           render={({ field }) => (
             <FormItem className="space-y-1 md:space-y-3">
-              <FormLabel className="text-muted-foreground max-md:text-xs">
+              <FormLabel
+                className={cn("text-muted-foreground max-md:text-xs", {
+                  "text-white": isModal,
+                })}
+              >
                 Email
               </FormLabel>
               <FormControl>
                 <Input
                   placeholder="you@example.com"
                   {...field}
-                  className="outline-border border-border text-muted-foreground placeholder:text-muted-foreground/30 focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none"
+                  className={cn(
+                    "outline-border border-border text-muted-foreground placeholder:text-muted-foreground/30 focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none",
+                    { "text-white": isModal }
+                  )}
                 />
               </FormControl>
 
@@ -53,12 +67,20 @@ export default function ForgotPasswordForm({ email }: { email?: string }) {
         </Button>
 
         <div className="space-y-2">
-          <p className="text-muted-foreground text-center text-sm max-md:text-xs">
+          <p
+            className={cn(
+              "text-muted-foreground text-center text-sm max-md:text-xs",
+              { "text-white": isModal }
+            )}
+          >
             <span> Don’t have an account? </span>
             <Link
               href="/auth/sign-up"
               replace
-              className="text-muted-foreground text-sm underline"
+              className={cn(
+                "text-muted-foreground text-sm underline",
+                { "text-white": isModal }
+              )}
             >
               Sign up
             </Link>

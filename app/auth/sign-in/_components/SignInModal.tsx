@@ -8,22 +8,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
-
 import { useRouter } from "next/navigation";
-import { useMediaQuery } from "react-responsive";
 import SignInForm from "./SignInForm";
 
 export default function SignInModal() {
-  const isDesktopOrLaptop = useMediaQuery({
-    query: "(min-width: 768px)",
-  });
   const router = useRouter();
 
   const handleOpenChange = (open: boolean) => {
@@ -32,33 +20,19 @@ export default function SignInModal() {
     }
   };
 
-  return isDesktopOrLaptop ? (
+  return (
     <Dialog defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
-      <DialogContent className="text-muted-foreground bg-muted/5 dark:bg-muted w-full !max-w-xl rounded-md border bg-clip-padding p-10 backdrop-blur-md backdrop-filter dark:border-none">
+      <DialogContent className="dark:text-muted-foreground bg-muted/5 dark:bg-muted w-[95%] max-w-md rounded-md border border-white bg-clip-padding p-6 text-white backdrop-blur-md backdrop-filter sm:max-w-lg sm:p-8 md:max-w-xl md:p-10 dark:border-none">
         <DialogHeader className="space-y-3">
-          <DialogTitle className="text-muted-foreground text-center text-4xl font-semibold">
+          <DialogTitle className="dark:text-muted-foreground text-center text-2xl font-semibold text-white sm:text-3xl md:text-4xl">
             Hey there! Good to see you
           </DialogTitle>
-          <DialogDescription className="text-muted-foreground text-center text-sm font-normal">
+          <DialogDescription className="dark:text-muted-foreground text-center text-sm font-normal text-white sm:text-base">
             Log in to access your personalized dashboard.
           </DialogDescription>
         </DialogHeader>
-        <SignInForm />
+        <SignInForm isModal />
       </DialogContent>
     </Dialog>
-  ) : (
-    <Drawer defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
-      <DrawerContent className="bg-opacity-20 text-muted-foreground dark:bg-muted bg-muted/5 rounded-md border bg-clip-padding px-4 backdrop-blur-md backdrop-filter dark:border-none">
-        <DrawerHeader className="text-left">
-          <DrawerTitle className="text-muted-foreground text-center text-xl font-semibold">
-            Hey there! Good to see you
-          </DrawerTitle>
-          <DrawerDescription className="text-muted-foreground text-center text-xs font-normal">
-            Log in to access your personalized dashboard.
-          </DrawerDescription>
-        </DrawerHeader>
-        <SignInForm />
-      </DrawerContent>
-    </Drawer>
   );
 }

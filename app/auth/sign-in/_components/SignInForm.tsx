@@ -16,9 +16,13 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import useLogin from "./use-login";
+import { cn } from "@/lib/utils";
 
-export default function SignInForm() {
+export default function SignInForm({ isModal = false }: { isModal?: boolean }) {
   const { form, onSubmit } = useLogin();
+
+  // 🔹 Base text color depending on modal or not
+  const baseText = isModal ? "text-white" : "text-muted-foreground";
 
   return (
     <Form {...form}>
@@ -26,40 +30,47 @@ export default function SignInForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-6 md:space-y-8"
       >
+        {/* Email */}
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem className="space-y-1 md:space-y-3">
-              <FormLabel className="text-muted-foreground max-md:text-xs">
+              <FormLabel className={cn(baseText, "max-md:text-xs")}>
                 Email
               </FormLabel>
               <FormControl>
                 <Input
                   placeholder="you@example.com"
                   {...field}
-                  className="outline-border border-border text-muted-foreground placeholder:text-muted-foreground/30 focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none"
+                  className={cn(
+                    baseText,
+                    "outline-border border-border focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none"
+                  )}
                 />
               </FormControl>
-
               <FormMessage className="max-md:text-xs" />
             </FormItem>
           )}
         />
 
+        {/* Password */}
         <FormField
           control={form.control}
           name="password"
           render={({ field }) => (
             <FormItem className="space-y-1 md:space-y-3">
-              <FormLabel className="text-muted-foreground max-md:text-xs">
+              <FormLabel className={cn(baseText, "max-md:text-xs")}>
                 Password
               </FormLabel>
               <FormControl>
                 <PasswordInput
                   placeholder="Enter your password"
                   {...field}
-                  className="outline-border border-border text-muted-foreground placeholder:text-muted-foreground/30 focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none"
+                  className={cn(
+                    baseText,
+                    "outline-border border-border focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none"
+                  )}
                 />
               </FormControl>
               <FormMessage className="max-md:text-xs" />
@@ -67,6 +78,7 @@ export default function SignInForm() {
           )}
         />
 
+        {/* Remember me + Forgot password */}
         <div className="flex items-center">
           <FormField
             control={form.control}
@@ -78,38 +90,43 @@ export default function SignInForm() {
                     {field.value ? (
                       <Icon
                         src="/check-box.svg"
-                        className="text-muted-foreground mr-1 size-4 cursor-pointer md:size-5"
+                        className={cn(
+                          baseText,
+                          "mr-1 size-4 cursor-pointer md:size-5"
+                        )}
                         onClick={() => field.onChange(false)}
                       />
                     ) : (
                       <Icon
                         src="/unchecked.svg"
-                        className="text-muted-foreground mr-1 size-4 cursor-pointer md:size-5"
+                        className={cn(
+                          baseText,
+                          "mr-1 size-4 cursor-pointer md:size-5"
+                        )}
                         onClick={() => field.onChange(true)}
                       />
                     )}
                   </FormControl>
                   <FormDescription
-                    className="text-muted-foreground cursor-pointer max-md:text-xs"
+                    className={cn(baseText, "cursor-pointer max-md:text-xs")}
                     onClick={() => field.onChange(!field.value)}
                   >
                     Remember me
                   </FormDescription>
                 </div>
-
                 <FormMessage />
               </FormItem>
             )}
           />
-
           <Link
             href="/auth/forgot-password"
-            className="text-muted-foreground ml-auto text-sm underline max-md:text-xs"
+            className={cn(baseText, "ml-auto text-sm underline max-md:text-xs")}
           >
             Forgot password?
           </Link>
         </div>
 
+        {/* Error Message */}
         {form.formState.errors?.root?.message && (
           <ErrorMessage
             variant="destructive"
@@ -117,6 +134,7 @@ export default function SignInForm() {
           />
         )}
 
+        {/* Submit Button */}
         <Button
           type="submit"
           className="bg-secondary hover:bg-secondary/80 focus-visible:ring-ring dark:bg-primary dark:text-muted-foreground dark:hover:bg-primary/80 w-full cursor-pointer text-sm font-semibold !text-black transition-colors hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
@@ -126,21 +144,18 @@ export default function SignInForm() {
           Log In
         </Button>
 
+        {/* Links */}
         <div className="space-y-2">
-          <p className="text-muted-foreground text-center text-sm max-md:text-xs">
-            <span> Don&apos;t have an account? </span>
-            <Link
-              href="/auth/sign-up"
-              replace
-              className="text-muted-foreground text-sm underline"
-            >
+          <p className={cn(baseText, "text-center text-sm max-md:text-xs")}>
+            <span>Don&apos;t have an account? </span>
+            <Link href="/auth/sign-up" replace className={cn(baseText, "underline")}>
               Sign up
             </Link>
           </p>
 
           <Link
             href="/"
-            className="text-muted-foreground block text-center text-sm underline max-md:text-xs"
+            className={cn(baseText, "block text-center text-sm underline max-md:text-xs")}
           >
             Stay Logged Out?
           </Link>

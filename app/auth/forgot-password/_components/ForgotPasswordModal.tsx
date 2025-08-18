@@ -8,22 +8,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
-
 import { useRouter } from "next/navigation";
-import { useMediaQuery } from "react-responsive";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 
 export default function ForgotPasswordModal({ email }: { email?: string }) {
-  const isDesktopOrLaptop = useMediaQuery({
-    query: "(min-width: 768px)",
-  });
   const router = useRouter();
 
   const handleOpenChange = (open: boolean) => {
@@ -32,35 +20,20 @@ export default function ForgotPasswordModal({ email }: { email?: string }) {
     }
   };
 
-  return isDesktopOrLaptop ? (
+  return (
     <Dialog defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
-      <DialogContent className="text-muted-foreground bg-muted/5 dark:bg-muted w-full !max-w-xl rounded-md border bg-clip-padding p-10 backdrop-blur-md backdrop-filter dark:border-none">
+      <DialogContent className="bg-muted/5 dark:bg-muted dark:text-muted-foreground w-[95%] max-w-sm rounded-xl border border-white bg-clip-padding p-4 text-white backdrop-blur-md backdrop-filter sm:max-w-md sm:p-6 md:max-w-lg md:p-8 lg:max-w-xl lg:p-10 dark:border-none">
         <DialogHeader className="space-y-3">
-          <DialogTitle className="text-muted-foreground text-center text-4xl font-semibold">
+          <DialogTitle className="dark:text-muted-foreground text-center text-xl font-semibold text-white sm:text-2xl md:text-3xl lg:text-4xl">
             Forgot Your Password?
           </DialogTitle>
-          <DialogDescription className="text-muted-foreground text-center text-sm font-normal">
+          <DialogDescription className="dark:text-muted-foreground text-center text-xs font-normal text-white sm:text-sm md:text-base">
             Don’t worry! Enter your email, and we’ll send you instructions to
             reset your password.
           </DialogDescription>
         </DialogHeader>
-        <ForgotPasswordForm email={email} />
+        <ForgotPasswordForm isModal email={email} />
       </DialogContent>
     </Dialog>
-  ) : (
-    <Drawer defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
-      <DrawerContent className="bg-opacity-20 text-muted-foreground dark:bg-muted bg-muted/5 rounded-md border bg-clip-padding px-4 backdrop-blur-md backdrop-filter dark:border-none">
-        <DrawerHeader className="text-left">
-          <DrawerTitle className="text-muted-foreground text-center text-xl font-semibold">
-            Forgot Your Password?
-          </DrawerTitle>
-          <DrawerDescription className="text-muted-foreground text-center text-xs font-normal">
-            Don’t worry! Enter your email, and we’ll send you instructions to
-            reset your password.
-          </DrawerDescription>
-        </DrawerHeader>
-        <ForgotPasswordForm email={email} />
-      </DrawerContent>
-    </Drawer>
-  );
+  )
 }
