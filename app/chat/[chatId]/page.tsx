@@ -14,7 +14,5 @@ export default async function ChatPage({
 
   const messages = chats.messages;
 
-  console.log("Fetched chats:", chats);
-
   return <Inbox inboxes={messages} profilePic={user?.profile_pic} />;
 }

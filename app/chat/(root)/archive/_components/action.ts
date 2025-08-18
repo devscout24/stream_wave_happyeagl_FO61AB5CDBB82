@@ -17,7 +17,6 @@ export async function getArchived() {
 
 export async function setArchive(chatId: number, is_archived: boolean) {
   try {
-    console.log("now on", { is_archived });
     const res = await fetcher(`chats/${chatId}/archive/`, {
       method: "PUT",
       body: JSON.stringify({ is_archived }),
@@ -27,7 +26,6 @@ export async function setArchive(chatId: number, is_archived: boolean) {
     } else {
       revalidatePath("/chat/archive");
     }
-    console.log(res);
     return res;
   } catch (error) {
     console.error("Error archiving chat:", error);
@@ -35,15 +33,13 @@ export async function setArchive(chatId: number, is_archived: boolean) {
   }
 }
 
-
-
 export const deleteArchive = async (chat_ids: number[]) => {
   try {
     await fetcher<ApiResponse<ChatHistoryResponse>>(
       "chats/archived/bulk-delete/",
       {
         method: "POST",
-        body: JSON.stringify({ chat_ids }), 
+        body: JSON.stringify({ chat_ids }),
       },
     );
     revalidatePath("/chat/archive");
@@ -53,7 +49,6 @@ export const deleteArchive = async (chat_ids: number[]) => {
   }
 };
 
-
 export const bulkUnarchive = async ({
   chat_ids,
   archive,
@@ -61,7 +56,6 @@ export const bulkUnarchive = async ({
   chat_ids: number[];
   archive: boolean;
 }) => {
-  
   try {
     const response = await fetcher<ApiResponse<ChatHistoryResponse>>(
       "chats/bulk-archived/",
@@ -76,7 +70,6 @@ export const bulkUnarchive = async ({
 
     revalidatePath("/chat/archive");
 
-    console.log("Bulk archive response:", response);
     return response;
   } catch (error) {
     console.error("Failed to bulk archive chats:", error);

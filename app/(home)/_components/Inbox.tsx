@@ -11,31 +11,22 @@ export default function Inbox({ chats }: { chats: ChatResponse[] }) {
   const scrollToBottom = () => {
     if (scrollRef.current) {
       const element = scrollRef.current;
-      console.log("Scroll values:", {
-        scrollTop: element.scrollTop,
-        scrollHeight: element.scrollHeight,
-        clientHeight: element.clientHeight,
-        shouldScroll: element.scrollHeight > element.clientHeight,
-      });
 
       if (element.scrollHeight > element.clientHeight) {
         element.scrollTop = element.scrollHeight;
-        console.log("Scrolled to bottom, new scrollTop:", element.scrollTop);
       } else {
-        console.log("No need to scroll, content fits in view");
+        console.error("No need to scroll, content fits in view");
       }
     }
   };
 
   // Callback for when streaming text updates
   const handleTextUpdate = () => {
-    console.log("Text streaming update detected, scrolling");
     scrollToBottom();
   };
 
   // Auto-scroll when new messages are added
   useEffect(() => {
-    console.log("Chats changed, scrolling to bottom");
     scrollToBottom();
   }, [chats]);
 
@@ -61,7 +52,6 @@ export default function Inbox({ chats }: { chats: ChatResponse[] }) {
       });
 
       if (hasTextChanges) {
-        console.log("Text content changed during streaming, scrolling");
         // Use immediate scroll during streaming
         requestAnimationFrame(() => {
           if (scrollRef.current) {
@@ -90,7 +80,6 @@ export default function Inbox({ chats }: { chats: ChatResponse[] }) {
           scrollHeight > clientHeight &&
           scrollHeight - scrollTop - clientHeight > 5
         ) {
-          console.log("Interval scroll during streaming");
           scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
       }
@@ -101,8 +90,6 @@ export default function Inbox({ chats }: { chats: ChatResponse[] }) {
       clearInterval(interval);
     };
   }, []);
-
-  console.log("Inbox chats:", chats);
 
   if (!chats || chats.length === 0) {
     return (

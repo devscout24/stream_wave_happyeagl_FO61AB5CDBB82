@@ -38,8 +38,6 @@ export async function updatePassword(values: {
   new_password: string;
   confirm_new_password: string;
 }) {
-  console.log(values);
-
   try {
     await fetcher<ApiResponse<UpdatePass>>("change-password/", {
       method: "PUT",
@@ -92,11 +90,14 @@ export async function saveChatHistory(data: { save_chat_history: boolean }) {
 
 export async function clearChatHistory() {
   try {
-    await fetcher<ApiResponse<void>>("history/delete-all/", {
+    await fetcher<ApiResponse<void>>("chats/history/delete-all/", {
       method: "DELETE",
     });
 
+    revalidatePath("/chat");
+    revalidatePath("/profile");
     revalidatePath("/chat/history");
+    revalidatePath("/chat/archive");
   } catch (error) {
     console.error("Error clearing chat history:", error);
     if (error && typeof error === "object" && "message" in error) {
@@ -139,12 +140,12 @@ export async function updateProfilePicture(file: File) {
     const formData = new FormData();
     formData.append("profile_pic", file);
 
-    const res = await fetcher<ApiResponse<void>>("profile/", {
+    await fetcher<ApiResponse<void>>("profile/", {
       method: "PUT",
       body: formData,
     });
-    console.log("🚀 ~ updateProfilePicture ~ res:", res);
 
+    revalidatePath("/chat");
     revalidatePath("/profile");
   } catch (error) {
     console.error("Error updating profile picture:", error);

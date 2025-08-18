@@ -12,34 +12,44 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { bulkArchive, deleteHistory } from "./action";
 import { Button } from "@/components/ui/btn";
+import { toast } from "sonner";
 import useProvider from "../../Context/use-provider";
+import { bulkArchive, deleteHistory } from "./action";
 
 export default function Action() {
-  const { selectedChat: chat_ids } = useProvider();
+  const { selectedHistoryChat: chat_ids } = useProvider();
 
   const handleArchiveToggle = async (condition: boolean) => {
-    
-  try {
-    const res = await bulkArchive({
-      chat_ids,     
-      archive: condition, 
-    });
-    console.log("the response",res);
-  } catch (error) {
-    console.error("Failed to update archive state:", error);
-  }
-};
-
+    try {
+      toast.promise(
+        bulkArchive({
+          chat_ids,
+          archive: condition,
+        }),
+        {
+          loading: "Updating...",
+          success: condition
+            ? "Chat archived successfully!"
+            : "Chat unarchive successfully!",
+          error: "Failed to update archive state.",
+        },
+      );
+    } catch (error) {
+      console.error("Failed to update archive state:", error);
+    }
+  };
 
   const handleDelete = async () => {
     try {
-    await deleteHistory(chat_ids);
-    console.log("Chats deleted successfully");
-  } catch (error) {
-    console.error("Failed to delete chats:", error);
-  }
+      toast.promise(deleteHistory(chat_ids), {
+        loading: "Deleting...",
+        success: "Chats deleted successfully",
+        error: "Failed to delete chats",
+      });
+    } catch (error) {
+      console.error("Failed to delete chats:", error);
+    }
   };
 
   return (
@@ -48,13 +58,17 @@ export default function Action() {
         disabled={chat_ids.length === 0}
         title="All Archive"
         onClick={() => handleArchiveToggle(true)}
+        className="cursor-pointer disabled:cursor-not-allowed"
       >
         <Icon src="/archive2.svg" />
       </Button>
 
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button disabled={chat_ids.length === 0}>
+          <Button
+            disabled={chat_ids.length === 0}
+            className="cursor-pointer disabled:cursor-not-allowed"
+          >
             <Icon src="/delete.svg" />
           </Button>
         </AlertDialogTrigger>

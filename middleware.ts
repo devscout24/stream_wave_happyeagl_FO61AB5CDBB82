@@ -30,8 +30,12 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/chat", request.url));
   }
 
-  // Allow access to home page regardless of authentication status
-  // This handles the case when users are redirected after logout/delete profile
+  // If logged in and accessing home page, redirect to /chat
+  if (accessToken && pathname === "/") {
+    return NextResponse.redirect(new URL("/chat", request.url));
+  }
+
+  // Allow access to home page if not logged in
   if (pathname === "/") {
     return NextResponse.next();
   }

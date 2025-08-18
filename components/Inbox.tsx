@@ -18,24 +18,12 @@ export default function Inbox({ inboxes, profilePic }: InboxProps) {
   const initializedRef = useRef(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  console.log("inboxes:", inboxes);
-  console.log("contextValue:", contextValue);
-  console.log("chats:", chats);
-  console.log("chats.length:", chats.length);
-
   // Auto-scroll to bottom when new messages are added
   const scrollToBottom = () => {
-    console.log("scrollToBottom called");
-
     // Method 1: Scroll the main container
     const scrollContainer = document.getElementById("scrollbar");
-    console.log("scrollContainer found:", !!scrollContainer);
 
     if (scrollContainer) {
-      console.log("Current scrollTop:", scrollContainer.scrollTop);
-      console.log("ScrollHeight:", scrollContainer.scrollHeight);
-      console.log("ClientHeight:", scrollContainer.clientHeight);
-
       // Try immediate scroll first
       scrollContainer.scrollTop = scrollContainer.scrollHeight;
 
@@ -47,12 +35,11 @@ export default function Inbox({ inboxes, profilePic }: InboxProps) {
         });
       }, 50);
     } else {
-      console.log("Scroll container #scrollbar not found");
+      console.error("Scroll container #scrollbar not found");
     }
 
     // Method 2: Use scrollIntoView on the end marker
     if (messagesEndRef.current) {
-      console.log("Scrolling into view using messagesEndRef");
       messagesEndRef.current.scrollIntoView({
         behavior: "smooth",
         block: "end",
@@ -63,33 +50,20 @@ export default function Inbox({ inboxes, profilePic }: InboxProps) {
   useEffect(() => {
     // Update state when server data changes, but be smart about it
     if (inboxes.length > 0 && setChats) {
-      console.log(
-        "Server data changed. Current chats length:",
-        chats.length,
-        "New inboxes length:",
-        inboxes.length,
-      );
-
       // If we have optimistic messages (chats longer than inboxes),
       // only update if the new server data actually has more messages
       if (chats.length > inboxes.length) {
-        console.log(
-          "We have optimistic messages. Checking if server has caught up...",
-        );
         // Don't overwrite optimistic state unless server has more messages
         if (inboxes.length > chats.length) {
-          console.log(
-            "Server has more messages than our optimistic state. Updating...",
-          );
           setChats(inboxes);
         } else {
-          console.log(
+          console.error(
             "Server hasn't caught up yet. Keeping optimistic messages.",
           );
         }
       } else {
         // No optimistic messages, safe to update
-        console.log("No optimistic messages. Updating with server data.");
+        console.error("No optimistic messages. Updating with server data.");
         setChats(inboxes);
       }
 
@@ -101,11 +75,8 @@ export default function Inbox({ inboxes, profilePic }: InboxProps) {
 
   // Scroll to bottom when chats change (new messages added)
   useEffect(() => {
-    console.log("useEffect triggered for scroll, chats.length:", chats.length);
-
     // Add a small delay to ensure DOM has updated
     const timeoutId = setTimeout(() => {
-      console.log("Executing scrollToBottom after timeout");
       scrollToBottom();
     }, 100);
 
@@ -114,7 +85,6 @@ export default function Inbox({ inboxes, profilePic }: InboxProps) {
 
   // Also try immediate scroll after DOM updates
   useLayoutEffect(() => {
-    console.log("useLayoutEffect triggered, scrolling immediately");
     scrollToBottom();
   }, [chats.length]);
 

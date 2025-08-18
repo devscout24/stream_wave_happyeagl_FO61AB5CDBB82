@@ -10,8 +10,6 @@ export default async function HistoryPage({
 }) {
   const { chq } = await searchParams;
 
-  console.log(chq);
-
   const chatHistory = await getChatHistory(!chq ? "" : chq);
 
   return (

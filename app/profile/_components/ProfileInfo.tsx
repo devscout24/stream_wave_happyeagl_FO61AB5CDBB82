@@ -4,17 +4,16 @@ import ProfileForm from "./ProfileForm";
 export default async function ProfileInfo() {
   const user = await getUserProfile();
 
-  if(!user){
-    return null
+  if (!user) {
+    return null;
   }
 
-  console.log(user)
   return (
     <div className="bg-card w-1/2 rounded-lg p-5">
       {/* Header */}
       <div className="mb-5 flex items-center justify-between">
         <h1 className="text-2xl font-medium">Profile Information</h1>
-        <ProfileForm user={user}/>
+        <ProfileForm user={user} />
       </div>
 
       {/* Name */}

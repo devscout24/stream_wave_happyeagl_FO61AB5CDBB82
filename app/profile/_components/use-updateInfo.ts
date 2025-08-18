@@ -1,5 +1,5 @@
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { updateProfile } from "./action";
@@ -7,7 +7,7 @@ import { updateProfile } from "./action";
 export const formSchema = z.object({
   first_name: z.string().min(1, "First name is required").optional(),
   last_name: z.string().min(1, "Last name is required").optional(),
-//   profile_pic: z.file().optional(),
+  //   profile_pic: z.file().optional(),
 });
 
 export type ProfileFormValues = z.infer<typeof formSchema>;
@@ -25,7 +25,7 @@ export default function useUpdateInfo(defaultValues?: UseUpdateInfoProps) {
     defaultValues: {
       first_name: defaultValues?.first_name || "",
       last_name: defaultValues?.last_name || "",
-    //   profile_pic: defaultValues?.profile_pic || "",
+      //   profile_pic: defaultValues?.profile_pic || "",
     },
   });
 
@@ -34,8 +34,6 @@ export default function useUpdateInfo(defaultValues?: UseUpdateInfoProps) {
 
     try {
       const result = await updateProfile(values);
-
-      console.log(result)
 
       if (result?.error) {
         form.setError("root", { type: "server", message: result.error });

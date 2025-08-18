@@ -23,9 +23,6 @@ export default function Provider({ children }: { children: React.ReactNode }) {
 
   // This should update the real state, which will sync with optimistic state
   const setChats = (newChats: (ChatResponse | Message)[]) => {
-    console.log("Provider setChats called with:", newChats.length, "messages");
-    console.log("Current state length:", state.length);
-    console.log("Setting new state...");
     setState(newChats);
   };
 

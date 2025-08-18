@@ -1,13 +1,8 @@
 import Logout from "@/app/chat/_components/Logout";
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/theme-toggle";
-import { getUserProfile } from "@/lib/actions";
 
 export default async function Header() {
-  const user = await getUserProfile(); // Assume this function fetches the user profile
-
-  console.log("user in header", user);
-
   return (
     <header>
       <nav>

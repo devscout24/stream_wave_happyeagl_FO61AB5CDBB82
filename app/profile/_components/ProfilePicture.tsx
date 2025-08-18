@@ -3,7 +3,9 @@
 import Icon from "@/components/Icon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/btn";
-import { useRef } from "react";
+import config from "@/config";
+import { useRef, useState } from "react";
+import { toast } from "sonner";
 import { updateProfilePicture } from "./action";
 
 export default function ProfilePicture({
@@ -14,9 +16,11 @@ export default function ProfilePicture({
   name: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Handler to accept only image files and (optionally) only one file
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsLoading(true);
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -27,23 +31,23 @@ export default function ProfilePicture({
       return;
     }
 
-    // Optionally, you can add more checks here (e.g., file size, dimensions)
-
-    // Handle the profile picture upload here
-    // Example: uploadProfilePicture(file);
-    console.log("Selected profile picture:", file);
-
     try {
-      await updateProfilePicture(file);
+      toast.promise(updateProfilePicture(file), {
+        loading: "Uploading...",
+        success: "Upload successful!",
+        error: "Upload failed.",
+      });
     } catch (error) {
       console.error("Error uploading profile picture:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="relative">
       <Avatar className="h-[70px] w-[70px]">
-        <AvatarImage src={picture} alt={name} />
+        <AvatarImage src={`${config.assetUrl}${picture}`} alt={name} />
         <AvatarFallback>{name}</AvatarFallback>
       </Avatar>
       <input
@@ -61,6 +65,7 @@ export default function ProfilePicture({
           inputRef.current?.click();
         }}
         type="button"
+        disabled={isLoading}
       >
         <Icon src="/camera-bold.svg" className="size-5" />
       </Button>

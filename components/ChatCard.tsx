@@ -5,6 +5,7 @@ import useProvider from "@/app/chat/(root)/Context/use-provider";
 import { cn } from "@/lib/utils";
 import { ChatTitle } from "@/types";
 import Link from "next/link";
+import { toast } from "sonner";
 import Icon from "./Icon";
 import LastSeen from "./LastSeen";
 import { Badge } from "./ui/badge";
@@ -16,17 +17,23 @@ interface ChatCardProps {
 
 export default function ChatCard({ chat }: ChatCardProps) {
   // const { selectedIds, toggleId, deselectAll } = useAllArchive(allChatIds);
-  const { selectedChat } = useProvider();
+  const { selectedHistoryChat, selectedArchiveChat } = useProvider();
 
   const isSelected = (chatId: number) => {
-    return selectedChat.includes(chatId);
+    return [...selectedHistoryChat, ...selectedArchiveChat].includes(chatId);
   };
 
   const message = chat?.chat || chat;
 
   const handleArchiveToggle = async (condition: boolean) => {
     try {
-      await setArchive(chat?.id, condition);
+      toast.promise(setArchive(chat?.id, condition), {
+        loading: "Updating...",
+        success: condition
+          ? "Chat archived successfully!"
+          : "Chat unarchive successfully!",
+        error: "Failed to update archive state.",
+      });
     } catch (error) {
       console.error("Failed to update archive state:", error);
     }

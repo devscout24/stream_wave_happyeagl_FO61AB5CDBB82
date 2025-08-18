@@ -20,8 +20,6 @@ export async function verifyCode(data: VerifyCodeData) {
       },
     );
 
-    console.log("Verify code response:", response);
-
     if (!response || !response.data) {
       return { error: "Verification failed. Please try again." };
     }

@@ -13,33 +13,44 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/btn";
+import { toast } from "sonner";
 import useProvider from "../../Context/use-provider";
 import { bulkUnarchive, deleteArchive } from "./action";
 
 export default function ActionArchive() {
-  const { selectedChat: chat_ids } = useProvider();
+  const { selectedArchiveChat: chat_ids } = useProvider();
 
-    const handleArchiveToggle = async (condition: boolean) => {
-
+  const handleArchiveToggle = async (condition: boolean) => {
     try {
-      const res = await bulkUnarchive({
-        chat_ids,
-        archive: condition,
-      });
-      console.log("the response",res);
+      toast.promise(
+        bulkUnarchive({
+          chat_ids,
+          archive: condition,
+        }),
+        {
+          loading: "Updating...",
+          success: condition
+            ? "Chat unarchive successfully!"
+            : "Chat archived successfully!",
+          error: "Failed to update archive state.",
+        },
+      );
     } catch (error) {
       console.error("Failed to update archive state:", error);
     }
   };
 
-    const handleDelete = async () => {
-      try {
-      await deleteArchive(chat_ids);
-      console.log("Chats deleted successfully");
+  const handleDelete = async () => {
+    try {
+      toast.promise(deleteArchive(chat_ids), {
+        loading: "Deleting...",
+        success: "Chats deleted successfully",
+        error: "Failed to delete chats",
+      });
     } catch (error) {
       console.error("Failed to delete chats:", error);
     }
-    };
+  };
 
   return (
     <div className="flex gap-6">
@@ -47,13 +58,17 @@ export default function ActionArchive() {
         disabled={chat_ids.length === 0}
         title="Unarchive"
         onClick={() => handleArchiveToggle(false)}
+        className="cursor-pointer disabled:cursor-not-allowed"
       >
         <Icon src="/unarchive.svg" className="size-[32px]" />
       </Button>
 
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button disabled={chat_ids.length === 0}>
+          <Button
+            disabled={chat_ids.length === 0}
+            className="cursor-pointer disabled:cursor-not-allowed"
+          >
             <Icon src="/delete.svg" />
           </Button>
         </AlertDialogTrigger>
@@ -67,7 +82,7 @@ export default function ActionArchive() {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-                onClick={handleDelete}
+              onClick={handleDelete}
               className="bg-red-500 text-white hover:bg-red-600"
             >
               Delete

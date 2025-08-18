@@ -20,8 +20,6 @@ export async function getChatHistory(chq?: string) {
         },
       );
 
-      console.log("Search HIstory:", result);
-
       return {
         total_count: result?.data?.total_messages || 0,
         chats: result?.data?.chat_groups || [],
@@ -35,13 +33,10 @@ export async function getChatHistory(chq?: string) {
 
 export const deleteHistory = async (chat_ids: number[]) => {
   try {
-    await fetcher<ApiResponse<ChatHistoryResponse>>(
-      "chats/bulk-delete/",
-      {
-        method: "POST",
-        body: JSON.stringify({ chat_ids }), 
-      },
-    );
+    await fetcher<ApiResponse<ChatHistoryResponse>>("chats/bulk-delete/", {
+      method: "POST",
+      body: JSON.stringify({ chat_ids }),
+    });
     revalidatePath("/chat/history");
   } catch (error) {
     console.error("Failed to delete chat history:", error);
@@ -56,7 +51,6 @@ export const bulkArchive = async ({
   chat_ids: number[];
   archive: boolean;
 }) => {
-  
   try {
     const response = await fetcher<ApiResponse<ChatHistoryResponse>>(
       "chats/bulk-archived/",
@@ -71,7 +65,6 @@ export const bulkArchive = async ({
 
     revalidatePath("/chat/history");
 
-    console.log("Bulk archive response:", response);
     return response;
   } catch (error) {
     console.error("Failed to bulk archive chats:", error);

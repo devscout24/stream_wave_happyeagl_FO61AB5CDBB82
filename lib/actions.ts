@@ -33,9 +33,6 @@ export async function sendChat(values: {
         body: JSON.stringify(values),
       });
     }
-
-    console.log("Chat sent successfully:", result);
-
     if (!result || !result.data) {
       throw new Error("Failed to send chat");
     }

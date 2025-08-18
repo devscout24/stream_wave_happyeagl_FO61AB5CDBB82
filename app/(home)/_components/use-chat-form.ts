@@ -21,8 +21,6 @@ export default function useChatForm() {
   const userInfo = useContext(IPInfoContext);
   const [chats, setChats] = useState<ChatResponse[]>([]);
 
-  console.log("useChatForm - current chats:", chats, "length:", chats.length);
-
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -33,8 +31,6 @@ export default function useChatForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Form submitted with values:", values);
-
     const prompt: ChatFormProps = {
       content: values.body,
       location: `${userInfo.city},${userInfo.country_name}`,
@@ -50,12 +46,10 @@ export default function useChatForm() {
       word_count: prompt.content.split(" ").length,
       requires_authentication: false,
     };
-    console.log("Adding user message:", userMessage);
-    console.log("Current chats before adding:", chats);
 
     setChats((prevChats) => {
       const newChats = [...prevChats, userMessage];
-      console.log("Updated chats:", newChats);
+
       return newChats;
     });
 
@@ -70,16 +64,13 @@ export default function useChatForm() {
         location: `${userInfo.city},${userInfo.country_name}`,
       });
 
-      console.log("Server response:", response);
-
       // Handle both ChatResponse and MessagesResponse
       if ("sender_type" in response) {
         // It's a ChatResponse
-        console.log("Handling ChatResponse");
+
         setChats((prevChats) => [...prevChats, response as ChatResponse]);
       } else {
         // It's a MessagesResponse - convert it to ChatResponse format
-        console.log("Handling MessagesResponse");
         const aiResponse: ChatResponse = {
           chat_id: response.chat_id,
           chat_title: response.chat_title,
@@ -89,7 +80,6 @@ export default function useChatForm() {
           word_count: response.word_count,
           requires_authentication: false,
         };
-        console.log("Converted AI response:", aiResponse);
         setChats((prevChats) => [...prevChats, aiResponse]);
       }
     } catch (error) {

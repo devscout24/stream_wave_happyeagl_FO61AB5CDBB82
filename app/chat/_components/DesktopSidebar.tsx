@@ -2,15 +2,14 @@ import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
 import Search from "@/components/Search";
 import { Suspense } from "react";
+import { getChatHistory } from "../(root)/history/_components/action";
 import Logout from "./Logout";
 import RecentHistory from "./RecentHistory";
 import SidebarMenu from "./SidebarMenu";
-import { getChatHistory } from "../(root)/history/_components/action";
 
 export default async function DesktopSidebar() {
   const chatHistory = await getChatHistory();
 
-  console.log(chatHistory)
   return (
     <aside className="row-span-full grid grid-rows-[auto_1fr_auto] max-lg:hidden">
       <div>
@@ -29,10 +28,10 @@ export default async function DesktopSidebar() {
       </div>
 
       {chatHistory?.total_count === 0 ? (
-              <p className="text-sm mt-2">No recent chat found.</p>
-            ) : (
-              <RecentHistory chats={chatHistory?.chats?.slice(0, 10)} />
-            )}
+        <p className="mt-2 text-sm">No recent chat found.</p>
+      ) : (
+        <RecentHistory chats={chatHistory?.chats?.slice(0, 10)} />
+      )}
 
       <div className="flex h-32 items-start">
         <Logout />

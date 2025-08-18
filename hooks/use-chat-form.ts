@@ -48,12 +48,11 @@ export default function useChatForm({ chatId }: { chatId?: number }) {
 
       // Add optimistic user message immediately in a transition (only if context is available)
       if (addOptimisticChat) {
-        console.log("Adding optimistic message:", optimisticUserMessage);
         startTransition(() => {
           addOptimisticChat(optimisticUserMessage);
         });
       } else {
-        console.log(
+        console.error(
           "No addOptimisticChat function available - context might be null",
         );
       }
@@ -65,25 +64,10 @@ export default function useChatForm({ chatId }: { chatId?: number }) {
 
       try {
         // Send to server
-        const response = await sendChat({
+        await sendChat({
           ...prompt,
           chat_id: chatId.toString(),
         });
-
-        console.log("Server response received:", response);
-        console.log(
-          "Response type:",
-          "chat_id" in response ? "MessagesResponse" : "ChatResponse",
-        );
-
-        // The sendChat function calls revalidatePath() which updates the page data
-        // But there might be a race condition. Let's handle the server response properly:
-
-        // If we get a MessagesResponse, it means the message was processed successfully
-        // We could update the context state with the new data, but for now let's just
-        // trust that the revalidatePath will eventually sync the data correctly
-
-        // Note: The optimistic message should stay visible until the next page data update
       } catch (error) {
         console.error("Failed to send message:", error);
         // TODO: Handle error - maybe show a retry button
@@ -91,7 +75,7 @@ export default function useChatForm({ chatId }: { chatId?: number }) {
     } else {
       const message = await sendChat(prompt);
 
-      console.log(message);
+      console.error(message);
 
       //  Redirect to conversation page
       router.replace(`/chat/${message.chat_id}`);

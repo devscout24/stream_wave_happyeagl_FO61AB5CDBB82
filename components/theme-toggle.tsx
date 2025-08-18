@@ -31,8 +31,6 @@ export default function ThemeToggle() {
 
   const isDark = resolvedTheme === "dark";
 
-  console.log("Current resolved theme:", resolvedTheme);
-
   return (
     <label className="relative inline-flex cursor-pointer items-center">
       <input
@@ -41,7 +39,6 @@ export default function ThemeToggle() {
         onChange={() => {
           const newTheme = isDark ? "light" : "dark";
           setTheme(newTheme);
-          console.log("Switching to theme:", newTheme);
         }}
         className="peer sr-only"
       />
