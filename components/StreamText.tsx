@@ -1,6 +1,7 @@
 "use client";
 import useAnimate from "@/hooks/use-animate";
 import { useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
 export default function StreamText({
   text,
@@ -20,5 +21,5 @@ export default function StreamText({
     }
   }, [animatedText, onTextUpdate]);
 
-  return <span>{isNow ? animatedText : text}</span>;
+  return <ReactMarkdown>{isNow ? animatedText : text}</ReactMarkdown>;
 }
