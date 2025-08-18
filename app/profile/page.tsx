@@ -6,7 +6,7 @@ export default function page() {
   return (
    <section>
     <Heading/>
-    <div className="mt-7 flex gap-5">
+    <div className="mt-7 flex-col md:flex-row flex gap-5">
       <ProfileInfo/>
       <Settings/>
     </div>

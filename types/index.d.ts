@@ -88,8 +88,8 @@ export interface Message {
   chat: number;
   sender_type: "user" | "assistant";
   message_type: "text" | "image" | "file";
-  content: string;
-  file?: File | null;
+  content?: string;
+  file?: string | null;
   file_url?: string | null;
   file_name?: string | null;
   created_at: Date;
