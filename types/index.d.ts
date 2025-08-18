@@ -89,7 +89,7 @@ export interface Message {
   sender_type: "user" | "assistant";
   message_type: "text" | "image" | "file";
   content?: string;
-  file?: string | null;
+  file?: string | File | null;
   file_url?: string | null;
   file_name?: string | null;
   created_at: Date;

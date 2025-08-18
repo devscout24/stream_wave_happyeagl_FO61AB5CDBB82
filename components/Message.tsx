@@ -74,7 +74,9 @@ export default function Message({
                     <Image
                       src={
                         message.file_url ||
-                        (message.file ? URL.createObjectURL(message.file) : "")
+                        (message.file instanceof File
+                          ? URL.createObjectURL(message.file)
+                          : "")
                       }
                       alt={message.file_name || "Image attachment"}
                       fill
