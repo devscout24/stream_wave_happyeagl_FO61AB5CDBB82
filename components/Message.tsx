@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import config from "@/config";
 import { cn } from "@/lib/utils";
 import { Message as IMessage } from "@/types";
 import Icon from "./Icon";
@@ -16,7 +17,7 @@ export default function Message({
   const isBot = message.sender_type === "assistant";
 
   const avatarSrc =
-    profile_pic ||
+    `${config.assetUrl}${profile_pic}` ||
     "https://sm.ign.com/ign_pk/cover/a/avatar-gen/avatar-generations_rpge.jpg";
 
   return (
