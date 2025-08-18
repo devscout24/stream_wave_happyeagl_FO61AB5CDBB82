@@ -15,7 +15,7 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="body"
+          name="files"
           render={({ field }) => (
             <FormItem className="relative">
               <Button
@@ -28,6 +28,40 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
               </Button>
               <FormControl>
                 <Input
+                  type="file"
+                  multiple
+                  name={field.name}
+                  ref={field.ref}
+                  disabled={form.formState.isSubmitting}
+                  onChange={(event) => {
+                    const files = event.target.files
+                      ? Array.from(event.target.files)
+                      : [];
+                    field.onChange(files);
+                  }}
+                  onBlur={field.onBlur}
+                  className="bg-input text-foreground placeholder:text-foreground hidden py-4 pl-14 text-sm shadow-xl placeholder:text-sm lg:rounded-[20px] lg:py-9 lg:text-lg placeholder:lg:text-lg dark:border-none"
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="body"
+          render={({ field }) => (
+            <FormItem className="relative">
+              {/* <Button
+                type="button"
+                variant="ghost"
+                className="absolute top-1/2 left-4 -translate-y-1/2 transform cursor-pointer hover:bg-transparent dark:text-white dark:hover:bg-transparent dark:hover:text-white"
+                disabled={form.formState.isSubmitting}
+              >
+                <Icon src="/attachment.svg" />
+              </Button> */}
+              <FormControl>
+                <Input
                   placeholder="Describe your thought"
                   {...field}
                   className="bg-input text-foreground placeholder:text-foreground py-4 pl-14 text-sm shadow-xl placeholder:text-sm lg:rounded-[20px] lg:py-9 lg:text-lg placeholder:lg:text-lg dark:border-none"
@@ -38,25 +72,8 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
                 type="submit"
                 variant="ghost"
                 className="text-input bg-foreground hover:bg-foreground hover:text-input dark:bg-primary dark:text-background dark:hover:text-background dark:hover:bg-primary absolute top-1/2 right-4 -translate-y-1/2 transform cursor-pointer max-lg:size-6 max-lg:rounded-sm"
-                disabled={form.formState.isSubmitting}
               >
-                {form.formState.isSubmitting ? (
-                  <svg
-                    className="text-foreground mr-3 size-4 animate-spin"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      fill="none"
-                    />
-                  </svg>
-                ) : (
-                  <Icon src="/sent.svg" className="size-4" />
-                )}
+                <Icon src="/sent.svg" className="size-4" />
               </Button>
             </FormItem>
           )}

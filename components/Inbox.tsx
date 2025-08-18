@@ -75,13 +75,27 @@ export default function Inbox({ inboxes, profilePic }: InboxProps) {
 
   // Scroll to bottom when chats change (new messages added)
   useEffect(() => {
-    // Add a small delay to ensure DOM has updated
+    // Add a small delay to ensure DOM has updated, including file attachments
     const timeoutId = setTimeout(() => {
       scrollToBottom();
-    }, 100);
+    }, 150); // Slightly longer delay for file loading
 
     return () => clearTimeout(timeoutId);
   }, [chats.length]);
+
+  // Also scroll when file attachments load
+  useEffect(() => {
+    // Check if any message has file attachments and scroll after they might load
+    const hasFiles = chats.some((chat) => "file_url" in chat && chat.file_url);
+
+    if (hasFiles) {
+      const timeoutId = setTimeout(() => {
+        scrollToBottom();
+      }, 300); // Extra delay for image loading
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [chats]);
 
   // Also try immediate scroll after DOM updates
   useLayoutEffect(() => {
@@ -99,9 +113,12 @@ export default function Inbox({ inboxes, profilePic }: InboxProps) {
               const message = item as IMessage;
               return (
                 <Message
-                  key={message.id}
+                  key={`${message.id}-${message.file_url ? "file" : "text"}`} // Better key for file messages
                   message={message}
-                  onTextUpdate={scrollToBottom}
+                  onTextUpdate={() => {
+                    // Scroll after text updates and file loads
+                    setTimeout(scrollToBottom, 100);
+                  }}
                   profile_pic={profilePic}
                 />
               );

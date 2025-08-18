@@ -11,28 +11,49 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function sendChat(values: {
-  content: string;
-  location: string;
-  chat_id?: string;
-}): Promise<MessagesResponse | ChatResponse> {
+export async function sendChat(
+  values: { content: string; location: string; chat_id?: string } | FormData,
+): Promise<MessagesResponse | ChatResponse> {
   try {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get("access_token")?.value;
 
     let result: ApiResponse<MessagesResponse | ChatResponse>;
 
-    if (!accessToken) {
-      result = await fetcher<ApiResponse<ChatResponse>>("chats/send-public/", {
-        method: "POST",
-        body: JSON.stringify(values),
-      });
+    // Prepare the request body
+    let body: string | FormData;
+    let isFormData = false;
+
+    if (values instanceof FormData) {
+      // If FormData is passed (with files), use it directly
+      body = values;
+      isFormData = true;
     } else {
-      result = await fetcher<ApiResponse<MessagesResponse>>("chats/send/", {
-        method: "POST",
-        body: JSON.stringify(values),
-      });
+      // If regular object is passed, stringify it
+      body = JSON.stringify(values);
     }
+
+    const requestOptions: RequestInit = {
+      method: "POST",
+      body,
+      // Don't set Content-Type header for FormData - browser will set it automatically with boundary
+      ...(isFormData
+        ? {}
+        : { headers: { "Content-Type": "application/json" } }),
+    };
+
+    if (!accessToken) {
+      result = await fetcher<ApiResponse<ChatResponse>>(
+        "chats/send-public/",
+        requestOptions,
+      );
+    } else {
+      result = await fetcher<ApiResponse<MessagesResponse>>(
+        "chats/send/",
+        requestOptions,
+      );
+    }
+
     if (!result || !result.data) {
       throw new Error("Failed to send chat");
     }
@@ -47,25 +68,6 @@ export async function sendChat(values: {
     throw error;
   }
 }
-
-// export async function resumeChat(
-//   chatId: string,
-//   value: ChatFormValues,
-// ): Promise<MessagesResponse> {
-//   try {
-//     const result = await fetcher<ApiResponse<MessagesResponse>>(
-//       `chats/${chatId}/resume/`,
-//       {
-//         method: "POST",
-//         body: JSON.stringify(value),
-//       },
-//     );
-//     return result.data;
-//   } catch (error) {
-//     console.error("Error resuming chat:", error);
-//     throw error;
-//   }
-// }
 
 export async function logoutUser() {
   const cookieStore = await cookies();

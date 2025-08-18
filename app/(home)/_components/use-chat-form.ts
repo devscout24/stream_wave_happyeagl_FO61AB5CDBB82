@@ -8,32 +8,46 @@ import { z } from "zod";
 
 export const formSchema = z.object({
   body: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    message: "Message must be at least 2 characters.",
   }),
+  files: z
+    .array(z.instanceof(File))
+    .optional()
+    .refine((files) => !files || files.length <= 5, "Maximum 5 files allowed")
+    .refine(
+      (files) => !files || files.every((file) => file.size <= 10 * 1024 * 1024),
+      "Each file must be less than 10MB",
+    ),
 });
 
 interface ChatFormProps {
   content: string;
   location: string;
+  files?: File[];
 }
 
 export default function useChatForm() {
   const userInfo = useContext(IPInfoContext);
   const [chats, setChats] = useState<ChatResponse[]>([]);
 
-  // 1. Define your form.
+  console.log("useChatForm - current chats:", chats, "length:", chats.length);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       body: "",
+      files: [],
     },
   });
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("Form submitted with values:", values);
+    console.log("Files:", values.files);
+
     const prompt: ChatFormProps = {
       content: values.body,
       location: `${userInfo.city},${userInfo.country_name}`,
+      files: values.files,
     };
 
     // 1. Add user message optimistically
@@ -47,30 +61,34 @@ export default function useChatForm() {
       requires_authentication: false,
     };
 
-    setChats((prevChats) => {
-      const newChats = [...prevChats, userMessage];
-
-      return newChats;
-    });
+    setChats((prevChats) => [...prevChats, userMessage]);
 
     form.reset();
     form.clearErrors();
     form.setFocus("body");
 
     try {
-      // 2. Send to server
-      const response = await sendChat({
-        content: values.body,
-        location: `${userInfo.city},${userInfo.country_name}`,
-      });
+      // Create FormData to send files
+      const formData = new FormData();
+      formData.append("content", values.body);
+      formData.append("location", `${userInfo.city},${userInfo.country_name}`);
 
-      // Handle both ChatResponse and MessagesResponse
+      // Append files to FormData
+      if (values.files) {
+        values.files.forEach((file, index) => {
+          formData.append(`files[${index}]`, file);
+        });
+      }
+
+      // Update sendChat to accept FormData or regular object
+      const response = await sendChat(formData);
+
+      console.log("Server response:", response);
+
+      // Handle response (same as before)
       if ("sender_type" in response) {
-        // It's a ChatResponse
-
         setChats((prevChats) => [...prevChats, response as ChatResponse]);
       } else {
-        // It's a MessagesResponse - convert it to ChatResponse format
         const aiResponse: ChatResponse = {
           chat_id: response.chat_id,
           chat_title: response.chat_title,
@@ -83,8 +101,9 @@ export default function useChatForm() {
         setChats((prevChats) => [...prevChats, aiResponse]);
       }
     } catch (error) {
-      // Handle error - maybe remove the optimistic messages
       console.error("Failed to send chat:", error);
+      // Remove optimistic message on error
+      setChats((prevChats) => prevChats.slice(0, -1));
     }
   }
 
