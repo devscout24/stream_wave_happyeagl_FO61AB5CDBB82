@@ -1,7 +1,9 @@
 "use client";
+
 import useAnimate from "@/hooks/use-animate";
 import { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 
 export default function StreamText({
   text,
@@ -14,12 +16,17 @@ export default function StreamText({
 }) {
   const animatedText = useAnimate(text);
 
-  // Trigger callback when animated text changes
   useEffect(() => {
-    if (onTextUpdate) {
-      onTextUpdate();
-    }
+    if (onTextUpdate) onTextUpdate();
   }, [animatedText, onTextUpdate]);
 
-  return <ReactMarkdown>{isNow ? animatedText : text}</ReactMarkdown>;
+  return (
+    <div className="prose prose-sm dark:prose-invert max-w-none">
+      <ReactMarkdown remarkPlugins={[remarkBreaks]}>
+        {isNow ? animatedText : text}
+      </ReactMarkdown>
+    </div>
+  );
 }
+
+

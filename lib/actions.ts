@@ -12,9 +12,10 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function sendChat(values: {
-  content: string;
+  content?: string;
   location: string;
   chat_id?: string;
+  file?: string;
 }): Promise<MessagesResponse | ChatResponse> {
   try {
     const cookieStore = await cookies();
