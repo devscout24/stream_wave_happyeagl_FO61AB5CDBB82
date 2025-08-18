@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import DesktopSidebar from "../_components/DesktopSidebar";
 import Provider from "./Context/Provider";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Home - Capital H",
   description:

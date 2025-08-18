@@ -5,6 +5,8 @@ import DesktopSidebar from "../_components/DesktopSidebar";
 import { getChatMessages } from "./_components/action";
 import Provider from "./_context/Provider";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Home - Capital H",
   description:

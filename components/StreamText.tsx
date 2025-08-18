@@ -5,11 +5,11 @@ import { useEffect } from "react";
 export default function StreamText({
   text,
   onTextUpdate,
-  isNow,
+  isNow = true,
 }: {
   text: string;
   onTextUpdate?: () => void;
-  isNow: boolean;
+  isNow?: boolean;
 }) {
   const animatedText = useAnimate(text);
 
