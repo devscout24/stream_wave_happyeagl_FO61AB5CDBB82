@@ -104,8 +104,9 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
               {!hasFiles && (
                 <div className="absolute top-1/2 left-4 z-20 -translate-y-1/2">
                   <label
+                  title="Attach File"
                     htmlFor="file-upload-input"
-                    className="flex cursor-pointer items-center justify-center rounded-full p-1 transition-colors hover:bg-gray-100"
+                    className="flex cursor-pointer items-center justify-center rounded-full p-1 transition-color"
                   >
                     <Icon src="/attachment.svg" className="h-5 w-5" />
                   </label>
