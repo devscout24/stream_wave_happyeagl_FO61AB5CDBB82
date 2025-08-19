@@ -31,7 +31,6 @@ export async function getChatMessages(
         method: "GET",
       },
     );
-    console.log("🚀 ~ getChatMessages ~ response:", response);
 
     if (!response || !response.data) {
       throw new Error("Failed to fetch chat messages");

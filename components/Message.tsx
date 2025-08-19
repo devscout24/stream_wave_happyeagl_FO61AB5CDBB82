@@ -25,10 +25,8 @@ export default function Message({
   file_processing,
   isAuthenticated = true, // Default to true if not provided
 }: MessageProps) {
-  console.log("🚀 ~ Message ~ content:", content);
   const avatarSrc = profile_pic ? `${config.assetUrl}${profile_pic}` : "";
 
-  console.log("🚀 ~ Message ~ Animate:", createdAt && createdAt === new Date());
 
   return (
     <div

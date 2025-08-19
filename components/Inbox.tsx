@@ -10,7 +10,6 @@ interface InboxProps {
 }
 
 export default function Inbox({ inboxes, profilePic }: InboxProps) {
-  console.log("🚀 ~ Inbox ~ inboxes:", inboxes);
 
   const contextValue = useCustomContext(); // May be null if not in Provider
 

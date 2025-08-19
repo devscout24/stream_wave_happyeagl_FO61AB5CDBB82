@@ -34,7 +34,6 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
     if (files.length > 0) {
       const currentFiles = form.getValues("files") || [];
       form.setValue("files", [...currentFiles, ...files]);
-      console.log("Files added:", files.length);
     }
     // Reset the input so same file can be selected again
     e.target.value = "";
@@ -104,9 +103,9 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
               {!hasFiles && (
                 <div className="absolute top-1/2 left-4 z-20 -translate-y-1/2">
                   <label
-                  title="Attach File"
+                    title="Attach File"
                     htmlFor="file-upload-input"
-                    className="flex cursor-pointer items-center justify-center rounded-full p-1 transition-color hover:bg-gray-100"
+                    className="transition-color flex cursor-pointer items-center justify-center rounded-full p-1"
                   >
                     <Icon src="/attachment.svg" className="h-5 w-5" />
                   </label>
@@ -150,17 +149,6 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
             </FormItem>
           )}
         />
-
-        {/* Add Files Button - Show when files are present */}
-        {hasFiles && (
-          <label
-            htmlFor="file-upload-input"
-            className="border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex w-full cursor-pointer items-center justify-center rounded-md border px-3 py-2 text-sm font-medium transition-colors"
-          >
-            <Icon src="/attachment.svg" className="mr-2 size-4" />
-            Add More Files
-          </label>
-        )}
 
         <p className="text-paragraph flex items-start justify-center gap-1 text-center font-normal md:items-center">
           <ShieldAlert

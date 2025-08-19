@@ -28,7 +28,6 @@ export async function sendChat(
       body = JSON.stringify(values);
     }
 
-    console.log("🚀 ~ sendChat ~ requestOptions:", body);
 
     const requestOptions: RequestInit = {
       method: "POST",

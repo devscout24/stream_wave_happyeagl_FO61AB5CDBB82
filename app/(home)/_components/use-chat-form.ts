@@ -58,7 +58,6 @@ export default function useChatForm() {
   const userInfo = useContext(IPInfoContext);
   const [chats, setChats] = useState<IMessage[]>([]);
 
-  console.log("useChatForm - current chats:", chats, "length:", chats.length);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,8 +68,6 @@ export default function useChatForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Form submitted with values:", values);
-    console.log("Files:", values.files);
 
     const prompt: ChatFormProps = {
       content: values.body || "",
@@ -116,8 +113,6 @@ export default function useChatForm() {
 
       // Update sendChat to accept FormData or regular object
       const response = await sendChat(formData);
-
-      console.log("Server response:", response);
 
       // Handle response (same as before)
       if ("sender_type" in response) {
