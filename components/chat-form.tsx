@@ -106,7 +106,7 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
                   <label
                   title="Attach File"
                     htmlFor="file-upload-input"
-                    className="flex cursor-pointer items-center justify-center rounded-full p-1 transition-color"
+                    className="flex cursor-pointer items-center justify-center rounded-full p-1 transition-color hover:bg-gray-100"
                   >
                     <Icon src="/attachment.svg" className="h-5 w-5" />
                   </label>
