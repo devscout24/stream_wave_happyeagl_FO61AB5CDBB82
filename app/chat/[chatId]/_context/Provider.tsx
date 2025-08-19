@@ -1,28 +1,28 @@
 "use client";
 
-import { ChatResponse, Message } from "@/types";
+import { IMessage } from "@/types";
 import React, { useOptimistic, useState } from "react";
 
 interface ContextValue {
-  chats: (ChatResponse | Message)[];
-  addOptimisticChat: (chat: ChatResponse | Message) => void;
-  setChats: (chats: (ChatResponse | Message)[]) => void;
-  state: (ChatResponse | Message)[];
-  setState: React.Dispatch<React.SetStateAction<(ChatResponse | Message)[]>>;
+  chats: IMessage[];
+  addOptimisticChat: (chat: IMessage) => void;
+  setChats: (chats: IMessage[]) => void;
+  state: IMessage[];
+  setState: React.Dispatch<React.SetStateAction<IMessage[]>>;
 }
 
 export const Context = React.createContext<ContextValue | undefined>(undefined);
 
 export default function Provider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<(ChatResponse | Message)[]>([]);
+  const [state, setState] = useState<IMessage[]>([]);
 
   const [optimisticChats, addOptimisticChat] = useOptimistic<
-    (ChatResponse | Message)[],
-    ChatResponse | Message
+    IMessage[],
+    IMessage
   >(state, (currentChats, newChat) => [...currentChats, newChat]);
 
   // This should update the real state, which will sync with optimistic state
-  const setChats = (newChats: (ChatResponse | Message)[]) => {
+  const setChats = (newChats: IMessage[]) => {
     setState(newChats);
   };
 

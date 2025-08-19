@@ -95,7 +95,15 @@ export default function ChatCard({ chat }: ChatCardProps) {
             variant="secondary"
             className="bg-accent h-8 w-24 rounded-full text-xs font-normal"
           >
-            <LastSeen date={chat?.created_at || chat.chat?.created_at} />
+            <LastSeen
+              date={
+                chat?.created_at
+                  ? new Date(chat.created_at)
+                  : chat.chat?.created_at
+                    ? new Date(chat.chat.created_at)
+                    : new Date()
+              }
+            />
           </Badge>
         </span>
         <Link href={`/chat/${chat?.id}`} onClick={(e) => e.stopPropagation()}>

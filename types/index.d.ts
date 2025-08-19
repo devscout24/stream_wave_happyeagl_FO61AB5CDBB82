@@ -55,6 +55,22 @@ export interface VerifyCodeResponse {
   };
 }
 
+export interface ChatTitle {
+  id: number;
+  title: string;
+  created_at: string;
+  content: string;
+  body: string;
+  is_archived: boolean;
+  created_at: Date;
+  chat?: {
+    id: number;
+    title: string;
+    created_at: Date;
+    content: string;
+  };
+}
+
 export interface FileProcessing {
   file_type: string;
   file_name: string;
