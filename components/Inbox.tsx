@@ -2,6 +2,7 @@
 import { useCustomContext } from "@/app/chat/[chatId]/_context/use-context";
 import { IMessage } from "@/types";
 import { useEffect, useLayoutEffect, useRef } from "react";
+import Message from "./Message";
 
 interface InboxProps {
   inboxes: IMessage[];
@@ -9,6 +10,8 @@ interface InboxProps {
 }
 
 export default function Inbox({ inboxes, profilePic }: InboxProps) {
+  console.log("🚀 ~ Inbox ~ inboxes:", inboxes);
+
   const contextValue = useCustomContext(); // May be null if not in Provider
 
   // If context is available, use it; otherwise fall back to just showing inboxes
@@ -105,28 +108,20 @@ export default function Inbox({ inboxes, profilePic }: InboxProps) {
     <section>
       <div className="flex flex-col gap-10">
         {chats
-          .map((item) => {
-            // Type guard to check if it's a Message
-            if ("id" in item && "chat" in item && "message_type" in item) {
-              // It's a Message
-              const message = item as IMessage;
-              return (
-                <Message
-                  key={`${message.id}-${message.file_url ? "file" : "text"}`} // Better key for file messages
-                  content={message.content}
-                  isUser={message.agent_type === "user"}
-                  onTextUpdate={() => {
-                    // Scroll after text updates and file loads
-                    setTimeout(scrollToBottom, 100);
-                  }}
-                  profile_pic={profilePic}
-                />
-              );
-            } else {
-              // It's a ChatResponse - skip for now since Message component expects Message type
-              return null;
-            }
-          })
+          .map((item) => (
+            <Message
+              key={`${item.id}-${item.file_processing?.file_name ? "file" : "text"}`} // Better key for file messages
+              content={item.ai_response}
+              isUser={item.agent_type === "user"}
+              createdAt={item?.created_at || undefined}
+              isAuthenticated={true}
+              onTextUpdate={() => {
+                // Scroll after text updates and file loads
+                setTimeout(scrollToBottom, 100);
+              }}
+              profile_pic={profilePic}
+            />
+          ))
           .filter(Boolean)}
 
         {/* Invisible element at the end for scrollIntoView */}

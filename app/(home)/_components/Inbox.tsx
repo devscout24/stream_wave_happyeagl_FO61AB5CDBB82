@@ -113,6 +113,7 @@ export default function Inbox({ chats }: { chats: IMessage[] }) {
             content={chat?.ai_response}
             isUser={chat?.agent_type === "user"}
             file_processing={chat?.file_processing}
+            isAuthenticated={false}
           />
         ))}
       </div>

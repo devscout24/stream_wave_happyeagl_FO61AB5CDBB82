@@ -71,6 +71,7 @@ export interface IMessage {
   word_count: number;
   requires_authentication: boolean;
   file_processing?: FileProcessing;
+  created_at?: Date;
 }
 export interface IMessages {
   messages: Message[];

@@ -13,6 +13,7 @@ interface MessageProps {
   profile_pic?: string;
   createdAt?: Date;
   file_processing?: FileProcessing;
+  isAuthenticated?: boolean;
 }
 
 export default function Message({
@@ -22,8 +23,12 @@ export default function Message({
   profile_pic,
   createdAt,
   file_processing,
+  isAuthenticated = true, // Default to true if not provided
 }: MessageProps) {
+  console.log("🚀 ~ Message ~ content:", content);
   const avatarSrc = profile_pic ? `${config.assetUrl}${profile_pic}` : "";
+
+  console.log("🚀 ~ Message ~ Animate:", createdAt && createdAt === new Date());
 
   return (
     <div
@@ -71,7 +76,17 @@ export default function Message({
                 />
               )}
               <StreamText
-                isNow={createdAt ? createdAt < new Date() : true}
+                isNow={
+                  isAuthenticated
+                    ? createdAt
+                      ? (() => {
+                          const now = new Date();
+                          const diff = now.getTime() - createdAt.getTime();
+                          return diff >= 0 && diff <= 0.1 * 60 * 1000; // within last 6 seconds
+                        })()
+                      : false
+                    : true
+                }
                 text={content}
                 onTextUpdate={onTextUpdate}
               />
