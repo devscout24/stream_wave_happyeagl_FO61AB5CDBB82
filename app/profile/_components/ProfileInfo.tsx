@@ -17,7 +17,7 @@ export default async function ProfileInfo() {
       </div>
 
       {/* Name */}
-      <div className="mb-4 flex gap-5">
+      <div className="mb-4 flex flex-col gap-5">
         <div className="w-full">
           <label className="block text-sm font-medium">First Name</label>
           <Input
@@ -37,14 +37,14 @@ export default async function ProfileInfo() {
       </div>
 
       {/* Email */}
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <label className="block text-sm font-medium">Email</label>
         <Input
           value={"example@gmail.com"}
           readOnly
           className="bg-background mt-1 border-none"
         />
-      </div>
+      </div> */}
     </div>
   );
 }

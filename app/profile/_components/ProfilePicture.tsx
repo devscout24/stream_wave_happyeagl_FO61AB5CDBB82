@@ -48,7 +48,7 @@ export default function ProfilePicture({
     <div className="relative">
       <Avatar className="h-[70px] w-[70px]">
         <AvatarImage src={`${config.assetUrl}${picture}`} alt={name} />
-        <AvatarFallback>{name}</AvatarFallback>
+        <AvatarFallback className="bg-background">{name}</AvatarFallback>
       </Avatar>
       <input
         ref={inputRef}
