@@ -18,9 +18,14 @@ interface ChatCardProps {
 export default function ChatCard({ chat }: ChatCardProps) {
   // const { selectedIds, toggleId, deselectAll } = useAllArchive(allChatIds);
   const { selectedHistoryChat, selectedArchiveChat } = useProvider();
+console.log(chat)
+
 
   const isSelected = (chatId: number) => {
-    return [...selectedHistoryChat, ...selectedArchiveChat].includes(chatId);
+    if(chat?.is_archived){
+      return selectedArchiveChat.includes(chatId)
+    }
+    return selectedHistoryChat.includes(chatId);
   };
 
   const message = chat?.chat || chat;
