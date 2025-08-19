@@ -1,34 +1,62 @@
 import { sendChat } from "@/lib/actions";
-import { ChatResponse } from "@/types";
+import { IMessage } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IPInfoContext } from "ip-info-react";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-export const formSchema = z.object({
-  body: z.string().min(2, {
-    message: "Message must be at least 2 characters.",
-  }),
-  files: z
-    .array(z.instanceof(File))
-    .optional()
-    .refine((files) => !files || files.length <= 5, "Maximum 5 files allowed")
-    .refine(
-      (files) => !files || files.every((file) => file.size <= 10 * 1024 * 1024),
-      "Each file must be less than 10MB",
-    ),
-});
+export const formSchema = z
+  .object({
+    body: z.string().optional(),
+    files: z
+      .array(z.instanceof(File))
+      .optional()
+      .refine((files) => !files || files.length <= 1, "Maximum 1 file allowed")
+      .refine(
+        (files) =>
+          !files || files.every((file) => file.size <= 10 * 1024 * 1024),
+        "Each file must be less than 10MB",
+      )
+      .refine(
+        (files) =>
+          !files ||
+          files.every((file) => {
+            const allowedTypes = [
+              "image/jpeg",
+              "image/jpg",
+              "image/png",
+              "image/gif",
+              "image/webp",
+              "application/pdf",
+            ];
+            return allowedTypes.includes(file.type);
+          }),
+        "Only images (JPEG, PNG, GIF, WebP) and PDF files are allowed",
+      ),
+  })
+  .refine(
+    (data) => {
+      // Either body has content (at least 2 chars) or files are provided
+      const hasContent = data.body && data.body.trim().length >= 2;
+      const hasFiles = data.files && data.files.length > 0;
+      return hasContent || hasFiles;
+    },
+    {
+      message: "Message must be at least 2 characters or attach a file.",
+      path: ["body"],
+    },
+  );
 
 interface ChatFormProps {
-  content: string;
+  content?: string;
   location: string;
   files?: File[];
 }
 
 export default function useChatForm() {
   const userInfo = useContext(IPInfoContext);
-  const [chats, setChats] = useState<ChatResponse[]>([]);
+  const [chats, setChats] = useState<IMessage[]>([]);
 
   console.log("useChatForm - current chats:", chats, "length:", chats.length);
 
@@ -45,20 +73,21 @@ export default function useChatForm() {
     console.log("Files:", values.files);
 
     const prompt: ChatFormProps = {
-      content: values.body,
+      content: values.body || "",
       location: `${userInfo.city},${userInfo.country_name}`,
       files: values.files,
     };
 
     // 1. Add user message optimistically
-    const userMessage: ChatResponse = {
-      sender_type: "user",
-      ai_response: prompt.content,
-      chat_title: prompt.content,
-      chat_id: null,
-      is_new_chat: true,
-      word_count: prompt.content.split(" ").length,
+    const userMessage: IMessage = {
+      word_count: (prompt.content || "").split(" ").length,
       requires_authentication: false,
+      chat_id: null,
+      id: Date.now(), // Temporary ID
+      chat_title: values.body || "",
+      agent_type: "user",
+      ai_response: values.body || "",
+      is_new_chat: true,
     };
 
     setChats((prevChats) => [...prevChats, userMessage]);
@@ -70,13 +99,18 @@ export default function useChatForm() {
     try {
       // Create FormData to send files
       const formData = new FormData();
-      formData.append("content", values.body);
+
+      // Only append content if it's not empty
+      if (values.body && values.body.trim().length > 0) {
+        formData.append("content", values.body.trim());
+      }
+
       formData.append("location", `${userInfo.city},${userInfo.country_name}`);
 
       // Append files to FormData
       if (values.files) {
-        values.files.forEach((file, index) => {
-          formData.append(`files[${index}]`, file);
+        values.files.forEach((file) => {
+          formData.append("file", file);
         });
       }
 
@@ -87,16 +121,17 @@ export default function useChatForm() {
 
       // Handle response (same as before)
       if ("sender_type" in response) {
-        setChats((prevChats) => [...prevChats, response as ChatResponse]);
+        setChats((prevChats) => [...prevChats, response as IMessage]);
       } else {
-        const aiResponse: ChatResponse = {
+        const aiResponse: IMessage = {
           chat_id: response.chat_id,
           chat_title: response.chat_title,
-          sender_type: "assistant",
+          agent_type: "legal_assistant",
           ai_response: response.ai_response,
           is_new_chat: response.is_new_chat,
           word_count: response.word_count,
           requires_authentication: false,
+          file_processing: response.file_processing,
         };
         setChats((prevChats) => [...prevChats, aiResponse]);
       }

@@ -1,8 +1,7 @@
 "use client";
 import { useCustomContext } from "@/app/chat/[chatId]/_context/use-context";
-import { Message as IMessage } from "@/types";
+import { IMessage } from "@/types";
 import { useEffect, useLayoutEffect, useRef } from "react";
-import Message from "./Message";
 
 interface InboxProps {
   inboxes: IMessage[];
@@ -114,7 +113,8 @@ export default function Inbox({ inboxes, profilePic }: InboxProps) {
               return (
                 <Message
                   key={`${message.id}-${message.file_url ? "file" : "text"}`} // Better key for file messages
-                  message={message}
+                  content={message.content}
+                  isUser={message.agent_type === "user"}
                   onTextUpdate={() => {
                     // Scroll after text updates and file loads
                     setTimeout(scrollToBottom, 100);

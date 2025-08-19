@@ -1,6 +1,6 @@
 import { useCustomContext } from "@/app/chat/[chatId]/_context/use-context";
 import { sendChat } from "@/lib/actions";
-import { Message } from "@/types";
+import { IMessage } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IPInfoContext } from "ip-info-react";
 import { useRouter } from "next/navigation";
@@ -8,14 +8,28 @@ import { startTransition, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const formSchema = z.object({
-  body: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  files: z.array(z.instanceof(File)).max(5, {
-    message: "You can only upload up to 5 files.",
-  }),
-});
+const formSchema = z
+  .object({
+    body: z.string().optional(),
+    files: z
+      .array(z.instanceof(File))
+      .max(5, {
+        message: "You can only upload up to 5 files.",
+      })
+      .optional(),
+  })
+  .refine(
+    (data) => {
+      // Either body has content or files are provided
+      const hasContent = data.body && data.body.trim().length > 0;
+      const hasFiles = data.files && data.files.length > 0;
+      return hasContent || hasFiles;
+    },
+    {
+      message: "Either message content or files are required.",
+      path: ["body"], // This will show the error on the body field
+    },
+  );
 
 export default function useChatForm({ chatId }: { chatId?: number }) {
   // const inputRef = useRef<HTMLInputElement>(null);
@@ -45,12 +59,17 @@ export default function useChatForm({ chatId }: { chatId?: number }) {
     if (values.files && values.files.length > 0) {
       // Create FormData for file uploads
       const formData = new FormData();
-      formData.append("content", values.body);
+
+      // Only append content if it's not empty
+      if (values.body && values.body.trim().length > 0) {
+        formData.append("content", values.body.trim());
+      }
+
       formData.append("location", `${userInfo.city},${userInfo.country_name}`);
 
       // Add files to FormData
       values.files.forEach((file) => {
-        formData.append(`files`, file);
+        formData.append("file", file);
       });
 
       if (chatId) {
@@ -61,7 +80,7 @@ export default function useChatForm({ chatId }: { chatId?: number }) {
     } else {
       // Regular object for text-only messages
       requestData = {
-        content: values.body,
+        content: values.body || "",
         location: `${userInfo.city},${userInfo.country_name}`,
         ...(chatId && { chat_id: chatId.toString() }),
       };
@@ -69,26 +88,16 @@ export default function useChatForm({ chatId }: { chatId?: number }) {
 
     if (chatId) {
       // Create optimistic user message
-      const hasFiles = values.files && values.files.length > 0;
-      const optimisticUserMessage: Message = {
+
+      const optimisticUserMessage: IMessage = {
         id: Date.now(), // Temporary ID
-        chat: chatId,
-        sender_type: "user",
-        message_type: hasFiles
-          ? values.files[0].type.startsWith("image/")
-            ? "image"
-            : "file"
-          : "text",
-        content: values.body,
-        created_at: new Date(),
-        // For optimistic updates, we can show the file info immediately
-        ...(hasFiles && {
-          file: values.files[0], // Show the first file for preview
-          file_name: values.files[0].name,
-          file_url: values.files[0].type.startsWith("image/")
-            ? URL.createObjectURL(values.files[0])
-            : undefined,
-        }),
+        chat_title: values.body || "",
+        chat_id: chatId,
+        agent_type: "user",
+        ai_response: values.body || "",
+        is_new_chat: true,
+        word_count: 0,
+        requires_authentication: true,
       };
 
       // Add optimistic user message immediately in a transition (only if context is available)

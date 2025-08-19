@@ -12,6 +12,7 @@ import useChatForm from "./_components/use-chat-form";
 
 export default function Home() {
   const { form, onSubmit, chats } = useChatForm();
+  console.log("🚀 ~ Home ~ chats:", chats);
 
   return (
     <div className="container mx-auto px-4 py-8">

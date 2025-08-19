@@ -5,156 +5,161 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useChatForm from "@/hooks/use-chat-form";
-import useFileCom from "@/hooks/use-file-com";
-import { ShieldAlert } from "lucide-react";
-import { useRef, useState } from "react";
+import { ShieldAlert, X } from "lucide-react";
 import Image from "next/image";
+import { useRef } from "react";
 
 export default function ChatForm({ chatId }: { chatId?: number }) {
   const { form, onSubmit } = useChatForm({ chatId });
-  const { onUploadFiles } = useFileCom({ chatId });
-
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
-  const handleFileClick = () => {
-    if (fileInputRef.current) fileInputRef.current.click();
+  const watchedFiles = form.watch("files") || [];
+  const hasFiles = watchedFiles.length > 0;
+
+  const removeFile = (index: number) => {
+    const currentFiles = form.getValues("files") || [];
+    const newFiles = currentFiles.filter((_, i) => i !== index);
+    form.setValue("files", newFiles);
+  };
+
+  const getFilePreview = (file: File) => {
+    if (file.type.startsWith("image/")) {
+      return URL.createObjectURL(file);
+    }
+    return null;
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const filesArray = Array.from(e.target.files);
-      setSelectedFiles(filesArray);
-
-      // Upload files via useFileCom
-      onUploadFiles(filesArray);
-
-      // Reset input
-      if (fileInputRef.current) fileInputRef.current.value = "";
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      const currentFiles = form.getValues("files") || [];
+      form.setValue("files", [...currentFiles, ...files]);
+      console.log("Files added:", files.length);
     }
+    // Reset the input so same file can be selected again
+    e.target.value = "";
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="files"
-          render={({ field }) => (
-            <FormItem className="relative">
-              <div>
-                {/* Hidden file input */}
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  multiple
-                  className="hidden"
-                />
-
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="absolute top-[55%] left-3 -translate-y-1/2 transform cursor-pointer hover:bg-transparent dark:text-white dark:hover:bg-transparent dark:hover:text-white"
-                  disabled={form.formState.isSubmitting}
-                  onClick={handleFileClick}
-                >
-                  {selectedFiles.length > 0 ? (
-                    (() => {
-                      const file = selectedFiles[0];
-                      const isImage = file.type.startsWith("image/");
-                      const fileUrl = URL.createObjectURL(file);
-
-                      return (
-                        <div className="relative">
-                          {isImage ? (
-                            <Image
-                              src={fileUrl}
-                              alt={file.name}
-                              width={48}
-                              height={48}
-                              className="rounded object-cover"
-                              unoptimized
-                            />
-                          ) : (
-                            <div className="flex h-8 w-8 items-center justify-center rounded bg-gray-200 p-1 text-center text-xs dark:bg-gray-700">
-                              {file.name.length > 4
-                                ? file.name.slice(0, 4) + "..."
-                                : file.name}
-                            </div>
-                          )}
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedFiles([]);
-                            }}
-                            className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white"
-                          >
-                            ×
-                          </button>
-                        </div>
-                      );
-                    })()
-                  ) : (
-                    <Icon src="/attachment.svg" />
-                  )}
-                </Button>
-              </div>
-
-              <FormControl>
-                <Input
-                  type="file"
-                  multiple
-                  name={field.name}
-                  ref={field.ref}
-                  disabled={form.formState.isSubmitting}
-                  onChange={(event) => {
-                    const files = event.target.files
-                      ? Array.from(event.target.files)
-                      : [];
-                    field.onChange(files);
-                  }}
-                  onBlur={field.onBlur}
-                  className="bg-input text-foreground placeholder:text-foreground hidden py-4 pl-14 text-sm shadow-xl placeholder:text-sm lg:rounded-[20px] lg:py-9 lg:text-lg placeholder:lg:text-lg dark:border-none"
-                />
-              </FormControl>
-            </FormItem>
-          )}
+        {/* Hidden File Input */}
+        <input
+          ref={fileInputRef}
+          id="file-upload-input"
+          type="file"
+          multiple
+          accept="image/*,application/pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.gif,.webp"
+          className="sr-only"
+          onChange={handleFileChange}
+          style={{ position: "absolute", left: "-9999px" }}
         />
+
+        {/* File Preview Section */}
+        {hasFiles && (
+          <div className="bg-muted/50 flex flex-wrap gap-2 rounded-lg p-2">
+            {watchedFiles.map((file, index) => (
+              <div key={index} className="group relative">
+                <div className="border-border relative h-20 w-20 overflow-hidden rounded-lg border">
+                  {getFilePreview(file) ? (
+                    <Image
+                      src={getFilePreview(file)!}
+                      alt={file.name}
+                      className="h-full w-full object-cover"
+                      width={80}
+                      height={80}
+                    />
+                  ) : (
+                    <div className="bg-muted flex h-full w-full items-center justify-center">
+                      <Icon
+                        src="/attachment.svg"
+                        className="text-muted-foreground size-6"
+                      />
+                    </div>
+                  )}
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    className="absolute -top-2 -right-2 size-6 rounded-full p-0"
+                    onClick={() => removeFile(index)}
+                  >
+                    <X className="size-3" />
+                  </Button>
+                </div>
+                <p className="text-muted-foreground mt-1 w-20 truncate text-xs">
+                  {file.name}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
 
         <FormField
           control={form.control}
           name="body"
           render={({ field }) => (
             <FormItem className="relative">
-              {/* <Button
-                type="button"
-                variant="ghost"
-                className="absolute top-1/2 left-4 -translate-y-1/2 transform cursor-pointer hover:bg-transparent dark:text-white dark:hover:bg-transparent dark:hover:text-white"
-                disabled={form.formState.isSubmitting}
-              >
-                <Icon src="/attachment.svg" />
-              </Button> */}
+              {/* Attachment Button - Only show when no files are present */}
+              {!hasFiles && (
+                <div className="absolute top-1/2 left-4 z-20 -translate-y-1/2">
+                  <label
+                    htmlFor="file-upload-input"
+                    className="flex cursor-pointer items-center justify-center rounded-full p-1 transition-colors hover:bg-gray-100"
+                  >
+                    <Icon src="/attachment.svg" className="h-5 w-5" />
+                  </label>
+                </div>
+              )}
+
               <FormControl>
                 <Input
                   placeholder="Describe your thought"
                   {...field}
-                  className="bg-input text-foreground placeholder:text-foreground py-4 pl-[76px] text-sm shadow-xl placeholder:text-sm lg:rounded-[20px] lg:py-9 lg:text-lg placeholder:lg:text-lg dark:border-none"
+                  className={`bg-input text-foreground placeholder:text-foreground py-4 text-sm shadow-xl placeholder:text-sm lg:rounded-[20px] lg:py-9 lg:text-lg placeholder:lg:text-lg dark:border-none ${
+                    hasFiles ? "pl-4" : "pl-14"
+                  }`}
                 />
               </FormControl>
 
               <Button
                 type="submit"
                 variant="ghost"
-                className="text-input bg-foreground hover:bg-foreground hover:text-input dark:bg-primary dark:text-background dark:hover:text-background dark:hover:bg-primary absolute top-[55%] right-4 -translate-y-1/2 transform cursor-pointer max-lg:size-6 max-lg:rounded-sm"
+                className="text-input bg-foreground hover:bg-foreground hover:text-input dark:bg-primary dark:text-background dark:hover:text-background dark:hover:bg-primary absolute top-1/2 right-4 z-10 -translate-y-1/2 transform cursor-pointer max-lg:size-6 max-lg:rounded-sm"
                 disabled={form.formState.isSubmitting}
               >
-                <Icon src="/sent.svg" className="size-4" />
+                {form.formState.isSubmitting ? (
+                  <svg
+                    className="text-foreground mr-3 size-4 animate-spin"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                    />
+                  </svg>
+                ) : (
+                  <Icon src="/sent.svg" className="size-4" />
+                )}
               </Button>
             </FormItem>
           )}
         />
+
+        {/* Add Files Button - Show when files are present */}
+        {hasFiles && (
+          <label
+            htmlFor="file-upload-input"
+            className="border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex w-full cursor-pointer items-center justify-center rounded-md border px-3 py-2 text-sm font-medium transition-colors"
+          >
+            <Icon src="/attachment.svg" className="mr-2 size-4" />
+            Add More Files
+          </label>
+        )}
 
         <p className="text-paragraph flex items-start justify-center gap-1 text-center font-normal md:items-center">
           <ShieldAlert

@@ -1,24 +1,19 @@
 "use server";
 
 import { fetcher } from "@/lib/fetcher";
-import {
-  ApiResponse,
-  ChatResponse,
-  MessagesResponse,
-  UserProfile,
-} from "@/types";
+import { ApiResponse, IMessage, UserProfile } from "@/types";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function sendChat(
   values: { content: string; location: string; chat_id?: string } | FormData,
-): Promise<MessagesResponse | ChatResponse> {
+): Promise<IMessage> {
   try {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get("access_token")?.value;
 
-    let result: ApiResponse<MessagesResponse | ChatResponse>;
+    let result: ApiResponse<IMessage>;
 
     // Prepare the request body
     let body: string | FormData;
@@ -33,6 +28,8 @@ export async function sendChat(
       body = JSON.stringify(values);
     }
 
+    console.log("🚀 ~ sendChat ~ requestOptions:", body);
+
     const requestOptions: RequestInit = {
       method: "POST",
       body,
@@ -43,12 +40,12 @@ export async function sendChat(
     };
 
     if (!accessToken) {
-      result = await fetcher<ApiResponse<ChatResponse>>(
+      result = await fetcher<ApiResponse<IMessage>>(
         "chats/send-public/",
         requestOptions,
       );
     } else {
-      result = await fetcher<ApiResponse<MessagesResponse>>(
+      result = await fetcher<ApiResponse<IMessage>>(
         "chats/send/",
         requestOptions,
       );

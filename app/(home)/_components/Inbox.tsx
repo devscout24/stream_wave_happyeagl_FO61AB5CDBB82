@@ -1,10 +1,10 @@
 "use client";
 
-import { ChatResponse } from "@/types";
+import Message from "@/components/Message";
+import { IMessage } from "@/types";
 import { useEffect, useRef } from "react";
-import Message from "./Message";
 
-export default function Inbox({ chats }: { chats: ChatResponse[] }) {
+export default function Inbox({ chats }: { chats: IMessage[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Simple auto-scroll function
@@ -107,7 +107,13 @@ export default function Inbox({ chats }: { chats: ChatResponse[] }) {
     >
       <div className="flex flex-col gap-10">
         {chats.map((chat, idx) => (
-          <Message key={idx} message={chat} onTextUpdate={handleTextUpdate} />
+          <Message
+            key={idx}
+            onTextUpdate={handleTextUpdate}
+            content={chat?.ai_response}
+            isUser={chat?.agent_type === "user"}
+            file_processing={chat?.file_processing}
+          />
         ))}
       </div>
     </section>

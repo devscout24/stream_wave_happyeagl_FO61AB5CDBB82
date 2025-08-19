@@ -17,29 +17,10 @@ export interface Testimonial {
   ratings: number;
 }
 
-export interface Chat {
-  id: number;
-  body: string;
-  sender: "user" | "bot";
-  avatar: string;
-  createdAt: string;
-  name: string;
-}
-
 export interface ChatHistory {
   id: number;
   title: string;
   created_at: string;
-}
-
-export interface ChatTitle {
-  id: number;
-  title: string;
-  content?: string;
-  created_at: date;
-  body: string;
-  is_archived: boolean;
-  chat?: Chat;
 }
 
 // Response from the API
@@ -74,28 +55,24 @@ export interface VerifyCodeResponse {
   };
 }
 
-export interface MessagesResponse {
-  chat_id: number;
+export interface FileProcessing {
+  file_type: string;
+  file_name: string;
+  processing_method: string;
+  status: string;
+}
+export interface IMessage {
+  id?: number;
+  chat_id: number | null;
   chat_title: string;
-  agent_type: string;
+  agent_type: "legal_assistant" | "user";
   ai_response: string;
   is_new_chat: boolean;
   word_count: number;
+  requires_authentication: boolean;
+  file_processing?: FileProcessing;
 }
-
-export interface Message {
-  id: number;
-  chat: number;
-  sender_type: "user" | "assistant";
-  message_type: "text" | "image" | "file";
-  content?: string;
-  file?: string | File | null;
-  file_url?: string | null;
-  file_name?: string | null;
-  created_at: Date;
-}
-
-export interface Messages {
+export interface IMessages {
   messages: Message[];
   total_count: number;
   chat_id: number;
@@ -134,16 +111,6 @@ export interface State {
   messages: Message[];
 }
 
-export interface ChatResponse {
-  chat_id?: number | null;
-  chat_title: string;
-  sender_type: "user" | "assistant";
-  ai_response: string;
-  is_new_chat?: boolean;
-  word_count?: number;
-  requires_authentication?: boolean;
-}
-
 export interface ChatHistoryResponse {
   chats: ChatTitle[];
   total_count: number;
@@ -172,18 +139,6 @@ export interface UpdatePass {
 export interface ChatMeta {
   id: number;
   chat: number;
-  sender_type: string;
-  message_type: string;
-  content: string;
-  file: number | null;
-  file_url: string | null;
-  file_name: string | null;
-  created_at: string;
-}
-
-export interface Chat {
-  id: number;
-  chat: ChatMeta;
   sender_type: string;
   message_type: string;
   content: string;

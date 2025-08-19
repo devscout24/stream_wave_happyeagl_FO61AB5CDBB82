@@ -8,11 +8,11 @@ import remarkBreaks from "remark-breaks";
 export default function StreamText({
   text,
   onTextUpdate,
-  isNow = true,
+  isNow,
 }: {
   text: string;
   onTextUpdate?: () => void;
-  isNow?: boolean;
+  isNow: boolean;
 }) {
   const animatedText = useAnimate(text);
 
@@ -28,5 +28,3 @@ export default function StreamText({
     </div>
   );
 }
-
-
