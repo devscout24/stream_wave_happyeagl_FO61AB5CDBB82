@@ -24,12 +24,12 @@ export default function Footer() {
             </Link>
           </li>
           <li className="text-center text-sm text-gray-500 dark:text-gray-400">
-            <Link href="/terms" className="hover:underline">
+            <Link href="/chat/history" className="hover:underline">
               Chat Library
             </Link>
           </li>
           <li className="text-center text-sm text-gray-500 dark:text-gray-400">
-            <Link href="/contact" className="hover:underline">
+            <Link href="/chat/archive" className="hover:underline">
               Chat Archive
             </Link>
           </li>
