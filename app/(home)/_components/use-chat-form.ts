@@ -1,16 +1,19 @@
+"use client";
 import { sendChat } from "@/lib/actions";
 import { IMessage } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IPInfoContext } from "ip-info-react";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
+const isBrowser = typeof window !== "undefined";
+
 import { z } from "zod";
 
 export const formSchema = z
   .object({
     body: z.string().optional(),
     files: z
-      .array(z.instanceof(File))
+      .array(isBrowser ? z.instanceof(File) : z.any())
       .optional()
       .refine((files) => !files || files.length <= 1, "Maximum 1 file allowed")
       .refine(
