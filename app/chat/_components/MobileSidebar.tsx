@@ -16,9 +16,11 @@ import RecentHistory from "./RecentHistory";
 import SidebarMenu from "./SidebarMenu";
 import { getChatHistory } from "../(root)/history/_components/action";
 
-export default async function MobileSidebar() {
-  const user = await getUserProfile(); // Assume this function fetches the user profile
-  const chatHistory = await getChatHistory();
+export default async function MobileSidebar({ chq }: { chq?: string }) {
+  const user = await getUserProfile(); 
+
+  const chatHistory = await getChatHistory(!chq ? "" : chq);
+
   return (
     <aside className="lg:hidden">
       <Drawer direction="left">

@@ -7,7 +7,7 @@ import Logo from "./Logo";
 import ThemeToggle from "./theme-toggle";
 import { Button } from "./ui/button";
 
-export default async function Header() {
+export default async function Header({chq}: {chq?: string}) {
   const user = await getUserProfile(); // Assume this function fetches the user profile
 
   return user ? (
@@ -22,7 +22,7 @@ export default async function Header() {
                 <Profile profile={user} avatarOnly />
               </Link>
 
-              <MobileSidebar />
+              <MobileSidebar chq={chq} />
             </div>
           </div>
         </div>

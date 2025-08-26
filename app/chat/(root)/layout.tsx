@@ -11,15 +11,17 @@ export const metadata: Metadata = {
     "Welcome to Capital H - A modern Next.js application with Docker development environment",
 };
 
-export default function ChatLayout({
-  children,
+export default async function ChatLayout({
+  children, searchParams
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode;   searchParams: Promise<{ query?: string }>;
 }>) {
+  const {query} = await searchParams || {};
+  console.log("",{query})
   return (
     <div className="mx-auto grid max-h-dvh gap-10 max-2xl:px-2 lg:max-w-[1440px] lg:grid-cols-[auto_1fr] lg:grid-rows-[auto_1fr_auto]">
-      <DesktopSidebar />
-      <Header />
+      <DesktopSidebar chq={query} />
+      <Header chq={query} />
       <Provider>
         <main id="scrollbar" className="overflow-y-auto">
           {children}

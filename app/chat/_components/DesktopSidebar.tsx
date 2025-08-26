@@ -7,8 +7,8 @@ import Logout from "./Logout";
 import RecentHistory from "./RecentHistory";
 import SidebarMenu from "./SidebarMenu";
 
-export default async function DesktopSidebar() {
-  const chatHistory = await getChatHistory();
+export default async function DesktopSidebar({ chq }: { chq?: string }) {
+  const chatHistory = await getChatHistory(!chq ? "" : chq);
 
   return (
     <aside className="row-span-full grid grid-rows-[auto_1fr_auto] max-lg:hidden">
