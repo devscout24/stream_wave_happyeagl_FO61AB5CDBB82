@@ -12,16 +12,14 @@ export const metadata: Metadata = {
 };
 
 export default async function ChatLayout({
-  children, searchParams
+  children,
 }: Readonly<{
-  children: React.ReactNode;   searchParams: Promise<{ query?: string }>;
+  children: React.ReactNode;
 }>) {
-  const {query} = await searchParams || {};
-  console.log("",{query})
   return (
     <div className="mx-auto grid max-h-dvh gap-10 max-2xl:px-2 lg:max-w-[1440px] lg:grid-cols-[auto_1fr] lg:grid-rows-[auto_1fr_auto]">
-      <DesktopSidebar chq={query} />
-      <Header chq={query} />
+      <DesktopSidebar />
+      <Header/>
       <Provider>
         <main id="scrollbar" className="overflow-y-auto">
           {children}

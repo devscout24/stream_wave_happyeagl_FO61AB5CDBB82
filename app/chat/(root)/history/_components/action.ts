@@ -5,6 +5,9 @@ import { ApiResponse, ChatHistoryResponse, ChatHistorySearch } from "@/types";
 import { revalidatePath } from "next/cache";
 
 export async function getChatHistory(chq?: string) {
+
+  console.log("server action",chq)
+
   try {
     let result;
 
@@ -19,6 +22,8 @@ export async function getChatHistory(chq?: string) {
           body: JSON.stringify({ query: chq }),
         },
       );
+
+  
 
       return {
         total_count: result?.data?.total_messages || 0,

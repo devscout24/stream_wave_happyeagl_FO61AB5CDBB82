@@ -1,14 +1,28 @@
+"use client";
+
 import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
 import Search from "@/components/Search";
-import { Suspense } from "react";
-import { getChatHistory } from "../(root)/history/_components/action";
+import { Suspense, useEffect, useState } from "react";
 import Logout from "./Logout";
 import RecentHistory from "./RecentHistory";
 import SidebarMenu from "./SidebarMenu";
+import { useSearchParams } from "next/navigation";
+import { getChatHistory } from "../(root)/history/_components/action";
+import { ChatHistoryResponse } from "@/types";
 
-export default async function DesktopSidebar({ chq }: { chq?: string }) {
-  const chatHistory = await getChatHistory(!chq ? "" : chq);
+export default function DesktopSidebar() {
+  const [chat, setChat] = useState<ChatHistoryResponse>();
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    async function fetchChat() {
+      const chatHistory = await getChatHistory(searchParams.get("query") || "");
+      setChat(chatHistory);
+    }
+    fetchChat();
+  }, [searchParams]);
 
   return (
     <aside className="row-span-full grid grid-rows-[auto_1fr_auto] max-lg:hidden">
@@ -27,10 +41,10 @@ export default async function DesktopSidebar({ chq }: { chq?: string }) {
         <h2 className="dark:text-secondary mt-10 text-sm">Recent Chat</h2>
       </div>
 
-      {chatHistory?.total_count === 0 ? (
+      {chat?.total_count === 0 ? (
         <p className="mt-2 text-sm">No recent chat found.</p>
       ) : (
-        <RecentHistory chats={chatHistory?.chats?.slice(0, 10)} />
+        <RecentHistory chats={chat?.chats?.slice(0, 10)} />
       )}
 
       <div className="flex h-32 items-start">

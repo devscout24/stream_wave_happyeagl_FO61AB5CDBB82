@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 
 interface RecentHistoryProps {
   isDesktop?: boolean;
-  chats: ChatHistory[];
+  chats?: ChatHistory[];
 }
 
 export default function RecentHistory({

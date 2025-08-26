@@ -12,14 +12,11 @@ import { getUserProfile } from "@/lib/actions";
 import { Menu } from "lucide-react";
 import Logout from "../../../components/Logout";
 import Search from "../../../components/Search";
-import RecentHistory from "./RecentHistory";
 import SidebarMenu from "./SidebarMenu";
-import { getChatHistory } from "../(root)/history/_components/action";
+import MobileSidebarCom from "./MobileSidebarCom";
 
-export default async function MobileSidebar({ chq }: { chq?: string }) {
+export default async function MobileSidebar() {
   const user = await getUserProfile(); 
-
-  const chatHistory = await getChatHistory(!chq ? "" : chq);
 
   return (
     <aside className="lg:hidden">
@@ -41,19 +38,7 @@ export default async function MobileSidebar({ chq }: { chq?: string }) {
 
           <SidebarMenu isDesktop={false} />
 
-          <div className="flex min-h-0 flex-1 flex-col">
-            <h2 className="dark:text-secondary mt-10 text-sm max-lg:pb-2">
-              Recent Chat
-            </h2>
-            {chatHistory.total_count === 0 ? (
-              <p className="mt-2 text-sm">No recent chats found.</p>
-            ) : (
-              <RecentHistory
-                chats={chatHistory.chats.slice(0, 10)}
-                isDesktop={false}
-              />
-            )}
-          </div>
+          <MobileSidebarCom/>
 
           <DrawerFooter>
             <Logout />
