@@ -13,7 +13,7 @@ import { ChatHistoryResponse } from "@/types";
 
 export default function DesktopSidebar() {
   const [chat, setChat] = useState<ChatHistoryResponse>();
-  const [showBar, setShowBar] = useState(false);
+  const [showBar, setShowBar] = useState(true);
 
   const searchParams = useSearchParams();
 
