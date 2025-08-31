@@ -136,7 +136,7 @@
 /* Custom scrollbar styles */
 
 /* Handle on hover */
-#scrollbar::-webkit-scrollbar {
+/* #scrollbar::-webkit-scrollbar {
   background: transparent;
   width: 10px;
 }
@@ -149,4 +149,36 @@
 
 #scrollbar:hover::-webkit-scrollbar-thumb {
   display: block;
+} */
+
+
+/* scrollbar.css */
+
+/* Container */
+#scrollbar {
+  overflow-y: scroll;         
+  scrollbar-gutter: stable;   
+}
+
+/* Scrollbar Track */
+#scrollbar::-webkit-scrollbar {
+  width: 10px;              
+  background: transparent;   
+}
+
+/* Scrollbar Thumb */
+#scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-ring); 
+  border-radius: 10px;          
+}
+
+/* Scrollbar Corner (when both x and y appear) */
+#scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox support */
+#scrollbar {
+  scrollbar-width: thin;         
+  scrollbar-color: var(--color-ring) transparent;
 }
