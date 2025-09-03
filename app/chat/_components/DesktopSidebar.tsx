@@ -10,6 +10,7 @@ import SidebarMenu from "./SidebarMenu";
 import { useSearchParams } from "next/navigation";
 import { getChatHistory } from "../(root)/history/_components/action";
 import { ChatHistoryResponse } from "@/types";
+import Link from "next/link";
 
 export default function DesktopSidebar() {
   const [chat, setChat] = useState<ChatHistoryResponse>();
@@ -31,7 +32,7 @@ export default function DesktopSidebar() {
         <div>
           <div className="flex items-center justify-between">
             <Logo className="mx-auto my-4 h-10 w-10" />
-            <Icon onClick={() => setShowBar(false)} src="/left-arrow.svg" />
+            <Icon onClick={() => setShowBar(!showBar)} src="/left-arrow.svg" />
           </div>
 
           <Suspense fallback={null}>
@@ -40,13 +41,25 @@ export default function DesktopSidebar() {
 
           <SidebarMenu />
 
-          <h2 className="dark:text-secondary mt-10 text-sm">Recent Chat</h2>
+          <h2 className="dark:text-secondary mt-14 text-sm">Recent Chat</h2>
         </div>
       ) : (
-        <div className="flex items-center gap-2">
-          <Logo className="mx-auto my-4 h-10 w-10" />
-          <Icon onClick={() => setShowBar(true)} src="/right-arrow.svg" />
+        <div className="flex flex-col justify-between h-screen">
+          {/* Part 1 - top */}
+          <div className="flex flex-col gap-6">
+            <Logo className="mx-auto my-4 h-10 w-10" />
+            <Icon onClick={() => setShowBar(!showBar)} src="/right-arrow.svg" />
+            <Link href="/chat"><Icon src="/edit.svg" /></Link>
+            <Link href="/chat/history"><Icon src="/history.svg" /></Link>
+            <Link href="/chat/archive"><Icon src="/archive.svg" /></Link>
+          </div>
+
+          {/* Part 2 - bottom */}
+          <div className="mb-[82px]">
+            <Logout isCollapsed={showBar} />
+          </div>
         </div>
+
       )}
 
       {showBar &&

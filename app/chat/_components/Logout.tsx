@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { logoutUser } from "@/lib/actions";
 import { toast } from "sonner";
 
-export default function Logout({ isProfile = false }: { isProfile?: boolean }) {
+export default function Logout({ isProfile = false, isCollapsed = true }: { isProfile?: boolean, isCollapsed? : boolean }) {
   const handleLogout = async () => {
     const logoutPromise = async () => {
       try {
@@ -42,7 +42,7 @@ export default function Logout({ isProfile = false }: { isProfile?: boolean }) {
 
   return isProfile ? (
     <Button onClick={handleLogout} variant="default">
-      Sign Out <Icon src="/login-arrow.svg" />
+      Sign In <Icon src="/login-arrow.svg" />
     </Button>
   ) : (
     <Button
@@ -51,7 +51,7 @@ export default function Logout({ isProfile = false }: { isProfile?: boolean }) {
       onClick={handleLogout}
     >
       <Icon src="/logout.svg" className="size-6" />
-      <span className="text-base">Sign Out</span>
+      <span className="text-base">{isCollapsed && "Sign Out"}</span>
     </Button>
   );
 }
