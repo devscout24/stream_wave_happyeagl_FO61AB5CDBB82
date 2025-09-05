@@ -14,12 +14,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import useLogin from "./use-login";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import useLogin from "./use-login";
 
 export default function SignInForm({ isModal = false }: { isModal?: boolean }) {
   const { form, onSubmit } = useLogin();
+  const router = useRouter();
 
   // 🔹 Base text color depending on modal or not
   const baseText = isModal ? "text-white" : "text-muted-foreground";
@@ -45,7 +47,7 @@ export default function SignInForm({ isModal = false }: { isModal?: boolean }) {
                   {...field}
                   className={cn(
                     baseText,
-                    "outline-border border-border focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none"
+                    "outline-border border-border focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none",
                   )}
                 />
               </FormControl>
@@ -69,7 +71,7 @@ export default function SignInForm({ isModal = false }: { isModal?: boolean }) {
                   {...field}
                   className={cn(
                     baseText,
-                    "outline-border border-border focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none"
+                    "outline-border border-border focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none",
                   )}
                 />
               </FormControl>
@@ -92,7 +94,7 @@ export default function SignInForm({ isModal = false }: { isModal?: boolean }) {
                         src="/check-box.svg"
                         className={cn(
                           baseText,
-                          "mr-1 size-4 cursor-pointer md:size-5"
+                          "mr-1 size-4 cursor-pointer md:size-5",
                         )}
                         onClick={() => field.onChange(false)}
                       />
@@ -101,7 +103,7 @@ export default function SignInForm({ isModal = false }: { isModal?: boolean }) {
                         src="/unchecked.svg"
                         className={cn(
                           baseText,
-                          "mr-1 size-4 cursor-pointer md:size-5"
+                          "mr-1 size-4 cursor-pointer md:size-5",
                         )}
                         onClick={() => field.onChange(true)}
                       />
@@ -148,17 +150,28 @@ export default function SignInForm({ isModal = false }: { isModal?: boolean }) {
         <div className="space-y-2">
           <p className={cn(baseText, "text-center text-sm max-md:text-xs")}>
             <span>Don&apos;t have an account? </span>
-            <Link href="/auth/sign-up" replace className={cn(baseText, "underline")}>
+            <Link
+              href="/auth/sign-up"
+              replace
+              className={cn(baseText, "underline")}
+            >
               Sign up
             </Link>
           </p>
 
-          <Link
-            href="/"
-            className={cn(baseText, "block text-center text-sm underline max-md:text-xs")}
-          >
-            Stay Logged Out?
-          </Link>
+          <div className="flex w-full justify-center">
+            <Button
+              type="button"
+              variant={"link"}
+              className={cn(
+                baseText,
+                "mx-auto w-fit text-center text-sm underline max-md:text-xs",
+              )}
+              onClick={() => router.back()}
+            >
+              Stay Logged Out?
+            </Button>
+          </div>
         </div>
       </form>
     </Form>
