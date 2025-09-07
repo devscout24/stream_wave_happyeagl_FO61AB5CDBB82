@@ -93,9 +93,17 @@ export default function Inbox({ chats }: { chats: IMessage[] }) {
 
   if (!chats || chats.length === 0) {
     return (
-      <h1 className="text-center text-2xl font-medium md:text-3xl xl:text-4xl">
-        How May I Help you!
-      </h1>
+      <>
+        <h1 className="text-center text-2xl font-medium md:text-3xl">
+          I am legal expert. You can talk to me <br /> in Spanish or any
+          language you prefer.
+        </h1>
+
+        <p className="text-center">
+          Soy experto legal. Puedes hablar conmigo <br /> en español o cualquier
+          idioma que prefieras.
+        </p>
+      </>
     );
   }
 

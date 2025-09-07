@@ -114,7 +114,7 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
 
               <FormControl>
                 <Input
-                  placeholder="Describe your thought"
+                  placeholder="Ask anything..."
                   {...field}
                   className={`bg-input text-foreground placeholder:text-foreground py-4 text-sm shadow-xl placeholder:text-sm lg:rounded-[20px] lg:py-9 lg:text-lg placeholder:lg:text-lg dark:border-none ${
                     hasFiles ? "pl-4" : "pl-14"
@@ -161,6 +161,12 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
             Always verify important information.
           </span>
         </p>
+
+        <div className="grid w-full place-content-center">
+          <Button type="button" className="mx-auto mt-2 w-fit">
+            Find Legal Help in City, ST
+          </Button>
+        </div>
       </form>
     </Form>
   );
