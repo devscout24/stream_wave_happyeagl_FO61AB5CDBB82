@@ -99,7 +99,7 @@ export async function logoutUser() {
   cookieStore.delete("access_token");
   cookieStore.delete("refresh_token");
 
-  return redirect("/auth/sign-in");
+  return redirect("/");
 }
 
 export async function getUserSession() {
