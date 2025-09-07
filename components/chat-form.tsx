@@ -156,9 +156,9 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
             strokeWidth={1.5}
             className="text-paragraph max-sm:h-8 max-sm:w-8"
           />
-          <span className="text-xs md:text-sm">
-            This AI may occasionally generate incorrect or incomplete answers.
-            Always verify important information.
+          <span className="text-xs font-medium md:text-sm">
+            AI can make mistakes. Consult with qualified human expert below,
+            certified to examine your critical legal matter.
           </span>
         </p>
 
