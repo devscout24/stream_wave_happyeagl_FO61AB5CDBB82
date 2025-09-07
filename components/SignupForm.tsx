@@ -12,10 +12,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-import useSignup from "./use-signup";
+import useSignup from "../hooks/use-signup";
 
 // Lazy load TermsModal
 const TermsModal = dynamic(() => import("./TermsModal"), {
@@ -32,6 +32,17 @@ export default function SignupForm({ isModal = false }: { isModal?: boolean }) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-6 md:space-y-8"
       >
+        <div className="container mx-auto max-w-xl space-y-3 max-md:px-2 md:space-y-5">
+          <h1 className="text-muted-foreground text-center text-xl font-semibold md:text-2xl lg:text-4xl">
+            Create Your Account
+          </h1>
+
+          <p className="text-muted-foreground mb-10 text-center text-xs font-normal md:text-sm">
+            Join the future of smart conversations — chat with your AI assistant
+            anytime, anywhere.
+          </p>
+        </div>
+
         {/* Email */}
         <FormField
           control={form.control}
@@ -55,7 +66,7 @@ export default function SignupForm({ isModal = false }: { isModal?: boolean }) {
                     {
                       "text-white": isModal,
                       "text-muted-foreground": !isModal,
-                    }
+                    },
                   )}
                 />
               </FormControl>
@@ -87,7 +98,7 @@ export default function SignupForm({ isModal = false }: { isModal?: boolean }) {
                     {
                       "text-white": isModal,
                       "text-muted-foreground": !isModal,
-                    }
+                    },
                   )}
                 />
               </FormControl>
@@ -119,7 +130,7 @@ export default function SignupForm({ isModal = false }: { isModal?: boolean }) {
                     {
                       "text-white": isModal,
                       "text-muted-foreground": !isModal,
-                    }
+                    },
                   )}
                 />
               </FormControl>
@@ -155,7 +166,7 @@ export default function SignupForm({ isModal = false }: { isModal?: boolean }) {
         >
           <span> Already have an account? </span>
           <Link
-            href="/auth/sign-in"
+            href="?modal=sign-in"
             replace
             className={cn("text-sm underline", {
               "text-white": isModal,
@@ -173,7 +184,7 @@ export default function SignupForm({ isModal = false }: { isModal?: boolean }) {
             {
               "text-white": isModal,
               "text-muted-foreground": !isModal,
-            }
+            },
           )}
         >
           <span>By continuing, you accept the&nbsp;</span>
@@ -183,7 +194,10 @@ export default function SignupForm({ isModal = false }: { isModal?: boolean }) {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <TermsModal text="Terms of Service" onChange={field.onChange} />
+                  <TermsModal
+                    text="Terms of Service"
+                    onChange={field.onChange}
+                  />
                 </FormControl>
                 <FormMessage className="max-md:text-xs" />
               </FormItem>

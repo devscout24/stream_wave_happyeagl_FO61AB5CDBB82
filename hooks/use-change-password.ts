@@ -1,48 +1,42 @@
+import { changePassword } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { registerUser } from "./action";
 
 const formSchema = z
   .object({
-    email: z.string().email({
-      message: "Please enter a valid email address.",
-    }),
-    password: z.string().min(4, {
-      message: "Password must be at least 4 characters.",
+    new_password: z.string().min(4, {
+      message: "New password must be at least 6 characters.",
     }),
     confirm_password: z.string().min(4, {
-      message: "Confirm Password must be at least 4 characters.",
+      message: "Confirm password must be at least 6 characters.",
     }),
-    terms: z.boolean().optional(),
-    privacy: z.boolean().optional(),
   })
-  .refine((data) => data.password === data.confirm_password, {
+  .refine((data) => data.new_password === data.confirm_password, {
     message: "Passwords do not match",
-    path: ["confirmPassword"],
   });
 
-export default function useSignup() {
+export default function useChangePassword() {
   const router = useRouter();
 
+  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      new_password: "",
       confirm_password: "",
-      terms: false,
-      privacy: false,
     },
   });
 
+  // 2. Define a submit handler.
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    toast.loading("Registering...");
+    toast.loading("Changing password...");
 
     try {
-      const result = await registerUser(values);
+      const result = await changePassword(values);
 
       if (result?.error) {
         // Set form errors for validation display
@@ -50,11 +44,10 @@ export default function useSignup() {
           type: "server",
           message: result.error,
         });
-        form.resetField("password");
+        form.resetField("new_password");
         form.resetField("confirm_password");
-        form.clearErrors("email");
-        form.clearErrors("password");
-        form.setFocus("email");
+        form.clearErrors("confirm_password");
+        form.clearErrors("new_password");
 
         // Show error toast
         toast.dismiss();
@@ -65,14 +58,12 @@ export default function useSignup() {
       // Success - clear form and show success
       form.clearErrors();
       toast.dismiss();
-      toast.success("Registration successful!");
+      toast.success("Password changed successfully!");
 
       // Close modal first, then redirect
       router.back();
       setTimeout(() => {
-        router.replace("/chat", {
-          scroll: false,
-        });
+        router.push("?modal=sign-in");
         router.refresh();
       }, 100); // Small delay to ensure modal closes first
     } catch (error) {
@@ -80,20 +71,18 @@ export default function useSignup() {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Registration failed. Please try again.";
+          : "Password change failed. Please try again.";
 
       form.setError("root", {
         type: "server",
         message: errorMessage,
       });
-      form.resetField("password");
+      form.resetField("new_password");
       form.resetField("confirm_password");
-      form.setFocus("email");
 
       toast.dismiss();
       toast.error(errorMessage);
     }
   }
-
   return { form, onSubmit };
 }

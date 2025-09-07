@@ -1,42 +1,38 @@
+import { verifyCode } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { changePassword } from "./action";
 
-const formSchema = z
-  .object({
-    new_password: z.string().min(4, {
-      message: "New password must be at least 6 characters.",
+const formSchema = z.object({
+  otp: z
+    .string()
+    .min(4, {
+      message: "OTP must be at least 4 characters.",
+    })
+    .max(4, {
+      message: "OTP must be at most 4 characters.",
     }),
-    confirm_password: z.string().min(4, {
-      message: "Confirm password must be at least 6 characters.",
-    }),
-  })
-  .refine((data) => data.new_password === data.confirm_password, {
-    message: "Passwords do not match",
-  });
+});
 
-export default function useChangePassword() {
+export default function useVerifyCode() {
   const router = useRouter();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      new_password: "",
-      confirm_password: "",
+      otp: "",
     },
   });
 
   // 2. Define a submit handler.
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    toast.loading("Registering...");
+    toast.loading("Verifying...");
 
     try {
-      const result = await changePassword(values);
+      const result = await verifyCode(values);
 
       if (result?.error) {
         // Set form errors for validation display
@@ -44,10 +40,7 @@ export default function useChangePassword() {
           type: "server",
           message: result.error,
         });
-        form.resetField("new_password");
-        form.resetField("confirm_password");
-        form.clearErrors("confirm_password");
-        form.clearErrors("new_password");
+        form.resetField("otp");
 
         // Show error toast
         toast.dismiss();
@@ -58,12 +51,12 @@ export default function useChangePassword() {
       // Success - clear form and show success
       form.clearErrors();
       toast.dismiss();
-      toast.success("Registration successful!");
+      toast.success("Verification successful!");
 
       // Close modal first, then redirect
-      router.back();
+      // router.back();
       setTimeout(() => {
-        router.push("/auth/sign-in");
+        router.replace("?modal=change-password");
         router.refresh();
       }, 100); // Small delay to ensure modal closes first
     } catch (error) {
@@ -71,14 +64,14 @@ export default function useChangePassword() {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Registration failed. Please try again.";
+          : "Verification failed. Please try again.";
 
       form.setError("root", {
         type: "server",
         message: errorMessage,
       });
-      form.resetField("new_password");
-      form.resetField("confirm_password");
+      form.resetField("otp");
+      form.setFocus("otp");
 
       toast.dismiss();
       toast.error(errorMessage);

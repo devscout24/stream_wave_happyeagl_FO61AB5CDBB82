@@ -1,38 +1,48 @@
+import { registerUser } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { verifyCode } from "./Action";
 
-const formSchema = z.object({
-  otp: z
-    .string()
-    .min(4, {
-      message: "OTP must be at least 4 characters.",
-    })
-    .max(4, {
-      message: "OTP must be at most 4 characters.",
+const formSchema = z
+  .object({
+    email: z.string().email({
+      message: "Please enter a valid email address.",
     }),
-});
+    password: z.string().min(4, {
+      message: "Password must be at least 4 characters.",
+    }),
+    confirm_password: z.string().min(4, {
+      message: "Confirm Password must be at least 4 characters.",
+    }),
+    terms: z.boolean().optional(),
+    privacy: z.boolean().optional(),
+  })
+  .refine((data) => data.password === data.confirm_password, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
-export default function useVerifyCode() {
+export default function useSignup() {
   const router = useRouter();
 
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      otp: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+      terms: false,
+      privacy: false,
     },
   });
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    toast.loading("Verifying...");
+    toast.loading("Registering...");
 
     try {
-      const result = await verifyCode(values);
+      const result = await registerUser(values);
 
       if (result?.error) {
         // Set form errors for validation display
@@ -40,7 +50,11 @@ export default function useVerifyCode() {
           type: "server",
           message: result.error,
         });
-        form.resetField("otp");
+        form.resetField("password");
+        form.resetField("confirm_password");
+        form.clearErrors("email");
+        form.clearErrors("password");
+        form.setFocus("email");
 
         // Show error toast
         toast.dismiss();
@@ -51,12 +65,14 @@ export default function useVerifyCode() {
       // Success - clear form and show success
       form.clearErrors();
       toast.dismiss();
-      toast.success("Verification successful!");
+      toast.success("Registration successful!");
 
       // Close modal first, then redirect
-      // router.back();
+      router.back();
       setTimeout(() => {
-        router.replace("/auth/change-password");
+        router.replace("/chat", {
+          scroll: false,
+        });
         router.refresh();
       }, 100); // Small delay to ensure modal closes first
     } catch (error) {
@@ -64,18 +80,20 @@ export default function useVerifyCode() {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Verification failed. Please try again.";
+          : "Registration failed. Please try again.";
 
       form.setError("root", {
         type: "server",
         message: errorMessage,
       });
-      form.resetField("otp");
-      form.setFocus("otp");
+      form.resetField("password");
+      form.resetField("confirm_password");
+      form.setFocus("email");
 
       toast.dismiss();
       toast.error(errorMessage);
     }
   }
+
   return { form, onSubmit };
 }

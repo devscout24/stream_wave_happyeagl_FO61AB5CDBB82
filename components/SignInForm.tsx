@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import useLogin from "./use-login";
+import useLogin from "../hooks/use-login";
 
 export default function SignInForm({ isModal = false }: { isModal?: boolean }) {
   const { form, onSubmit } = useLogin();
@@ -32,6 +32,16 @@ export default function SignInForm({ isModal = false }: { isModal?: boolean }) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-6 md:space-y-8"
       >
+        <div className="container mx-auto max-w-xl space-y-3 max-md:px-2 md:space-y-5">
+          <h1 className="text-muted-foreground text-center text-xl font-semibold md:text-2xl lg:text-4xl">
+            Hey there! Good to see you
+          </h1>
+
+          <p className="text-muted-foreground mb-10 text-center text-xs font-normal md:text-sm">
+            Log in to access your personalized dashboard.
+          </p>
+        </div>
+
         {/* Email */}
         <FormField
           control={form.control}
@@ -121,7 +131,7 @@ export default function SignInForm({ isModal = false }: { isModal?: boolean }) {
             )}
           />
           <Link
-            href="/auth/forgot-password"
+            href="/?modal=forgot-password"
             className={cn(baseText, "ml-auto text-sm underline max-md:text-xs")}
           >
             Forgot password?
@@ -151,7 +161,7 @@ export default function SignInForm({ isModal = false }: { isModal?: boolean }) {
           <p className={cn(baseText, "text-center text-sm max-md:text-xs")}>
             <span>Don&apos;t have an account? </span>
             <Link
-              href="/auth/sign-up"
+              href="?modal=sign-up"
               replace
               className={cn(baseText, "underline")}
             >
@@ -167,7 +177,7 @@ export default function SignInForm({ isModal = false }: { isModal?: boolean }) {
                 baseText,
                 "mx-auto w-fit text-center text-sm underline max-md:text-xs",
               )}
-              onClick={() => router.back()}
+              onClick={() => router.push("/")}
             >
               Stay Logged Out?
             </Button>

@@ -1,38 +1,35 @@
+import { sendForgotPasswordEmail } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { loginUser } from "./action";
 
 const formSchema = z.object({
-  email: z.string().min(2, {
-    message: "Email must be at least 2 characters.",
+  email: z.string().email({
+    message: "Please enter a valid email address.",
   }),
-  password: z.string().min(4, {
-    message: "Password must be at least 6 characters.",
-  }),
-  rememberMe: z.boolean().optional(),
 });
 
-export default function useLogin() {
+export default function useForgotPassword(email?: string) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const encodedEmail = searchParams.get("email");
+  const decodedEmail = encodedEmail ? atob(encodedEmail) : "";
+  email = email || decodedEmail || "";
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: "onChange",
     defaultValues: {
-      email: "",
-      password: "",
-      rememberMe: false,
+      email: email || "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    toast.loading("Logging in...");
+    toast.loading("Sending...");
 
     try {
-      const result = await loginUser(values);
+      const result = await sendForgotPasswordEmail(values);
 
       if (result?.error) {
         // Set form errors for validation display
@@ -40,10 +37,8 @@ export default function useLogin() {
           type: "server",
           message: result.error,
         });
-        form.resetField("password");
+
         form.clearErrors("email");
-        form.clearErrors("password");
-        form.clearErrors("rememberMe");
         form.setFocus("email");
 
         // Show error toast
@@ -55,26 +50,26 @@ export default function useLogin() {
       // Success - clear form and show success
       form.clearErrors();
       toast.dismiss();
-      toast.success("Logged in successfully!");
+      toast.success("Password reset email sent!");
 
       // Close modal first, then redirect
-      router.back();
-      setTimeout(() => {
-        router.replace("/chat");
-        router.refresh();
-      }, 100); // Small delay to ensure modal closes first
+      // router.back();
+      // setTimeout(() => {
+      router.replace(`?modal=verify-email&email=${btoa(values.email)}`);
+      router.refresh();
+      // }, 100); // Small delay to ensure modal closes first
     } catch (error) {
       // Handle actual errors only
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Login failed. Please try again.";
+          : "Password reset failed. Please try again.";
 
       form.setError("root", {
         type: "server",
         message: errorMessage,
       });
-      form.resetField("password");
+      form.resetField("email");
       form.setFocus("email");
 
       toast.dismiss();

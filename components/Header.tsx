@@ -22,7 +22,7 @@ export default async function Header() {
                 <Profile profile={user} avatarOnly />
               </Link>
 
-              <MobileSidebar/>
+              <MobileSidebar />
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@ export default async function Header() {
             <div className="flex items-center gap-4">
               <ThemeToggle />
 
-              <Link href="/auth/sign-in">
+              <Link href="?modal=sign-in">
                 <Button variant="default">
                   Sign In <Icon src="/login-arrow.svg" />
                 </Button>

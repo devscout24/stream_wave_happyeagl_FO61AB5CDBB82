@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     "Welcome to Capital H - A modern Next.js application with Docker development environment",
 };
 
+// Force dynamic rendering because Header uses cookies
+export const dynamic = "force-dynamic";
+
 export default function HomeLayout({
   children,
 }: Readonly<{

@@ -1,4 +1,5 @@
 import IPInfoProvider from "@/components/IPInfoProvider";
+import Modals from "@/components/Modals";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import config from "@/config";
@@ -57,6 +58,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Modals />
           <Toaster />
           {modal}
           <IPInfoProvider>{children}</IPInfoProvider>

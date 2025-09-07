@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
-import useChangePassword from "./use-change-password";
+import useChangePassword from "../hooks/use-change-password";
 
 export default function ChangePasswordForm() {
   const { form, onSubmit } = useChangePassword();
@@ -24,6 +24,12 @@ export default function ChangePasswordForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-6 md:space-y-8"
       >
+        <div className="container mx-auto max-w-xl space-y-3 max-md:px-2 md:space-y-5">
+          <h1 className="text-muted-foreground text-xl font-semibold md:text-2xl lg:text-4xl">
+            Change Password
+          </h1>
+        </div>
+
         <FormField
           control={form.control}
           name="new_password"

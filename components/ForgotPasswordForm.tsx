@@ -10,9 +10,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import useForgotPassword from "./use-forgot-password";
+import useForgotPassword from "@/hooks/use-forgot-password";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export default function ForgotPasswordForm({
   email,
@@ -29,6 +29,16 @@ export default function ForgotPasswordForm({
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-6 md:space-y-8"
       >
+        <div className="container mx-auto max-w-xl space-y-3 max-md:px-2 md:space-y-5">
+          <h1 className="text-muted-foreground text-center text-xl font-semibold md:text-2xl lg:text-4xl">
+            Forgot Your Password?
+          </h1>
+
+          <p className="text-muted-foreground mb-10 text-center text-xs font-normal md:text-sm">
+            Don’t worry! Enter your email, and we’ll send you instructions to
+            reset your password.
+          </p>
+        </div>
         <FormField
           control={form.control}
           name="email"
@@ -47,7 +57,7 @@ export default function ForgotPasswordForm({
                   {...field}
                   className={cn(
                     "outline-border border-border text-muted-foreground placeholder:text-muted-foreground/30 focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none",
-                    { "text-white": isModal }
+                    { "text-white": isModal },
                   )}
                 />
               </FormControl>
@@ -70,17 +80,16 @@ export default function ForgotPasswordForm({
           <p
             className={cn(
               "text-muted-foreground text-center text-sm max-md:text-xs",
-              { "text-white": isModal }
+              { "text-white": isModal },
             )}
           >
             <span> Don’t have an account? </span>
             <Link
               href="/auth/sign-up"
               replace
-              className={cn(
-                "text-muted-foreground text-sm underline",
-                { "text-white": isModal }
-              )}
+              className={cn("text-muted-foreground text-sm underline", {
+                "text-white": isModal,
+              })}
             >
               Sign up
             </Link>
