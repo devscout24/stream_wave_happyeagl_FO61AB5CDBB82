@@ -350,3 +350,33 @@ export async function registerUser(values: {
     return { error: "Registration failed. Please try again." };
   }
 }
+
+export async function resendVerificationCode(email: string) {
+  try {
+    const response = await fetcher<ApiResponse<{ message: string }>>(
+      "password-reset/request/",
+      {
+        method: "POST",
+        body: JSON.stringify({ email }),
+      },
+    );
+
+    if (!response?.data) {
+      return {
+        error: response?.message || "Failed to resend verification code",
+      };
+    }
+
+    return {
+      message: response.data.message || "Verification code sent successfully!",
+    };
+  } catch (error) {
+    console.error("Resend verification error:", error);
+
+    if (error && typeof error === "object" && "message" in error) {
+      return { error: (error as { message: string }).message };
+    }
+
+    return { error: "Failed to resend verification code. Please try again." };
+  }
+}

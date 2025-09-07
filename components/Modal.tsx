@@ -45,7 +45,7 @@ export default function Modal({
 
   return (
     <Dialog open={modal === openId} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-[600px]">
+      <DialogContent className="max-h-[90dvh] sm:max-w-[600px]">
         <DialogTitle hidden />
 
         {children}

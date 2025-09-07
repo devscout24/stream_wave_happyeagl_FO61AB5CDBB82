@@ -20,7 +20,8 @@ import useVerifyCode from "../hooks/use-verify-code";
 import Icon from "./Icon";
 
 export default function VerifyForm() {
-  const { form, onSubmit } = useVerifyCode();
+  const { form, onSubmit, timeLeft, canResend, formatTime, resendCode } =
+    useVerifyCode();
   const searchParams = useSearchParams();
   const encodedEmail = searchParams.get("email") || "";
   const email = atob(encodedEmail);
@@ -62,7 +63,7 @@ export default function VerifyForm() {
                   <InputOTPGroup className="flex w-full justify-between">
                     <InputOTPSlot
                       index={0}
-                      className="h-20 w-18 rounded-md text-6xl" // caret-4 increases cursor thickness, caret-primary sets color
+                      className="h-20 w-18 rounded-md text-6xl"
                     />
                     <InputOTPSlot
                       index={1}
@@ -95,18 +96,26 @@ export default function VerifyForm() {
 
         <div className="space-y-2">
           <p className="text-muted-foreground text-center text-sm max-md:text-xs">
-            <Link
-              href="/auth/sign-up"
-              replace
-              className="text-muted-foreground text-sm underline"
-            >
-              Didn’t receive code?
-            </Link>
+            {canResend ? (
+              <button
+                type="button"
+                onClick={resendCode}
+                className="text-muted-foreground hover:text-foreground text-sm underline transition-colors"
+              >
+                Didn&apos;t receive code? Resend
+              </button>
+            ) : (
+              <span className="text-muted-foreground text-sm">
+                Didn&apos;t receive code?
+              </span>
+            )}
           </p>
 
-          <p className="text-muted-foreground text-center text-sm max-md:text-xs">
-            Resend: 00.30
-          </p>
+          {!canResend && (
+            <p className="text-muted-foreground text-center text-sm max-md:text-xs">
+              Resend: {formatTime(timeLeft)}
+            </p>
+          )}
         </div>
       </form>
     </Form>
