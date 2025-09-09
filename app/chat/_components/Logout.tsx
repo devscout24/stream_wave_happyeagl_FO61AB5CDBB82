@@ -3,15 +3,16 @@
 import Icon from "@/components/Icon";
 import { Button } from "@/components/ui/button";
 import { logoutUser } from "@/lib/actions";
+import React from "react";
 import { toast } from "sonner";
 
-export default function Logout({
-  isProfile = false,
-  isCollapsed = true,
-}: {
-  isProfile?: boolean;
-  isCollapsed?: boolean;
-}) {
+const Logout = React.forwardRef<
+  HTMLButtonElement,
+  React.ComponentPropsWithoutRef<"button"> & {
+    isProfile?: boolean;
+    isCollapsed?: boolean;
+  }
+>(({ isProfile = false, isCollapsed = true, onClick, ...props }, ref) => {
   const handleLogout = async () => {
     const logoutPromise = async () => {
       try {
@@ -46,18 +47,29 @@ export default function Logout({
     });
   };
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    handleLogout();
+    onClick?.(e);
+  };
+
   return isProfile ? (
-    <Button onClick={handleLogout} variant="default">
+    <Button ref={ref} onClick={handleClick} variant="default" {...props}>
       Sign out <Icon src="/login-arrow.svg" />
     </Button>
   ) : (
     <Button
+      ref={ref}
       variant="ghost"
       className="dark:text-secondary hover:text-foreground hover:dark:text-secondary mt-4 cursor-pointer !p-0 hover:bg-transparent hover:dark:bg-transparent"
-      onClick={handleLogout}
+      onClick={handleClick}
+      {...props}
     >
       <Icon src="/logout.svg" className="size-6" />
       <span className="text-base">{isCollapsed && "Sign Out"}</span>
     </Button>
   );
-}
+});
+
+Logout.displayName = "Logout";
+
+export default Logout;

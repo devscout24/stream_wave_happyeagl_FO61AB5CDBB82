@@ -1,3 +1,5 @@
+"use client";
+
 import Logo from "@/components/Logo";
 import Profile from "@/components/Profile";
 import { DialogTitle } from "@/components/ui/dialog";
@@ -8,16 +10,14 @@ import {
   DrawerHeader,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { getUserProfile } from "@/lib/actions";
+import { UserProfile } from "@/types";
 import { Menu } from "lucide-react";
 import Logout from "../../../components/Logout";
 import Search from "../../../components/Search";
-import SidebarMenu from "./SidebarMenu";
 import MobileSidebarCom from "./MobileSidebarCom";
+import SidebarMenu from "./SidebarMenu";
 
-export default async function MobileSidebar() {
-  const user = await getUserProfile(); 
-
+export default function MobileSidebar({ user }: { user: UserProfile | null }) {
   return (
     <aside className="lg:hidden">
       <Drawer direction="left">
@@ -38,7 +38,7 @@ export default async function MobileSidebar() {
 
           <SidebarMenu isDesktop={false} />
 
-          <MobileSidebarCom/>
+          <MobileSidebarCom />
 
           <DrawerFooter>
             <Logout />

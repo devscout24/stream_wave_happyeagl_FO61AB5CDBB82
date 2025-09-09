@@ -1,29 +1,49 @@
+"use client";
+
 import MobileSidebar from "@/app/chat/_components/MobileSidebar";
 import Profile from "@/components/Profile";
 import { getUserProfile } from "@/lib/actions";
+import { UserProfile } from "@/types";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import Icon from "./Icon";
 import Logo from "./Logo";
 import Sidebar from "./Sidebar";
 import ThemeToggle from "./theme-toggle";
 import { Button } from "./ui/button";
 
-export default async function Header() {
-  const user = await getUserProfile(); // Assume this function fetches the user profile
+export default function Header() {
+  const [user, setUser] = useState<UserProfile | null>(null);
+  // Assume this function fetches the user profile
+
+  const searchParams = useSearchParams();
+  const sidebar = searchParams.get("sidebar") === "true";
+
+  useEffect(() => {
+    async function fetchUser() {
+      const userProfile = await getUserProfile();
+      setUser(userProfile);
+    }
+    fetchUser();
+  }, []);
 
   return user ? (
     <header>
       <nav>
         <div className="container mx-auto max-md:px-2">
           <div className="flex items-center justify-between py-3">
-            <h1 className="text-3xl font-semibold">AI Chat</h1>
+            <div className="flex items-center gap-3">
+              {sidebar && <Logo className="h-12 w-12" />}
+              <h1 className="text-3xl font-semibold">AI Chat</h1>
+            </div>
 
             <div className="flex items-center gap-4">
               <Link href="/profile">
                 <Profile profile={user} avatarOnly />
               </Link>
 
-              <MobileSidebar />
+              <MobileSidebar user={user} />
             </div>
           </div>
         </div>
