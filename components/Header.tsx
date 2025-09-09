@@ -4,6 +4,7 @@ import { getUserProfile } from "@/lib/actions";
 import Link from "next/link";
 import Icon from "./Icon";
 import Logo from "./Logo";
+import Sidebar from "./Sidebar";
 import ThemeToggle from "./theme-toggle";
 import { Button } from "./ui/button";
 
@@ -34,9 +35,7 @@ export default async function Header() {
         <div className="container mx-auto max-md:px-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 py-4">
-              <Link href="/about">
-                <Icon src="/menu.svg" />
-              </Link>
+              <Sidebar />
               <Logo />
             </div>
             <div className="flex items-center gap-4">
