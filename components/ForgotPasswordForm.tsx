@@ -85,7 +85,7 @@ export default function ForgotPasswordForm({
           >
             <span> Don’t have an account? </span>
             <Link
-              href="/auth/sign-up"
+              href="?modal=sign-up"
               replace
               className={cn("text-muted-foreground text-sm underline", {
                 "text-white": isModal,
