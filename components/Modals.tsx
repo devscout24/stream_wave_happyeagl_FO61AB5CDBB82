@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Appointment from "./Appointment";
 import ChangePasswordForm from "./ChangePasswordForm";
+import ConfirmAppointment from "./ConfirmAppointment";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import Modal from "./Modal";
 import SignInForm from "./SignInForm";
@@ -32,6 +33,9 @@ export default function Modals() {
 
       <Modal modalId="modal" openId="appointment">
         <Appointment />
+      </Modal>
+      <Modal modalId="booked" openId="appointment" className="!max-w-sm">
+        <ConfirmAppointment />
       </Modal>
     </Suspense>
   );

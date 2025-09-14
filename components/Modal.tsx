@@ -1,6 +1,6 @@
 "use client";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
+import { cn, formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { PropsWithChildren } from "react";
@@ -8,12 +8,14 @@ import { PropsWithChildren } from "react";
 interface ModalProps {
   modalId: string;
   openId: string;
+  className?: string;
 }
 
 export default function Modal({
   openId,
   modalId,
   children,
+  className,
 }: PropsWithChildren<ModalProps>) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -45,7 +47,9 @@ export default function Modal({
 
   return (
     <Dialog open={modal === openId} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-h-[90dvh] sm:max-w-[600px]">
+      <DialogContent
+        className={cn("max-h-[90dvh] sm:max-w-[600px]", className)}
+      >
         <DialogTitle hidden />
 
         {children}
