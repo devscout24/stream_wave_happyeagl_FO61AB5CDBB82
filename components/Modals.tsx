@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Appointment from "./Appointment";
 import ChangePasswordForm from "./ChangePasswordForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import Modal from "./Modal";
@@ -8,7 +9,7 @@ import VerifyForm from "./VerifyForm";
 
 export default function Modals() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<div>Loading...</div>}>
       <Modal modalId="modal" openId="sign-in">
         <SignInForm />
       </Modal>
@@ -27,6 +28,10 @@ export default function Modals() {
 
       <Modal modalId="modal" openId="change-password">
         <ChangePasswordForm />
+      </Modal>
+
+      <Modal modalId="modal" openId="appointment">
+        <Appointment />
       </Modal>
     </Suspense>
   );

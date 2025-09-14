@@ -8,6 +8,7 @@ import { ShieldAlert, X } from "lucide-react";
 import Image from "next/image";
 import { useRef } from "react";
 
+import Link from "next/link";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { formSchema } from "./use-chat-form";
@@ -170,9 +171,11 @@ export default function ChatForm({
           </span>
         </p>
         <div className="grid w-full place-content-center">
-          <Button type="button" className="mx-auto mt-2 w-fit">
-            Find Legal Help in City, ST
-          </Button>
+          <Link href="?modal=appointment">
+            <Button type="button" className="mx-auto mt-2 w-fit">
+              Find Legal Help in City, ST
+            </Button>
+          </Link>
         </div>
       </form>
     </Form>

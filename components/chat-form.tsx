@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import useChatForm from "@/hooks/use-chat-form";
 import { ShieldAlert, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRef } from "react";
 
 export default function ChatForm({ chatId }: { chatId?: number }) {
@@ -163,9 +164,11 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
         </p>
 
         <div className="grid w-full place-content-center">
-          <Button type="button" className="mx-auto mt-2 w-fit">
-            Find Legal Help in City, ST
-          </Button>
+          <Link href="?modal=appointment">
+            <Button type="button" className="mx-auto mt-2 w-fit">
+              Find Legal Help in City, ST
+            </Button>
+          </Link>
         </div>
       </form>
     </Form>
