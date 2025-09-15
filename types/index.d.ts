@@ -28,6 +28,7 @@ export interface ApiResponse<T> {
   data: T;
   message: string;
   status: string;
+  reply?: string;
 }
 
 // Error response from the API

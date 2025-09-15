@@ -380,3 +380,35 @@ export async function resendVerificationCode(email: string) {
     return { error: "Failed to resend verification code. Please try again." };
   }
 }
+
+export async function openChatSession() {
+  try {
+    const response = await fetcher<
+      ApiResponse<{ id: string; message: string }>
+    >("/chat/session", {
+      method: "POST",
+      body: JSON.stringify({}),
+    });
+
+    if (!response?.data) {
+      return {
+        error: response?.message || "Failed to open chat session",
+      };
+    }
+
+    return {
+      id: response.data.id,
+      message:
+        response?.reply ||
+        "Hello! I'm here to help you book an appointment. What would you like to schedule?",
+    };
+  } catch (error) {
+    console.error("Open chat session error:", error);
+
+    if (error && typeof error === "object" && "message" in error) {
+      return { error: (error as { message: string }).message };
+    }
+
+    return { error: "Failed to open chat session. Please try again." };
+  }
+}

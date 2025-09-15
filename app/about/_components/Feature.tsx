@@ -1,17 +1,27 @@
-import { features } from "../data/feature";
+import { Feature as IFeature } from "@/types";
+
 import FeatureCard from "./FeatureCard";
 
-export default function Feature() {
+interface FeatureProps {
+  title: string;
+  description: string;
+  features: IFeature[];
+}
+
+export default function Feature({
+  title,
+  description,
+  features,
+}: FeatureProps) {
   return (
     <section>
       <div className="container mx-auto mt-8 max-lg:px-2 lg:max-w-7xl">
         <div className="space-y-2">
           <h1 className="text-center text-2xl font-semibold sm:text-3xl lg:text-4xl">
-            What Makes our AI Smarter
+            {title}
           </h1>
           <p className="text-paragraph text-center max-sm:text-xs">
-            More than just chat — it understands context, learns with you, and
-            helps you get real work done.
+            {description}
           </p>
         </div>
 

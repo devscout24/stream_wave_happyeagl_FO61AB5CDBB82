@@ -19,7 +19,7 @@ export default function AboutLayout({
   return (
     <>
       <Header />
-      <main>{children}</main>;
+      {children}
     </>
   );
 }
