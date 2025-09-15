@@ -1,6 +1,8 @@
-import { openChatSession } from "@/lib/actions";
+import { appointmentChatSession, openChatSession } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -19,15 +21,14 @@ type Message = {
 };
 
 export default function useAppointment() {
-  const [messages, setMessages] = useState<Message[]>([
-    // {
-    //   id: "initial",
-    //   content:
-    //     "Hello! I'm here to help you book an appointment. What would you like to schedule?",
-    //   createdAt: new Date(),
-    //   isUser: false,
-    // },
-  ]);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const chat_id = searchParams.get("chat_id");
+  console.log("🚀 ~ useAppointment ~ chat_id:", chat_id);
+
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  console.log("🚀 ~ useAppointment ~ messages:", messages);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,7 +42,8 @@ export default function useAppointment() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!values.body?.trim()) return;
+    setIsLoading(true);
+    if (!values.body?.trim() || !chat_id) return;
 
     const userMessage: Message = {
       id: `user-${Date.now()}`,
@@ -58,59 +60,83 @@ export default function useAppointment() {
     form.reset();
 
     try {
-      // Simulate API call for appointment booking
-      // Replace this with your actual API call
-      const response = await new Promise<string>((resolve) => {
-        setTimeout(() => {
-          resolve(
-            "Thank you for your message! I'll help you schedule an appointment. What type of appointment are you looking for?",
-          );
-        }, 1000);
+      const result = await appointmentChatSession({
+        chat_id,
+        body: values.body,
       });
+      console.log("🚀 ~ onSubmit ~ result:", result);
 
-      // Remove optimistic flag and add AI response
-      setMessages((prev) => [
-        ...prev.map((msg) =>
-          msg.id === userMessage.id ? { ...msg, isOptimistic: false } : msg,
-        ),
-        {
+      if (result && result.message) {
+        const aiMessage: Message = {
           id: `ai-${Date.now()}`,
-          content: response,
+          content: result.message,
           createdAt: new Date(),
           isUser: false,
-        },
-      ]);
+        };
+        setMessages((prev) => [...prev, aiMessage]);
+      }
+
+      if (result?.next_action === "confirm" || result?.picked_expert_id) {
+        // Handle completed state
+        router.push(
+          `?modal=appointment&booked=appointment&expert_id=${result.picked_expert_id}&session_id=${result.session_id}`,
+        );
+        // const newUrl = formUrlQuery({
+        //   params: searchParams.toString(),
+        //   key: "booked",
+        //   value: "appointment",
+        // });
+
+        // const expertId = formUrlQuery({
+        //   params: searchParams.toString(),
+        //   key: "expert_id",
+        //   value: result?.picked_expert_id || 1,
+        // });
+        // // replace URL without scrolling
+        // router.push(newUrl || "/", { scroll: false });
+        // router.push(expertId || "/", { scroll: false });
+      }
     } catch (error) {
       // Remove optimistic message on error
       setMessages((prev) => prev.filter((msg) => msg.id !== userMessage.id));
       console.error("Failed to send message:", error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
+  const fetchInitialMessagesRef = useRef(false);
+
   useEffect(() => {
+    const hasFetched = fetchInitialMessagesRef.current;
+    if (hasFetched) return;
+    fetchInitialMessagesRef.current = true;
+
     async function fetchInitialMessages() {
       const result = await openChatSession();
       console.log("🚀 ~ fetchInitialMessages ~ result:", result);
+
       if (result) {
         if (
-          typeof result.id === "string" &&
+          (typeof result.id === "string" || typeof result.id === "number") &&
           typeof result.message === "string"
         ) {
-          setMessages((prev) => [
-            ...prev,
+          setMessages([
             {
-              id: result.id,
+              id: String(result.id), // Convert to string
               content: result.message,
               createdAt: new Date(),
               isUser: false,
             },
           ]);
+
+          router.push(`?modal=appointment&chat_id=${result.id}`);
         }
       }
     }
 
     fetchInitialMessages();
-  }, []);
+  }, [router]);
 
-  return { form, onSubmit, messages };
+  return { form, onSubmit, messages, isLoading };
 }

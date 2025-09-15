@@ -27,25 +27,25 @@ export const features = [
 
 export const portals = [
   {
-    icon: "/ai-audio-solid-rounded.svg",
+    icon: "/bump.svg",
     title: "Traffic Violations",
     description:
       "Get help with Traffic Tickets, DUI and other traffic violations, be it in state or out of state,",
   },
   {
-    icon: "/lock-password-solid-standard.svg",
+    icon: "/family.svg",
     title: "Family Matters",
     description:
       "Matters such as divorce, prenuptials, adoption, paternity, alimony, child support, child custody, and more,",
   },
   {
-    icon: "/sun-cloud-fast-wind.svg",
+    icon: "/company.svg",
     title: "Corporate/Busn Work",
     description:
       "Forming corporation, compliance, filing trademarks & patents, federal, state & local tax, and more,",
   },
   {
-    icon: "/tools-solid-standard.svg",
+    icon: "/passport.svg",
     title: "Immigration Issues",
     description:
       "Immigrant visas, greencard, get U.S. citizenship, political asylum or refugee status, deportation, and more,",

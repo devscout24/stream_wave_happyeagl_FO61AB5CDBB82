@@ -4,10 +4,11 @@ import useAppointment from "@/hooks/use-appointment";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef } from "react";
 import AppointmentChatForm from "./AppointmentChatForm";
+import Icon from "./Icon";
 import Message from "./Message";
 
 export default function Appointment() {
-  const { messages, form, onSubmit } = useAppointment();
+  const { messages, form, onSubmit, isLoading } = useAppointment();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
@@ -45,6 +46,19 @@ export default function Appointment() {
             />
           </div>
         ))}
+        {isLoading && (
+          <div role="status" className="flex items-center gap-2">
+            <Icon src="/ai.svg" className="size-6" />
+            <span className="flex items-end gap-1">
+              Thinking
+              <span className="flex gap-1">
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.4s] [animation-duration:0.8s]"></span>
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.2s] [animation-duration:0.8s]"></span>
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-duration:0.8s]"></span>
+              </span>
+            </span>
+          </div>
+        )}
         <div ref={messagesEndRef} />
       </div>
 

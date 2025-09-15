@@ -383,12 +383,13 @@ export async function resendVerificationCode(email: string) {
 
 export async function openChatSession() {
   try {
-    const response = await fetcher<
-      ApiResponse<{ id: string; message: string }>
-    >("/chat/session", {
-      method: "POST",
-      body: JSON.stringify({}),
-    });
+    const response = await fetcher<ApiResponse<{ id: string; reply: string }>>(
+      "/chat/session",
+      {
+        method: "POST",
+        body: JSON.stringify({}),
+      },
+    );
 
     if (!response?.data) {
       return {
@@ -399,7 +400,7 @@ export async function openChatSession() {
     return {
       id: response.data.id,
       message:
-        response?.reply ||
+        response.data?.reply ||
         "Hello! I'm here to help you book an appointment. What would you like to schedule?",
     };
   } catch (error) {
@@ -410,5 +411,92 @@ export async function openChatSession() {
     }
 
     return { error: "Failed to open chat session. Please try again." };
+  }
+}
+
+export async function appointmentChatSession({
+  chat_id,
+  body,
+}: {
+  chat_id: string;
+  body: string;
+}) {
+  try {
+    const response = await fetcher<
+      ApiResponse<{
+        id: string;
+        reply: string;
+        next_action: string;
+        picked_expert_id?: string;
+        session_id?: string;
+      }>
+    >(`/chat/${chat_id}/message`, {
+      method: "POST",
+      body: JSON.stringify({ text: body }),
+    });
+
+    if (!response?.data) {
+      return {
+        error: response?.message || "Failed to open appointment chat session",
+      };
+    }
+
+    return {
+      id: response.data.id,
+      message:
+        response.data?.reply ||
+        "Hello! I'm here to help you book an appointment. What would you like to schedule?",
+      next_action: response.data.next_action,
+      picked_expert_id: response.data.picked_expert_id,
+      session_id: response.data.session_id,
+    };
+  } catch (error) {
+    console.error("Appointment chat session error:", error);
+
+    if (error && typeof error === "object" && "message" in error) {
+      return { error: (error as { message: string }).message };
+    }
+
+    return {
+      error: "Failed to open appointment chat session. Please try again.",
+    };
+  }
+}
+
+export async function confirmBooking({
+  session_id,
+  picked_expert_id,
+}: {
+  session_id: string;
+  picked_expert_id: string;
+}) {
+  try {
+    const response = await fetcher<
+      ApiResponse<{ id: string; confirmation: string }>
+    >(`/appointments/confirm`, {
+      method: "POST",
+      body: JSON.stringify({ session_id, picked_expert_id }),
+    });
+
+    if (!response?.data) {
+      return {
+        error: response?.message || "Failed to confirm booking",
+      };
+    }
+
+    return {
+      id: response.data.id,
+      message:
+        response.data?.confirmation ||
+        "Your appointment has been confirmed! We look forward to seeing you.",
+    };
+  } catch (error) {
+    console.error("Confirm booking error:", error);
+
+    if (error && typeof error === "object" && "message" in error) {
+      return { error: (error as { message: string }).message };
+    }
+
+    return { error: "Failed to confirm booking. Please try again." };
   }
 }
