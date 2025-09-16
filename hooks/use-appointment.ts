@@ -76,7 +76,7 @@ export default function useAppointment() {
         setMessages((prev) => [...prev, aiMessage]);
       }
 
-      if (result?.next_action === "confirm" || result?.picked_expert_id) {
+      if (result?.next_action === "confirm" && result?.picked_expert_id) {
         // Handle completed state
         router.push(
           `?modal=appointment&booked=appointment&expert_id=${result.picked_expert_id}&session_id=${result.session_id}`,
