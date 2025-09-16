@@ -467,8 +467,8 @@ export async function confirmBooking({
   session_id,
   picked_expert_id,
 }: {
-  session_id: string;
-  picked_expert_id: string;
+  session_id: number;
+  picked_expert_id: number;
 }) {
   try {
     const response = await fetcher<

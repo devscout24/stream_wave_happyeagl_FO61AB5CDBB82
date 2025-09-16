@@ -37,14 +37,14 @@ export default function ConfirmAppointment() {
         return;
       }
       const response = await confirmBooking({
-        session_id: session_id,
-        picked_expert_id: expert_id,
+        session_id: Number(session_id),
+        picked_expert_id: Number(expert_id),
       });
       toast.success("Appointment confirmed!", { id: toastId });
       console.log("Appointment confirmed:", response);
       const newUrl = removeKeysFromQuery({
         params: searchParams.toString(),
-        keysToRemove: ["booked", "session_id"],
+        keysToRemove: ["booked", "session_id", "modal", "expert_id"],
       });
       // replace URL without scrolling
       router.replace(newUrl || "/", { scroll: false });

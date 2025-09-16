@@ -81,20 +81,6 @@ export default function useAppointment() {
         router.push(
           `?modal=appointment&booked=appointment&expert_id=${result.picked_expert_id}&session_id=${result.session_id}`,
         );
-        // const newUrl = formUrlQuery({
-        //   params: searchParams.toString(),
-        //   key: "booked",
-        //   value: "appointment",
-        // });
-
-        // const expertId = formUrlQuery({
-        //   params: searchParams.toString(),
-        //   key: "expert_id",
-        //   value: result?.picked_expert_id || 1,
-        // });
-        // // replace URL without scrolling
-        // router.push(newUrl || "/", { scroll: false });
-        // router.push(expertId || "/", { scroll: false });
       }
     } catch (error) {
       // Remove optimistic message on error
