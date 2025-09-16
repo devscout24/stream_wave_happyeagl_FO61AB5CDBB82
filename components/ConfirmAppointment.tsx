@@ -40,7 +40,12 @@ export default function ConfirmAppointment() {
         session_id: Number(session_id),
         picked_expert_id: Number(expert_id),
       });
-      toast.success("Appointment confirmed!", { id: toastId });
+
+      if (response?.error) {
+        throw new Error(response?.error || "Failed to confirm appointment");
+      }
+
+      toast.success("Appointment confirmed!");
       console.log("Appointment confirmed:", response);
       const newUrl = removeKeysFromQuery({
         params: searchParams.toString(),
@@ -49,9 +54,7 @@ export default function ConfirmAppointment() {
       // replace URL without scrolling
       router.replace(newUrl || "/", { scroll: false });
     } catch (error) {
-      toast.error("Failed to confirm appointment. Please try again.", {
-        id: toastId,
-      });
+      toast.error("Failed to confirm appointment. Please try again.");
       console.error("Failed to confirm appointment:", error);
     } finally {
       toast.dismiss(toastId);
