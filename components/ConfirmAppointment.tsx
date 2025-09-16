@@ -9,17 +9,11 @@ import { Button } from "./ui/button";
 export default function ConfirmAppointment() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const booked = searchParams.get("booked");
   const expert_id = searchParams.get("expert_id");
 
   const session_id = searchParams.get("session_id");
-  console.log("🚀 ~ ConfirmAppointment ~ booked:", booked);
-  console.log("🚀 ~ ConfirmAppointment ~ session_id:", session_id);
-  console.log("🚀 ~ ConfirmAppointment ~ expert_id:", expert_id);
 
   const handleCancel = () => {
-    // Logic to handle cancellation
-    console.log("Appointment cancelled");
     const newUrl = removeKeysFromQuery({
       params: searchParams.toString(),
       keysToRemove: ["booked", "chat_id", "expert_id", "session_id"],
@@ -46,7 +40,6 @@ export default function ConfirmAppointment() {
       }
 
       toast.success("Appointment confirmed!");
-      console.log("Appointment confirmed:", response);
       const newUrl = removeKeysFromQuery({
         params: searchParams.toString(),
         keysToRemove: ["booked", "session_id", "modal", "expert_id"],

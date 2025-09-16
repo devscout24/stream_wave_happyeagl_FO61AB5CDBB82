@@ -24,12 +24,10 @@ export default function useAppointment() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const chat_id = searchParams.get("chat_id");
-  console.log("🚀 ~ useAppointment ~ chat_id:", chat_id);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [streamingMessage, setStreamingMessage] = useState<string>("");
-  console.log("🚀 ~ useAppointment ~ messages:", messages);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -65,7 +63,6 @@ export default function useAppointment() {
         chat_id,
         body: values.body,
       });
-      console.log("🚀 ~ onSubmit ~ result:", result);
 
       if (result && result.message) {
         const aiMessage: Message = {
@@ -101,7 +98,6 @@ export default function useAppointment() {
 
     async function fetchInitialMessages() {
       const result = await openChatSession();
-      console.log("🚀 ~ fetchInitialMessages ~ result:", result);
 
       if (result) {
         if (

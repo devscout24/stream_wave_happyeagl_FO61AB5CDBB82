@@ -47,6 +47,7 @@ export default function Modal({
 
   return (
     <Dialog open={modal === openId} onOpenChange={handleOpenChange}>
+      <DialogTitle hidden />
       <DialogContent
         className={cn("max-h-[90dvh] sm:max-w-[600px]", className)}
       >
