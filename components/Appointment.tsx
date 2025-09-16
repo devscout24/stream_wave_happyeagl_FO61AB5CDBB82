@@ -8,26 +8,27 @@ import Icon from "./Icon";
 import Message from "./Message";
 
 export default function Appointment() {
-  const { messages, form, onSubmit, isLoading } = useAppointment();
+  const { messages, form, onSubmit, isLoading, streamingMessage } =
+    useAppointment();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom when new messages appear
+  // Auto-scroll to bottom when new messages appear or streaming updates
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-      });
-    }
-  }, [messages]);
+    setTimeout(() => {
+      if (messagesContainerRef.current) {
+        messagesContainerRef.current.scrollTop =
+          messagesContainerRef.current.scrollHeight;
+      }
+    }, 100);
+  }, [messages, isLoading, streamingMessage]);
 
   return (
     <div className="flex h-full flex-col">
       <h2 className="mb-4 text-2xl font-bold">Book an Appointment</h2>
       <div
         ref={messagesContainerRef}
-        className="max-h-96 min-h-96 flex-1 space-y-4 overflow-y-auto p-4"
+        className="flex max-h-96 min-h-96 flex-col justify-start space-y-4 overflow-y-auto p-4"
       >
         {messages.map((message) => (
           <div
@@ -46,7 +47,21 @@ export default function Appointment() {
             />
           </div>
         ))}
-        {isLoading && (
+
+        {/* Streaming message display */}
+        {streamingMessage && (
+          <div className="transition-opacity duration-300">
+            <Message
+              content={streamingMessage}
+              createdAt={new Date()}
+              isAuthenticated={true}
+              profile_pic="/ai.svg"
+              isUser={false}
+            />
+          </div>
+        )}
+
+        {isLoading && !streamingMessage && (
           <div role="status" className="flex items-center gap-2">
             <Icon src="/ai.svg" className="size-6" />
             <span className="flex items-end gap-1">
@@ -59,7 +74,7 @@ export default function Appointment() {
             </span>
           </div>
         )}
-        <div ref={messagesEndRef} />
+        <div ref={messagesEndRef} className="h-1" />
       </div>
 
       <div className="mt-auto">

@@ -28,6 +28,7 @@ export default function useAppointment() {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [streamingMessage, setStreamingMessage] = useState<string>("");
   console.log("🚀 ~ useAppointment ~ messages:", messages);
 
   // 1. Define your form.
@@ -124,5 +125,12 @@ export default function useAppointment() {
     fetchInitialMessages();
   }, [router]);
 
-  return { form, onSubmit, messages, isLoading };
+  return {
+    form,
+    onSubmit,
+    messages,
+    isLoading,
+    streamingMessage,
+    setStreamingMessage,
+  };
 }
