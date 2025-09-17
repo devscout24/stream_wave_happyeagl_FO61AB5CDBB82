@@ -126,8 +126,6 @@ export default function useChatForm({ chatId }: { chatId?: number }) {
     } else {
       const message = await sendChat(requestData);
 
-      console.error(message);
-
       //  Redirect to conversation page
       router.replace(`/chat/${message.chat_id}`);
     }

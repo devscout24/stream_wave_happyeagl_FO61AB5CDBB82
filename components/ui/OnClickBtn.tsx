@@ -1,6 +1,6 @@
 "use client";
 
-import useProvider from "@/app/chat/(root)/Context/use-provider";
+import useProvider from "@/Context/use-provider";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren } from "react";
 

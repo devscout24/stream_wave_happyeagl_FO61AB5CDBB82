@@ -1,7 +1,7 @@
 "use client";
 
 import { setArchive } from "@/app/chat/(root)/archive/_components/action";
-import useProvider from "@/app/chat/(root)/Context/use-provider";
+import useProvider from "@/Context/use-provider";
 import { cn } from "@/lib/utils";
 import { ChatTitle } from "@/types";
 import Link from "next/link";

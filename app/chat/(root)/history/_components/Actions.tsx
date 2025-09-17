@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/btn";
 import { toast } from "sonner";
-import useProvider from "../../Context/use-provider";
+import useProvider from "../../../../../Context/use-provider";
 import { bulkArchive, deleteHistory } from "./action";
 
 export default function Action() {

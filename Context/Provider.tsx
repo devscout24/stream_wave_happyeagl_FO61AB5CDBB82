@@ -7,6 +7,8 @@ interface ContextProps {
   selectHistoryChat: (chatId?: number) => void;
   selectedArchiveChat: number[];
   selectArchiveChat: (chatId?: number) => void;
+  toggleCollapse: () => void;
+  isCollapsed: boolean;
 }
 
 export const Context = React.createContext<ContextProps | undefined>(undefined);
@@ -14,6 +16,7 @@ export const Context = React.createContext<ContextProps | undefined>(undefined);
 export default function Provider({ children }: { children: React.ReactNode }) {
   const [selectedHistoryChat, setSelectedHistoryChat] = useState<number[]>([]);
   const [selectedArchiveChat, setSelectedArchiveChat] = useState<number[]>([]);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
 
   const selectHistoryChat = (chatId?: number) => {
     if (!chatId) return;
@@ -37,6 +40,8 @@ export default function Provider({ children }: { children: React.ReactNode }) {
     setSelectedArchiveChat((prev) => [...prev, chatId]);
   };
 
+  const toggleCollapse = () => setIsCollapsed((prev) => !prev);
+
   return (
     <Context.Provider
       value={{
@@ -44,6 +49,8 @@ export default function Provider({ children }: { children: React.ReactNode }) {
         selectedHistoryChat,
         selectArchiveChat,
         selectedArchiveChat,
+        toggleCollapse,
+        isCollapsed,
       }}
     >
       {children}

@@ -13,19 +13,21 @@ import Logout from "./Logout";
 import RecentHistory from "./RecentHistory";
 import SidebarMenu from "./SidebarMenu";
 
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import useProvider from "../../../Context/use-provider";
 
 export default function DesktopSidebar() {
   const [chat, setChat] = useState<ChatHistoryResponse>();
   const [user, setUser] = useState<UserProfile | null>();
+  const { isCollapsed, toggleCollapse } = useProvider();
 
   const searchParams = useSearchParams();
-  const sidebar = searchParams.get("sidebar") === "true";
 
   const pathname = usePathname();
   const isActive = (path: string) => pathname === path;
@@ -42,16 +44,22 @@ export default function DesktopSidebar() {
 
   return (
     <aside className="row-span-full grid grid-rows-[auto_1fr_auto] max-lg:hidden">
-      {sidebar ? (
+      {isCollapsed ? (
         <div>
           <div className="mt-3 flex items-center justify-between">
             {/* <Logo className="mx-auto my-4 h-10 w-10" /> */}
             <h1 className="py-3 text-lg font-semibold">
-              {"Hey " + user?.first_name} Welcome back!
+              Welcome back
+              {user?.first_name ? ` ${user.first_name.split(" ")[0]}` : ""}
             </h1>
-            <Link href="?sidebar=false">
+            <Button
+              variant="link"
+              size="icon"
+              onClick={toggleCollapse}
+              className="cursor-pointer"
+            >
               <Icon src="/left-arrow.svg" className="size-8" />
-            </Link>
+            </Button>
           </div>
 
           <Suspense fallback={null}>
@@ -69,13 +77,16 @@ export default function DesktopSidebar() {
           <div className="flex flex-col gap-6">
             <Logo className="mx-auto my-4 h-10 w-10" />
             <Tooltip>
-              <TooltipTrigger>
-                <Link href="?sidebar=true">
-                  <Icon src="/right-arrow.svg" />
-                </Link>
+              <TooltipTrigger
+                onClick={toggleCollapse}
+                className="cursor-pointer"
+              >
+                {/* <Link href="?sidebar=true"> */}
+                <Icon src="/right-arrow.svg" />
+                {/* </Link> */}
               </TooltipTrigger>
               <TooltipContent side="right">
-                <p className="text-white">Expand</p>
+                <p className="text-white dark:!text-black">Expand</p>
               </TooltipContent>
             </Tooltip>
 
@@ -91,7 +102,7 @@ export default function DesktopSidebar() {
                 </Link>
               </TooltipTrigger>
               <TooltipContent side="right">
-                <p className="text-white">New chat</p>
+                <p className="text-white dark:!text-black">New chat</p>
               </TooltipContent>
             </Tooltip>
 
@@ -107,7 +118,7 @@ export default function DesktopSidebar() {
                 </Link>
               </TooltipTrigger>
               <TooltipContent side="right">
-                <p className="text-white">Chat history</p>
+                <p className="text-white dark:!text-black">Chat history</p>
               </TooltipContent>
             </Tooltip>
 
@@ -123,7 +134,7 @@ export default function DesktopSidebar() {
                 </Link>
               </TooltipTrigger>
               <TooltipContent side="right">
-                <p className="text-white">Chat archive</p>
+                <p className="text-white dark:!text-black">Chat archive</p>
               </TooltipContent>
             </Tooltip>
           </div>
@@ -134,26 +145,26 @@ export default function DesktopSidebar() {
             <Tooltip>
               <TooltipTrigger asChild className="w-fit">
                 <Logout
-                  isCollapsed={sidebar}
+                  isCollapsed={isCollapsed}
                   className="w-full cursor-pointer hover:bg-transparent"
                 />
               </TooltipTrigger>
               <TooltipContent side="right">
-                <p className="text-white">Logout</p>
+                <p className="text-white dark:!text-black">Logout</p>
               </TooltipContent>
             </Tooltip>
           </div>
         </div>
       )}
 
-      {sidebar &&
+      {isCollapsed &&
         (chat?.total_count === 0 ? (
           <p className="mt-2 text-sm">No recent chat found.</p>
         ) : (
           <RecentHistory chats={chat?.chats?.slice(0, 10)} />
         ))}
 
-      {sidebar && (
+      {isCollapsed && (
         <div className="flex h-32 items-start">
           <Logout />
         </div>
