@@ -2,7 +2,7 @@ import ChatForm from "@/components/chat-form";
 
 export default function ChatPage() {
   return (
-    <div className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center">
+    <div className="flex min-h-[calc(100vh-200px)] flex-col items-center justify-center">
       <div className="mx-auto max-w-4xl space-y-5">
         <h1 className="text-center text-2xl font-medium md:text-3xl">
           I am legal expert. You can talk to me <br /> in Spanish or any

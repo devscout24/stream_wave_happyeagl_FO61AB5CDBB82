@@ -7,6 +7,8 @@ import { z } from "zod";
 
 const formSchema = z
   .object({
+    first_name: z.string().min(1, "First name is required"),
+    last_name: z.string().min(1, "Last name is required"),
     email: z.string().email({
       message: "Please enter a valid email address.",
     }),
@@ -30,6 +32,8 @@ export default function useSignup() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      first_name: "",
+      last_name: "",
       email: "",
       password: "",
       confirm_password: "",

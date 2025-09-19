@@ -1,8 +1,8 @@
 "use client";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn, formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
-
 import { PropsWithChildren } from "react";
 
 interface ModalProps {
@@ -48,12 +48,10 @@ export default function Modal({
   return (
     <Dialog open={modal === openId} onOpenChange={handleOpenChange}>
       <DialogTitle hidden />
-      <DialogContent
-        className={cn("max-h-[90dvh] sm:max-w-[600px]", className)}
-      >
-        <DialogTitle hidden />
-
-        {children}
+      <DialogContent className="px-0 sm:max-w-[600px]">
+        <ScrollArea className={cn("max-h-[90dvh] px-4", className)}>
+          {children}
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

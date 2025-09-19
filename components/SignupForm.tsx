@@ -43,6 +43,70 @@ export default function SignupForm({ isModal = false }: { isModal?: boolean }) {
           </p>
         </div>
 
+        {/* First Name */}
+        <FormField
+          control={form.control}
+          name="first_name"
+          render={({ field }) => (
+            <FormItem className="space-y-1 md:space-y-3">
+              <FormLabel
+                className={cn("max-md:text-xs", {
+                  "text-white": isModal,
+                  "text-muted-foreground": !isModal,
+                })}
+              >
+                First Name
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your first name"
+                  {...field}
+                  className={cn(
+                    "outline-border border-border placeholder:text-muted-foreground/30 focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none",
+                    {
+                      "text-white": isModal,
+                      "text-muted-foreground": !isModal,
+                    },
+                  )}
+                />
+              </FormControl>
+              <FormMessage className="max-md:text-xs" />
+            </FormItem>
+          )}
+        />
+
+        {/* Last Name */}
+        <FormField
+          control={form.control}
+          name="last_name"
+          render={({ field }) => (
+            <FormItem className="space-y-1 md:space-y-3">
+              <FormLabel
+                className={cn("max-md:text-xs", {
+                  "text-white": isModal,
+                  "text-muted-foreground": !isModal,
+                })}
+              >
+                Last Name
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your last name"
+                  {...field}
+                  className={cn(
+                    "outline-border border-border placeholder:text-muted-foreground/30 focus:border-none focus:ring-0 max-md:placeholder:text-xs dark:border-none dark:outline-none",
+                    {
+                      "text-white": isModal,
+                      "text-muted-foreground": !isModal,
+                    },
+                  )}
+                />
+              </FormControl>
+              <FormMessage className="max-md:text-xs" />
+            </FormItem>
+          )}
+        />
+
         {/* Email */}
         <FormField
           control={form.control}
