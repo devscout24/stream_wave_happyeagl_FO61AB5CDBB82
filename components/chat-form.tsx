@@ -5,12 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useChatForm from "@/hooks/use-chat-form";
+import { IPInfoContext } from "ip-info-react";
 import { ShieldAlert, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 
 export default function ChatForm({ chatId }: { chatId?: number }) {
+  const userInfo = useContext(IPInfoContext);
+
   const { form, onSubmit } = useChatForm({ chatId });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -166,7 +169,7 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
         <div className="grid w-full place-content-center">
           <Link href="?modal=appointment">
             <Button type="button" className="mx-auto mt-2 w-fit">
-              Find Legal Help in City, ST
+              Find Legal Help in {userInfo.city}, {userInfo.region}
             </Button>
           </Link>
         </div>

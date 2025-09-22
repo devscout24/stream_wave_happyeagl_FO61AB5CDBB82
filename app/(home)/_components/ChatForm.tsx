@@ -6,8 +6,9 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ShieldAlert, X } from "lucide-react";
 import Image from "next/image";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 
+import { IPInfoContext } from "ip-info-react";
 import Link from "next/link";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
@@ -20,6 +21,7 @@ export default function ChatForm({
   form: UseFormReturn<z.infer<typeof formSchema>>;
   onSubmit: (values: z.infer<typeof formSchema>) => void;
 }) {
+  const userInfo = useContext(IPInfoContext);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const watchedFiles = form.watch("files") || [];
@@ -173,7 +175,7 @@ export default function ChatForm({
         <div className="grid w-full place-content-center">
           <Link href="?modal=appointment">
             <Button type="button" className="mx-auto mt-2 w-fit">
-              Find Legal Help in City, ST
+              Find Legal Help in {userInfo.city}, {userInfo.region}
             </Button>
           </Link>
         </div>

@@ -151,34 +151,33 @@
   display: block;
 } */
 
-
 /* scrollbar.css */
 
 /* Container */
 #scrollbar {
-  overflow-y: scroll;         
-  scrollbar-gutter: stable;   
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 }
 
 /* Scrollbar Track */
 #scrollbar::-webkit-scrollbar {
-  width: 10px;              
-  background: transparent;   
+  width: 10px;
+  background: inherit;
 }
 
 /* Scrollbar Thumb */
 #scrollbar::-webkit-scrollbar-thumb {
-  background: var(--color-ring); 
-  border-radius: 10px;          
+  background: var(--color-ring);
+  border-radius: 10px;
 }
 
 /* Scrollbar Corner (when both x and y appear) */
 #scrollbar::-webkit-scrollbar-corner {
-  background: transparent;
+  background: inherit;
 }
 
 /* Firefox support */
 #scrollbar {
-  scrollbar-width: thin;         
-  scrollbar-color: var(--color-ring) transparent;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ring) inherit;
 }
