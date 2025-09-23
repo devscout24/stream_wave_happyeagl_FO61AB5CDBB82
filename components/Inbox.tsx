@@ -10,7 +10,6 @@ interface InboxProps {
 }
 
 export default function Inbox({ inboxes, profilePic }: InboxProps) {
-
   const contextValue = useCustomContext(); // May be null if not in Provider
 
   // If context is available, use it; otherwise fall back to just showing inboxes
@@ -105,7 +104,7 @@ export default function Inbox({ inboxes, profilePic }: InboxProps) {
 
   return (
     <section>
-      <div className="flex flex-col gap-10">
+      <div className="flex min-h-[calc(100vh-20rem)] flex-col gap-10">
         {chats
           .map((item) => (
             <Message
