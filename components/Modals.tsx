@@ -34,7 +34,7 @@ export default function Modals() {
       <Modal modalId="modal" openId="appointment">
         <Appointment />
       </Modal>
-      <Modal modalId="booked" openId="appointment" className="!max-w-sm">
+      <Modal modalId="booked" openId="appointment" className="!max-w-xs">
         <ConfirmAppointment />
       </Modal>
     </Suspense>

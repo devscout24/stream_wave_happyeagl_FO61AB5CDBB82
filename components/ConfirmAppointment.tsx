@@ -55,7 +55,7 @@ export default function ConfirmAppointment() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4">
       <h2 className="text-lg font-medium">Appointment Confirmed!</h2>
       <div className="flex gap-4">
         <Button

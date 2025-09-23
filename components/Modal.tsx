@@ -48,7 +48,7 @@ export default function Modal({
   return (
     <Dialog open={modal === openId} onOpenChange={handleOpenChange}>
       <DialogTitle hidden />
-      <DialogContent className="px-0 sm:max-w-[600px]">
+      <DialogContent className={className}>
         <ScrollArea className={cn("max-h-[90dvh]", className)}>
           {children}
         </ScrollArea>
