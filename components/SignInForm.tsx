@@ -30,7 +30,7 @@ export default function SignInForm({ isModal = false }: { isModal?: boolean }) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 md:space-y-8"
+        className="space-y-6 px-4 md:space-y-8"
       >
         <div className="container mx-auto max-w-xl space-y-3 max-md:px-2 md:space-y-5">
           <h1 className="text-muted-foreground text-center text-xl font-semibold md:text-2xl lg:text-4xl">

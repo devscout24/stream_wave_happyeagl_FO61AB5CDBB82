@@ -49,7 +49,7 @@ export default function Modal({
     <Dialog open={modal === openId} onOpenChange={handleOpenChange}>
       <DialogTitle hidden />
       <DialogContent className="px-0 sm:max-w-[600px]">
-        <ScrollArea className={cn("max-h-[90dvh] px-4", className)}>
+        <ScrollArea className={cn("max-h-[90dvh]", className)}>
           {children}
         </ScrollArea>
       </DialogContent>

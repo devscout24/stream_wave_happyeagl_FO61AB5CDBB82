@@ -24,7 +24,7 @@ export default function Appointment() {
   }, [messages, isLoading, streamingMessage]);
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col px-4">
       <h2 className="mb-4 text-2xl font-bold">Book an Appointment</h2>
       <div
         ref={messagesContainerRef}

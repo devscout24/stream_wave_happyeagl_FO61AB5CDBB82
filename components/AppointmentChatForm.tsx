@@ -21,7 +21,7 @@ export default function AppointmentChatForm({
 }: AppointmentChatFormProps) {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pb-2">
         <FormField
           control={form.control}
           name="body"
