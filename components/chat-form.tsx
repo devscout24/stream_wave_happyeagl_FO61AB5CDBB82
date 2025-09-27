@@ -3,13 +3,13 @@
 import Icon from "@/components/Icon";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import useChatForm from "@/hooks/use-chat-form";
 import { IPInfoContext } from "ip-info-react";
 import { ShieldAlert, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useContext, useRef } from "react";
+import { Input } from "./ui/input";
 
 export default function ChatForm({ chatId }: { chatId?: number }) {
   const userInfo = useContext(IPInfoContext);
@@ -120,7 +120,7 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
                 <Input
                   placeholder="Ask anything..."
                   {...field}
-                  className={`bg-input text-foreground placeholder:text-foreground py-4 text-sm shadow-xl placeholder:text-sm lg:rounded-[20px] lg:py-9 lg:text-lg placeholder:lg:text-lg dark:border-none ${
+                  className={`bg-input text-foreground placeholder:text-foreground py-4 pr-20 text-sm shadow-xl placeholder:text-sm lg:rounded-[20px] lg:py-9 lg:text-lg placeholder:lg:text-lg dark:border-none ${
                     hasFiles ? "pl-4" : "pl-14"
                   }`}
                 />
@@ -168,7 +168,7 @@ export default function ChatForm({ chatId }: { chatId?: number }) {
 
         <div className="grid w-full place-content-center">
           <Link href="?modal=appointment">
-            <Button type="button" className="mx-auto mt-2 w-fit">
+            <Button type="button" className="mx-auto mt-2 w-fit cursor-pointer">
               Find Legal Help in {userInfo.city}, {userInfo.region}
             </Button>
           </Link>

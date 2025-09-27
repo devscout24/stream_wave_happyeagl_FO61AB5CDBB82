@@ -178,6 +178,6 @@
 
 /* Firefox support */
 #scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-ring) inherit;
+  scrollbar-width: auto;
+  scrollbar-color: var(--color-ring) transparent;
 }

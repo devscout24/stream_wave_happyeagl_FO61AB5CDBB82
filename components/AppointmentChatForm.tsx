@@ -33,7 +33,7 @@ export default function AppointmentChatForm({
                 <Input
                   placeholder="Ask anything..."
                   {...field}
-                  className={`bg-input text-foreground placeholder:text-foreground py-4 text-sm shadow-xl placeholder:text-sm lg:rounded-[16px] lg:py-6 lg:text-lg placeholder:lg:text-lg dark:border-none`}
+                  className={`bg-input text-foreground placeholder:text-foreground py-4 pr-20 text-sm shadow-xl placeholder:text-sm lg:rounded-[16px] lg:py-6 lg:text-lg placeholder:lg:text-lg dark:border-none`}
                 />
               </FormControl>
 
