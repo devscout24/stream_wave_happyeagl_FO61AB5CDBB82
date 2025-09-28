@@ -61,7 +61,7 @@ export default function ConfirmAppointment() {
         <Button
           variant="outline"
           size="lg"
-          className="flex-1"
+          className="flex-1 cursor-pointer"
           onClick={handleCancel}
         >
           Cancel
@@ -69,7 +69,7 @@ export default function ConfirmAppointment() {
         <Button
           variant="default"
           size="lg"
-          className="flex-1"
+          className="flex-1 cursor-pointer"
           onClick={handleConfirm}
         >
           Confirm
