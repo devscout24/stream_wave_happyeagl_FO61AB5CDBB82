@@ -15,6 +15,7 @@ import { Button } from "./ui/button";
 
 export default function Header() {
   const [user, setUser] = useState<UserProfile | null>(null);
+
   const { isCollapsed } = useProvider();
   const [isPending, startTransition] = useTransition();
 
@@ -85,7 +86,7 @@ export default function Header() {
               <ThemeToggle />
 
               <Link href="?modal=sign-in">
-                <Button variant="default">
+                <Button variant="default" className="cursor-pointer">
                   Sign In <Icon src="/login-arrow.svg" />
                 </Button>
               </Link>

@@ -38,7 +38,10 @@ export default function UpdatePassword() {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button className="bg-secondary text-[#070707]" variant="secondary">
+        <Button
+          className="bg-secondary cursor-pointer text-[#070707]"
+          variant="secondary"
+        >
           Change Password
         </Button>
       </DialogTrigger>

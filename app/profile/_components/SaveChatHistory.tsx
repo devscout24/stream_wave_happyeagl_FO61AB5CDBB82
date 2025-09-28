@@ -24,6 +24,10 @@ export default function SaveChatHistory({
   };
 
   return (
-    <Switch checked={isSaveChatHistory} onCheckedChange={handleSaveHistory} />
+    <Switch
+      checked={isSaveChatHistory}
+      onCheckedChange={handleSaveHistory}
+      className="cursor-pointer"
+    />
   );
 }

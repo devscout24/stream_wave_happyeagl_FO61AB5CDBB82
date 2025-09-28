@@ -53,7 +53,13 @@ const Logout = React.forwardRef<
   };
 
   return isProfile ? (
-    <Button ref={ref} onClick={handleClick} variant="default" {...props}>
+    <Button
+      ref={ref}
+      onClick={handleClick}
+      variant="default"
+      {...props}
+      className="cursor-pointer"
+    >
       Sign out <Icon src="/login-arrow.svg" />
     </Button>
   ) : (

@@ -15,7 +15,10 @@ export default function Sidebar() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" className="p-0 hover:bg-transparent">
+        <Button
+          variant="ghost"
+          className="cursor-pointer p-0 hover:bg-transparent"
+        >
           <Icon src="/menu.svg" className="size-8" />
         </Button>
       </SheetTrigger>
