@@ -1,7 +1,6 @@
 "use client";
 
 import Icon from "@/components/Icon";
-import Logo from "@/components/Logo";
 import Search from "@/components/Search";
 import { getUserProfile } from "@/lib/actions";
 import { ChatHistoryResponse, UserProfile } from "@/types";
@@ -75,7 +74,8 @@ export default function DesktopSidebar() {
           {/* Part 1 - top */}
 
           <div className="flex flex-col gap-6">
-            <Logo className="mx-auto my-4 h-10 w-10" />
+            {/* <Logo className="mx-auto my-4 h-10 w-10" /> */}
+            <div className="mx-auto my-4 h-10 w-10" />
             <Tooltip>
               <TooltipTrigger
                 onClick={toggleCollapse}

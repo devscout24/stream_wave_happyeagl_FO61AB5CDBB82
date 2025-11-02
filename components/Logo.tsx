@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
-import Icon from "./Icon";
 
 interface LogoProps {
   className?: string;
@@ -9,7 +9,13 @@ interface LogoProps {
 export default function Logo({ className }: LogoProps) {
   return (
     <Link href="/">
-      <Icon src="/logo.svg" className={cn("h-12 w-12", className)} />
+      <Image
+        src="/LogoTransBG.png"
+        alt="Logo"
+        width={1280}
+        height={720}
+        className={cn("h-8 w-full", className)}
+      />
     </Link>
   );
 }

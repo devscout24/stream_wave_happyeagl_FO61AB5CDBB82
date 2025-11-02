@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="space-y-5 py-8 max-sm:px-2">
       <div className="container mx-auto flex flex-col items-center justify-center gap-4 md:flex-row md:justify-between lg:max-w-7xl">
         <div className="flex flex-col items-center justify-center gap-2 md:items-start">
-          <Logo className="size-16 md:size-20" />
+          <Logo />
           <p className="text-paragraph text-xs md:text-sm">
             Smarter AI conversations
           </p>
