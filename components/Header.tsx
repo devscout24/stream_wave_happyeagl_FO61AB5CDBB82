@@ -56,7 +56,7 @@ export default function Header() {
                 <React.Suspense
                   fallback={<div className="h-12 w-12 rounded bg-gray-200" />}
                 >
-                  <Logo className="h-12 w-12" />
+                  <Logo className="h-12 w-full" />
                 </React.Suspense>
               )}
               <h1 className="text-3xl font-semibold">AI Chat</h1>
