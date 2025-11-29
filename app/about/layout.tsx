@@ -3,9 +3,9 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "About - Capital H",
+  title: "About - Experto.Live",
   description:
-    "Learn more about Capital H - A modern Next.js application with Docker development environment",
+    "Learn more about Experto.Live - A modern Next.js application with Docker development environment",
 };
 
 // Force dynamic rendering because Header uses cookies

@@ -8,9 +8,9 @@ import Provider from "./_context/Provider";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Home - Capital H",
+  title: "Home - Experto.Live",
   description:
-    "Welcome to Capital H - A modern Next.js application with Docker development environment",
+    "Welcome to Experto.Live - A modern Next.js application with Docker development environment",
 };
 
 export default async function ChatLayout({

@@ -2,9 +2,9 @@ import Header from "@/components/Header";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Home - Capital H",
+  title: "Home - Experto.Live",
   description:
-    "Welcome to Capital H - A modern Next.js application with Docker development environment",
+    "Welcome to Experto.Live - A modern Next.js application with Docker development environment",
 };
 
 // Force dynamic rendering because Header uses cookies
