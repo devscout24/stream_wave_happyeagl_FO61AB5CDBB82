@@ -1,46 +1,20 @@
 "use client";
+
 import { sendChat } from "@/lib/actions";
 import { IMessage } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IPInfoContext } from "ip-info-react";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-const isBrowser = typeof window !== "undefined";
-
 import { z } from "zod";
 
 export const formSchema = z
   .object({
     body: z.string().optional(),
-    files: z
-      .array(isBrowser ? z.instanceof(File) : z.any())
-      .optional()
-      .refine((files) => !files || files.length <= 1, "Maximum 1 file allowed")
-      .refine(
-        (files) =>
-          !files || files.every((file) => file.size <= 10 * 1024 * 1024),
-        "Each file must be less than 10MB",
-      )
-      .refine(
-        (files) =>
-          !files ||
-          files.every((file) => {
-            const allowedTypes = [
-              "image/jpeg",
-              "image/jpg",
-              "image/png",
-              "image/gif",
-              "image/webp",
-              "application/pdf",
-            ];
-            return allowedTypes.includes(file.type);
-          }),
-        "Only images (JPEG, PNG, GIF, WebP) and PDF files are allowed",
-      ),
+    files: z.array(z.any()).optional(),
   })
   .refine(
     (data) => {
-      // Either body has content (at least 2 chars) or files are provided
       const hasContent = data.body && data.body.trim().length >= 2;
       const hasFiles = data.files && data.files.length > 0;
       return hasContent || hasFiles;
@@ -61,7 +35,6 @@ export default function useChatForm() {
   const userInfo = useContext(IPInfoContext);
   const [chats, setChats] = useState<IMessage[]>([]);
 
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -71,7 +44,6 @@ export default function useChatForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-
     const prompt: ChatFormProps = {
       content: values.body || "",
       location: `${userInfo.city},${userInfo.country_name}`,
